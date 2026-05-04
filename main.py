@@ -45,6 +45,25 @@ async def chat(audio: UploadFile = File(...), scene: str = Form(...)):
     os.remove(audio_path)
     return {"user_text": user_text, "ai_text": ai_text, "is_exit": False}
 
+@app.post("/chat_text")
+async def chat_text(user_text: str = Form(...), scene: str = Form(...)):
+    if not user_text:
+        return {"user_text": "", "ai_text": "Sorry, I didn't catch that. Could you repeat?", "is_exit": False}
+    
+    if is_exit(user_text):
+        return {"user_text": user_text, "ai_text": "Goodbye! See you next time.", "is_exit": True}
+
+    try:
+        ai_text = agent_reply(user_text, scene).strip()
+        ai_text = ai_text[:200] if len(ai_text) > 200 else ai_text
+        ai_text = ai_text or "Sorry, could you say that again?"
+    except Exception as e:
+        print("❌ Agent错误:", e)
+        ai_text = "Sorry, something went wrong."
+
+    save_memory(scene, user_text, ai_text)
+    return {"user_text": user_text, "ai_text": ai_text, "is_exit": False}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
