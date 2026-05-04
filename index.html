@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SceneTalk 口语练习</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        /* 场景选择 */
+        .scene-bar {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        select {
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        /* 聊天框 */
+        .chat-box {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            height: 450px;
+            overflow-y: auto;
+            margin-bottom: 25px;
+            background: #f9f9f9;
+        }
+        .user-msg {
+            text-align: right;
+            margin: 10px 0;
+            color: #fff;
+            background: #3498db;
+            padding: 10px 15px;
+            border-radius: 15px 15px 0 15px;
+            display: inline-block;
+            max-width: 70%;
+            float: right;
+            clear: both;
+        }
+        .ai-msg {
+            text-align: left;
+            margin: 10px 0;
+            color: #2c3e50;
+            background: #ecf0f1;
+            padding: 10px 15px;
+            border-radius: 15px 15px 15px 0;
+            display: inline-block;
+            max-width: 70%;
+            float: left;
+            clear: both;
+        }
+        /* 输入区域分区：语音 + 打字 */
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        /* 语音输入区域 */
+        .voice-input {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            padding: 15px;
+            border: 1px solid #ffeded;
+            border-radius: 8px;
+            background: #fff5f5;
+        }
+        /* 打字输入区域 */
+        .text-input {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            border: 1px solid #e8f4ff;
+            border-radius: 8px;
+            background: #f5faff;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        #recordBtn {
+            background: #e74c3c;
+            color: white;
+        }
+        #stopBtn {
+            background: #3498db;
+            color: white;
+            display: none;
+        }
+        #sendTextBtn {
+            background: #2ecc71;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎤 SceneTalk 英语口语练习</h1>
+
+    <!-- 场景选择 -->
+    <div class="scene-bar">
+        <select id="sceneSelect">
+            <option value="1">餐厅点餐</option>
+            <option value="2">英语面试</option>
+            <option value="3">酒店入住</option>
+        </select>
+    </div>
+
+    <!-- 聊天记录框 -->
+    <div class="chat-box" id="chatBox"></div>
+
+    <!-- 双输入区域：语音 + 打字 分区 -->
+    <div class="input-container">
+        <!-- 语音输入区 -->
+        <div class="voice-input">
+            <h3>🎙️ 语音输入</h3>
+            <button id="recordBtn">开始录音</button>
+            <button id="stopBtn">结束并发送</button>
+        </div>
+
+        <!-- 打字输入区 -->
+        <div class="text-input">
+            <h3>⌨️ 打字输入</h3>
+            <input type="text" id="textInput" placeholder="输入英文对话，按回车/点击发送">
+            <button id="sendTextBtn">发送</button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://127.0.0.1:8000";
+        let audioContext;
+        let currentScene = "restaurant";
+
+        // DOM元素
+        const sceneSelect = document.getElementById("sceneSelect");
+        const recordBtn = document.getElementById("recordBtn");
+        const stopBtn = document.getElementById("stopBtn");
+        const textInput = document.getElementById("textInput");
+        const sendTextBtn = document.getElementById("sendTextBtn");
+        const chatBox = document.getElementById("chatBox");
+
+        // 初始化场景
+        async function initScene() {
+            const sceneChoice = sceneSelect.value;
+            const res = await fetch(`${API_BASE}/init`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `scene_choice=${sceneChoice}`
+            });
+            const data = await res.json();
+            currentScene = data.scene;
+            addMessage(data.initial_message, false);
+        }
+
+        // 添加消息到聊天框
+        function addMessage(text, isUser) {
+            const div = document.createElement("div");
+            div.className = isUser ? "user-msg" : "ai-msg";
+            div.textContent = text;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // 播放AI语音
+        function speakText(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = "en-US";
+            speechSynthesis.speak(utterance);
+        }
+
+        // ==================== 1. 语音输入逻辑（原功能保留） ====================
+        async function startRecording() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioContext.createMediaStreamSource(stream);
+            const processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+            source.connect(processor);
+            processor.connect(audioContext.destination);
+
+            const recordedData = [];
+            processor.onaudioprocess = (e) => {
+                const inputData = e.inputBuffer.getChannelData(0);
+                recordedData.push(new Float32Array(inputData));
+            };
+
+            recordBtn.style.display = "none";
+            stopBtn.style.display = "inline-block";
+
+            stopBtn.onclick = async () => {
+                stream.getTracks().forEach(track => track.stop());
+                processor.disconnect();
+                source.disconnect();
+                audioContext.close();
+
+                const sampleRate = 16000;
+                const totalLength = recordedData.reduce((acc, arr) => acc + arr.length, 0);
+                const audioBuffer = new Float32Array(totalLength);
+                let offset = 0;
+                for (const arr of recordedData) {
+                    audioBuffer.set(arr, offset);
+                    offset += arr.length;
+                }
+
+                const resampledBuffer = resample(audioBuffer, audioContext.sampleRate, sampleRate);
+                const wavBlob = createWavBlob(resampledBuffer, sampleRate);
+
+                const formData = new FormData();
+                formData.append("audio", wavBlob, "input.wav");
+                formData.append("scene", currentScene);
+
+                try {
+                    const res = await fetch(`${API_BASE}/chat`, { method: "POST", body: formData });
+                    const data = await res.json();
+                    addMessage(data.user_text, true);
+                    addMessage(data.ai_text, false);
+                    speakText(data.ai_text);
+                } catch (err) {
+                    addMessage("网络错误，请重试", false);
+                    console.error(err);
+                }
+
+                recordBtn.style.display = "inline-block";
+                stopBtn.style.display = "none";
+            };
+        }
+
+        // ==================== 2. 打字输入逻辑（新增） ====================
+        async function sendTextMessage() {
+            const userText = textInput.value.trim();
+            if (!userText) return;
+
+            // 清空输入框
+            textInput.value = "";
+            addMessage(userText, true);
+
+            try {
+                const res = await fetch(`${API_BASE}/chat_text`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `user_text=${encodeURIComponent(userText)}&scene=${currentScene}`
+                });
+                const data = await res.json();
+                addMessage(data.ai_text, false);
+                speakText(data.ai_text);
+            } catch (err) {
+                addMessage("发送失败，请重试", false);
+                console.error(err);
+            }
+        }
+
+        // ==================== 工具函数 ====================
+        function resample(audioData, fromSampleRate, toSampleRate) {
+            const ratio = fromSampleRate / toSampleRate;
+            const newLength = Math.round(audioData.length / ratio);
+            const result = new Float32Array(newLength);
+            for (let i = 0; i < newLength; i++) {
+                const index = i * ratio;
+                const floor = Math.floor(index);
+                const ceil = Math.ceil(index);
+                const t = index - floor;
+                result[i] = ceil >= audioData.length ? audioData[floor] : audioData[floor] * (1 - t) + audioData[ceil] * t;
+            }
+            return result;
+        }
+
+        function createWavBlob(audioData, sampleRate) {
+            const buffer = new ArrayBuffer(44 + audioData.length * 2);
+            const view = new DataView(buffer);
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + audioData.length * 2, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, audioData.length * 2, true);
+
+            let offset = 44;
+            for (let i = 0; i < audioData.length; i++) {
+                const sample = Math.max(-1, Math.min(1, audioData[i]));
+                view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+                offset += 2;
+            }
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        // 绑定事件
+        recordBtn.addEventListener("click", startRecording);
+        sendTextBtn.addEventListener("click", sendTextMessage);
+        textInput.addEventListener("keypress", (e) => e.key === "Enter" && sendTextMessage());
+        sceneSelect.addEventListener("change", initScene);
+
+        // 页面初始化
+        initScene();
+    </script>
+</body>
+</html>

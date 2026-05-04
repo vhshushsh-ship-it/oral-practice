@@ -6,6 +6,7 @@ from dashscope.audio.asr import Recognition
 from dashscope import Generation
 import chromadb
 from datetime import datetime
+from pydub import AudioSegment
 
 load_dotenv()
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
@@ -22,7 +23,46 @@ def save_uploaded_audio(upload_file, save_dir="./temp_audio"):
         f.write(upload_file.file.read())
     return file_path
 
+def convert_audio(input_path, output_path, target_sr=16000):
+    # 自动转成16000Hz单声道WAV
+    audio = AudioSegment.from_file(input_path)
+    audio = audio.set_frame_rate(target_sr).set_channels(1)
+    audio.export(output_path, format="wav")
+    return output_path
+
+# def asr(file_path):
+#     # 先转换格式
+#     converted_path = file_path.replace(".wav", "_converted.wav")
+#     try:
+#         convert_audio(file_path, converted_path)
+#     except Exception as e:
+#         print("❌ 音频转换失败:", e)
+#         return ""
+
+#     # 调用ASR
+#     recognition = Recognition(
+#         model="paraformer-realtime-v2",
+#         format="wav",
+#         sample_rate=16000,
+#         language_hints=["en"],
+#         callback=None,
+#     )
+#     result = recognition.call(converted_path)
+#     os.remove(converted_path) # 清理临时文件
+#     if result.status_code != HTTPStatus.OK:
+#         return ""
+#     sentences = result.get_sentence()
+#     return " ".join([item.get("text", "") for item in sentences]).strip() if sentences else ""
 def asr(file_path):
+    # 新增：自动转换为16000Hz单声道WAV
+    converted_path = file_path.replace(".wav", "_converted.wav")
+    try:
+        convert_audio(file_path, converted_path)
+    except Exception as e:
+        print("❌ 音频转换失败:", e)
+        return ""
+
+    # 调用ASR识别
     recognition = Recognition(
         model="paraformer-realtime-v2",
         format="wav",
@@ -30,7 +70,12 @@ def asr(file_path):
         language_hints=["en"],
         callback=None,
     )
-    result = recognition.call(file_path)
+    result = recognition.call(converted_path)
+    
+    # 清理临时转换文件
+    if os.path.exists(converted_path):
+        os.remove(converted_path)
+
     if result.status_code != HTTPStatus.OK:
         return ""
     sentences = result.get_sentence()
