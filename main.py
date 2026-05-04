@@ -1,67 +1,105 @@
-
 import os
-import chromadb
+from dotenv import load_dotenv
+import dashscope
 import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile as wav
-import dashscope
-from dotenv import load_dotenv
+from http import HTTPStatus
+from dashscope.audio.asr import Recognition
 from dashscope import Generation
+import pyttsx3
+import asyncio
+
+# 解决 Windows 报错
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 # ================= 配置 =================
 load_dotenv()
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 
-LLM_MODEL = "qwen-turbo"
+# 初始化 TTS
+# engine = pyttsx3.init()
+# engine.setProperty("rate", 170)
 
-# Chroma
-chroma_client = chromadb.Client()
-collection = chroma_client.create_collection(name="user_memory")
+# ================= 语音播报 =================
+def speak(text):
+    try:
+        engine = pyttsx3.init()   # ✅ 每次重新创建
+        engine.setProperty("rate", 170)
+
+        engine.say(text)
+        engine.runAndWait()
+
+        engine.stop()  # ✅ 释放资源
+
+    except Exception as e:
+        print("❌ TTS错误:", e)
 
 # ================= 录音 =================
-def record_audio(filename="input.wav", duration=5, fs=16000):
-    print("🎤 Speak now...")
-    audio = sd.rec(int(duration * fs), samplerate=fs, channels=1)
+def record_audio(filename="input.wav", duration=4, fs=16000):
+    print("🎤 开始说话...")
+    audio = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype="int16")
     sd.wait()
     wav.write(filename, fs, audio)
     return filename
 
-# ================= 语音识别（暂用占位） =================
-def speech_to_text(file_path):
-    # ⚠️ DashScope也有ASR（paraformer），这里先简化
-    print("⚠️ 当前用文本模拟语音输入")
-    return input("👉 Type what you said (模拟语音): ")
+# ================= ASR =================
+def asr(file_path):
+    recognition = Recognition(
+        model="paraformer-realtime-v2",
+        format="wav",
+        sample_rate=16000,
+        language_hints=["en"],
+        callback=None,
+    )
 
-# ================= Agent核心 =================
+    result = recognition.call(file_path)
+
+    if result.status_code != HTTPStatus.OK:
+        return ""
+
+    sentences = result.get_sentence()
+
+    # ✅ 防止 None
+    if not sentences:
+        return ""
+
+    text = " ".join([item.get("text", "") for item in sentences]).strip()
+    return text
+
+# ================= 退出判断 =================
+def is_exit(text):
+    if not text:
+        return False
+
+    text = text.lower()
+
+    exit_keywords = [
+        "exit", "quit", "bye", "goodbye",
+        "stop", "end", "退出", "结束"
+    ]
+
+    return any(word in text for word in exit_keywords)
+
+# ================= Agent =================
 def agent_reply(user_text, scene="restaurant"):
-
     system_prompt = f"""
-You are an English conversation coach in a {scene} scenario.
+You are a real person in a {scene} scenario.
 
-You must:
-1. Stay in role (e.g., waiter, interviewer)
-2. Detect grammar mistakes
-3. Correct the sentence
-4. Give a more natural version
-5. Ask user to repeat
+Rules:
+- Speak naturally like a human
+- Keep it short (1-2 sentences)
+- If user makes a mistake:
+  briefly correct it naturally
+- Continue the conversation
 
-Format:
-
-[Roleplay Reply]
-...
-
-[Correction]
-...
-
-[Better Sentence]
-...
-
-[Try Again]
-...
+Example:
+User: I very like coffee
+You: Oh, you mean "I really like coffee"? Nice! What kind do you like?
 """
 
     response = Generation.call(
-        model=LLM_MODEL,
+        model="qwen-turbo",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_text}
@@ -71,41 +109,32 @@ Format:
 
     return response.output.choices[0].message["content"]
 
-# ================= 记忆系统 =================
-def save_memory(text):
-    collection.add(
-        documents=[text],
-        ids=[str(hash(text))]
-    )
+# ================= 主程序 =================
+if __name__ == "__main__":
+    scene = "restaurant"
 
-# ================= 主流程 =================
-def run():
-
-    print("🎭 SceneTalk AI (DashScope版)")
-    print("选择场景: 1. 餐厅 2. 面试 3. 酒店")
-
-    scene_map = {
-        "1": "restaurant",
-        "2": "job interview",
-        "3": "hotel check-in"
-    }
-
-    scene_choice = input("👉 选择场景: ")
-    scene = scene_map.get(scene_choice, "restaurant")
+    print("🎭 SceneTalk AI 已启动")
+    print("👉 说 'exit' / 'bye' / '结束' 可以退出\n")
 
     while True:
         audio_file = record_audio()
 
-        user_text = speech_to_text(audio_file)
+        text = asr(audio_file)
 
-        print(f"\n🧑 You: {user_text}")
+        if not text:
+            print("❌ 没识别到内容，请再说一次\n")
+            continue
 
-        reply = agent_reply(user_text, scene=scene)
+        print("🧑 You:", text)
 
-        print(f"\n🤖 AI:\n{reply}\n")
+        # ✅ 退出
+        if is_exit(text):
+            print("👋 对话结束")
+            speak("Goodbye! See you next time.")
+            break
 
-        save_memory(user_text)
+        reply = agent_reply(text, scene=scene)
 
+        print("🤖 AI:", reply, "\n")
 
-if __name__ == "__main__":
-    run()
+        speak(reply)
