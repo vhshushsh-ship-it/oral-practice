@@ -57,7 +57,8 @@
             background: #ccc;
             border-radius: 3px;
         }
-        /* 聊天消息样式 */
+        
+                /* 聊天消息样式（带点击提示） */
         .user-msg {
             text-align: right;
             margin: 10px 0;
@@ -69,7 +70,14 @@
             max-width: 70%;
             float: right;
             clear: both;
+            cursor: pointer; /* 新增：鼠标移上去变手型，提示可点击 */
+            transition: opacity 0.2s ease; /* 新增：hover过渡效果 */
         }
+        /* 鼠标悬停时的半透明效果 */
+        .user-msg:hover {
+            opacity: 0.8;
+        }
+
         .ai-msg {
             text-align: left;
             margin: 10px 0;
@@ -81,6 +89,12 @@
             max-width: 70%;
             float: left;
             clear: both;
+            cursor: pointer; /* 新增：鼠标移上去变手型，提示可点击 */
+            transition: opacity 0.2s ease; /* 新增：hover过渡效果 */
+        }
+        /* 鼠标悬停时的半透明效果 */
+        .ai-msg:hover {
+            opacity: 0.8;
         }
         /* 翻译区样式 */
         .right-panel h3 {
@@ -160,6 +174,63 @@
         button:hover {
             opacity: 0.9;
         }
+
+
+        /* 单词查询模块样式 */
+        .word-query-section {
+            margin-top: 20px;
+        }
+        .word-input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .word-input-area input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .word-input-area button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .word-input-area button:hover {
+            opacity: 0.9;
+        }
+        .word-result {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background: #f9f9f9;
+            min-height: 100px;
+        }
+        /* 音标样式（带点击提示） */
+        .word-phonetic {
+            font-size: 18px;
+            color: #3498db;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+            display: inline-block;
+            transition: opacity 0.2s;
+        }
+        .word-phonetic:hover {
+            opacity: 0.8;
+        }
+        .word-definition {
+            margin: 8px 0;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+        
     </style>
 </head>
 <body>
@@ -199,11 +270,29 @@
             </div>
         </div>
 
-        <!-- 右边：实时翻译区 -->
+        <!-- 右边：实时翻译区
         <div class="right-panel">
             <h3>📝 实时翻译</h3>
             <div class="translate-box" id="translateBox"></div>
+            
+
+        </div> -->
+
+        <div class="right-panel">
+            <h3>📝 实时翻译</h3>
+            <div class="translate-box" id="translateBox"></div>
+
+            <!-- ✅ 单词查询模块，加在这里！ -->
+            <div class="word-query-section">
+                <h3>📚 单词查询</h3>
+                <div class="word-input-area">
+                    <input type="text" id="wordInput" placeholder="输入英文单词查询音标和释义">
+                    <button id="searchWordBtn">查询</button>
+                </div>
+                <div class="word-result" id="wordResult"></div>
+            </div>
         </div>
+
     </div>
 
     <script>
@@ -224,18 +313,18 @@
         const chatBox = document.getElementById("chatBox");
         const translateBox = document.getElementById("translateBox");
 
-        // 初始化场景
-        // async function initScene() {
-        //     const sceneChoice = sceneSelect.value;
-        //     const res = await fetch(`${API_BASE}/init`, {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        //         body: `scene_choice=${sceneChoice}`
-        //     });
-        //     const data = await res.json();
-        //     currentScene = data.scene;
-        //     addMessage(data.initial_message, false);
-        // }
+        // 单词查询DOM元素
+        const wordInput = document.getElementById("wordInput");
+        const searchWordBtn = document.getElementById("searchWordBtn");
+        const wordResult = document.getElementById("wordResult");
+
+
+        // 先判断元素是否获取成功
+        if (!wordInput || !searchWordBtn || !wordResult) {
+            console.error("❌ 单词查询DOM元素获取失败！检查HTML里的id是否和JS一致");
+        } else {
+            console.log("✅ 单词查询DOM元素获取成功");
+        }
 
         // 初始化场景（修复版：开场语加入记忆 + 播放语音）
         async function initScene() {
@@ -264,14 +353,40 @@
             }
         }
 
-        // 添加消息到聊天框 + 同步翻译
+        // // 添加消息到聊天框 + 同步翻译
+        // async function addMessage(text, isUser) {
+        //     // 1. 添加到聊天框
+        //     const chatDiv = document.createElement("div");
+        //     chatDiv.className = isUser ? "user-msg" : "ai-msg";
+        //     chatDiv.textContent = text;
+        //     chatBox.appendChild(chatDiv);
+        //     chatBox.scrollTop = chatBox.scrollHeight;
+
+        //     // 2. 同步翻译并添加到翻译区
+        //     await addTranslation(text, isUser);
+        // }
+
+        // 添加消息到聊天框 + 同步翻译（带点击重放语音功能）
         async function addMessage(text, isUser) {
-            // 1. 添加到聊天框
+            if (!text || text === undefined || text === null) {
+                console.log("无效消息，跳过添加");
+                return;
+            }
+
+            // 1. 创建消息元素
             const chatDiv = document.createElement("div");
             chatDiv.className = isUser ? "user-msg" : "ai-msg";
             chatDiv.textContent = text;
             chatBox.appendChild(chatDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            // ✅ 核心新增：给消息添加点击事件，点击重放语音
+            chatDiv.addEventListener('click', function() {
+                const messageText = this.textContent.trim();
+                if (messageText) {
+                    speakText(messageText);
+                }
+            });
 
             // 2. 同步翻译并添加到翻译区
             await addTranslation(text, isUser);
@@ -308,7 +423,7 @@
         // }
 
         function speakText(text) {
-    // 核心修复：立即清空所有正在播放的语音，解决卡顿变慢
+             // 核心修复：立即清空所有正在播放的语音，解决卡顿变慢
             window.speechSynthesis.cancel();
             
             if (!text) return;
@@ -319,6 +434,80 @@
             window.speechSynthesis.speak(utterance);
         }
 
+
+        // 2. 单词查询核心函数
+        async function searchWord() {
+            console.log("📌 点击了查询按钮，开始执行searchWord函数");
+            const word = wordInput.value.trim().toLowerCase();
+            if (!word) {
+                wordResult.innerHTML = "<p style='color:#e74c3c;'>请输入英文单词</p>";
+                return;
+            }
+
+            wordResult.innerHTML = "<p>查询中...</p>";
+            console.log("📌 正在查询单词：", word);
+
+            try {
+                // 调用免费词典API（支持CORS，Live Server下可用）
+                const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+                console.log("📌 API请求状态：", res.status);
+                if (!res.ok) throw new Error("单词未找到");
+
+                const data = await res.json();
+                const wordData = data[0];
+                console.log("📌 API返回数据：", wordData);
+
+                // 优先取美式音标
+                const phonetic = wordData.phonetic || (wordData.phonetics?.find(p => p.text)?.text || "无音标");
+                const definitions = wordData.meanings?.[0]?.definitions || [];
+
+                // 构建结果HTML
+                let resultHTML = `
+                    <div class="word-phonetic" data-word="${word}">
+                        🔊 ${phonetic}
+                    </div>
+                    <div class="word-definitions">
+                `;
+                definitions.slice(0, 3).forEach((def, index) => {
+                    resultHTML += `
+                        <div class="word-definition">
+                            <strong>${index + 1}.</strong> ${def.definition}
+                        </div>
+                    `;
+                });
+                resultHTML += `</div>`;
+                wordResult.innerHTML = resultHTML;
+
+                // 给音标绑定点击发音事件
+                const phoneticEl = wordResult.querySelector(".word-phonetic");
+                if (phoneticEl) {
+                    phoneticEl.addEventListener("click", function() {
+                        const targetWord = this.dataset.word;
+                        console.log("📌 点击音标，播放单词：", targetWord);
+                        speakText(targetWord);
+                    });
+                }
+
+            } catch (err) {
+                console.error("❌ 单词查询失败：", err);
+                wordResult.innerHTML = `<p style='color:#e74c3c;'>查询失败：未找到单词「${word}」，请检查拼写</p>`;
+            }
+        }
+
+        // 3. 绑定事件（点击+回车）
+        if (searchWordBtn && wordInput) {
+            searchWordBtn.addEventListener("click", function() {
+                console.log("📌 按钮点击事件触发");
+                searchWord();
+            });
+            wordInput.addEventListener("keypress", function(e) {
+                if (e.key === "Enter") {
+                    console.log("📌 回车事件触发");
+                    searchWord();
+                }
+            });
+            console.log("✅ 单词查询事件绑定成功");
+        }      
         // ==================== 1. 语音输入逻辑 ====================
         async function startRecording() {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
