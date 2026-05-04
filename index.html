@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>  
     <meta charset="UTF-8">
     <title>SceneTalk 英语口语练习</title>
     <style>
@@ -207,6 +207,10 @@
     </div>
 
     <script>
+        // 对话历史维护（格式：[{role: "user/assistant", content: "消息内容"}]）
+        let conversationHistory = [];
+        // 最大对话历史长度（避免超过模型上下文，10轮足够口语练习）
+        const MAX_HISTORY_LENGTH = 10;
         const API_BASE = "http://127.0.0.1:8000";
         let audioContext;
         let currentScene = "restaurant";
@@ -221,16 +225,43 @@
         const translateBox = document.getElementById("translateBox");
 
         // 初始化场景
+        // async function initScene() {
+        //     const sceneChoice = sceneSelect.value;
+        //     const res = await fetch(`${API_BASE}/init`, {
+        //         method: "POST",
+        //         headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        //         body: `scene_choice=${sceneChoice}`
+        //     });
+        //     const data = await res.json();
+        //     currentScene = data.scene;
+        //     addMessage(data.initial_message, false);
+        // }
+
+        // 初始化场景（修复版：开场语加入记忆 + 播放语音）
         async function initScene() {
             const sceneChoice = sceneSelect.value;
-            const res = await fetch(`${API_BASE}/init`, {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `scene_choice=${sceneChoice}`
-            });
-            const data = await res.json();
-            currentScene = data.scene;
-            addMessage(data.initial_message, false);
+            try {
+                const res = await fetch(`${API_BASE}/init`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `scene_choice=${sceneChoice}`
+                });
+                const data = await res.json();
+                currentScene = data.scene;
+                // 清空聊天和翻译记录
+                chatBox.innerHTML = "";
+                translateBox.innerHTML = "";
+                conversationHistory = [];
+
+                // 👇 核心修复：强制使用后端返回的开场白，不用任何默认兜底
+                const welcomeText = data.initial_message;
+                conversationHistory.push({ "role": "assistant", "content": welcomeText });
+                addMessage(welcomeText, false);
+                speakText(welcomeText);
+            } catch (err) {
+                console.error("初始化场景失败:", err);
+                addMessage("Sorry, the scene failed to load. Please refresh.", false);
+            }
         }
 
         // 添加消息到聊天框 + 同步翻译
@@ -270,10 +301,22 @@
         }
 
         // 播放AI语音
+        // function speakText(text) {
+        //     const utterance = new SpeechSynthesisUtterance(text);
+        //     utterance.lang = "en-US";
+        //     speechSynthesis.speak(utterance);
+        // }
+
         function speakText(text) {
+    // 核心修复：立即清空所有正在播放的语音，解决卡顿变慢
+            window.speechSynthesis.cancel();
+            
+            if (!text) return;
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = "en-US";
-            speechSynthesis.speak(utterance);
+            // 加速播放（可选，1.0是正常速度，1.1更自然）
+            utterance.rate = 1.0; 
+            window.speechSynthesis.speak(utterance);
         }
 
         // ==================== 1. 语音输入逻辑 ====================
@@ -313,13 +356,36 @@
                 const resampledBuffer = resample(audioBuffer, audioContext.sampleRate, sampleRate);
                 const wavBlob = createWavBlob(resampledBuffer, sampleRate);
 
+                // const formData = new FormData();
+                // formData.append("audio", wavBlob, "input.wav");
+                // formData.append("scene", currentScene);
+
+                // try {
+                //     const res = await fetch(`${API_BASE}/chat`, { method: "POST", body: formData });
+                //     const data = await res.json();
+                //     addMessage(data.user_text, true);
+                //     addMessage(data.ai_text, false);
+                //     speakText(data.ai_text);
+                // } catch (err) {
+                //     addMessage("网络错误，请重试", false);
+                //     console.error(err);
+                // }
+
+
                 const formData = new FormData();
                 formData.append("audio", wavBlob, "input.wav");
                 formData.append("scene", currentScene);
+                // 新增：添加对话历史
+                formData.append("conversation_history", JSON.stringify(conversationHistory.slice(-MAX_HISTORY_LENGTH)));
 
                 try {
                     const res = await fetch(`${API_BASE}/chat`, { method: "POST", body: formData });
                     const data = await res.json();
+                    
+                    // 新增：把对话存入记忆
+                    conversationHistory.push({"role": "user", "content": data.user_text});
+                    conversationHistory.push({"role": "assistant", "content": data.ai_text});
+                    
                     addMessage(data.user_text, true);
                     addMessage(data.ai_text, false);
                     speakText(data.ai_text);
@@ -327,7 +393,6 @@
                     addMessage("网络错误，请重试", false);
                     console.error(err);
                 }
-
                 recordBtn.style.display = "inline-block";
                 stopBtn.style.display = "none";
             };
@@ -342,13 +407,33 @@
             textInput.value = "";
             addMessage(userText, true);
 
+            // try {
+            //     const res = await fetch(`${API_BASE}/chat_text`, {
+            //         method: "POST",
+            //         headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            //         body: `user_text=${encodeURIComponent(userText)}&scene=${currentScene}`
+            //     });
+            //     const data = await res.json();
+            //     addMessage(data.ai_text, false);
+            //     speakText(data.ai_text);
+            // } catch (err) {
+            //     addMessage("发送失败，请重试", false);
+            //     console.error(err);
+            // }
+
             try {
                 const res = await fetch(`${API_BASE}/chat_text`, {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `user_text=${encodeURIComponent(userText)}&scene=${currentScene}`
+                    // 👇 这一行是修改的：加上对话历史
+                    body: `user_text=${encodeURIComponent(userText)}&scene=${currentScene}&conversation_history=${encodeURIComponent(JSON.stringify(conversationHistory.slice(-MAX_HISTORY_LENGTH)))}`
                 });
                 const data = await res.json();
+                
+                // 👇 这两行是新增的：把对话存入记忆
+                conversationHistory.push({"role": "user", "content": userText});
+                conversationHistory.push({"role": "assistant", "content": data.ai_text});
+                
                 addMessage(data.ai_text, false);
                 speakText(data.ai_text);
             } catch (err) {
@@ -412,6 +497,7 @@
             // 切换场景时清空聊天和翻译记录
             chatBox.innerHTML = "";
             translateBox.innerHTML = "";
+            conversationHistory = [];
             initScene();
         });
 
