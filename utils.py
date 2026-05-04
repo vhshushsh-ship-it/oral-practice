@@ -8,6 +8,8 @@ import chromadb
 from datetime import datetime
 from pydub import AudioSegment
 
+import json
+
 
 load_dotenv()
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
@@ -104,22 +106,79 @@ def get_memory_context(limit=5):
         print("❌ 读取记忆失败:", e)
         return ""
 
-def agent_reply(user_text, scene="restaurant"):
-    memory_context = get_memory_context()
-    system_prompts = {
-        "restaurant": "You are a waiter. Speak naturally, help order food, keep it short (1-2 sentences).",
-        "interview": "You are an interviewer. Ask challenging questions, keep it professional.",
-        "hotel": "You are a receptionist. Help check in, be polite and short."
+# def agent_reply(user_text, scene="restaurant"):
+#     memory_context = get_memory_context()
+#     system_prompts = {
+#         "restaurant": "You are a waiter. Speak naturally, help order food, keep it short (1-2 sentences).",
+#         "interview": "You are an interviewer. Ask challenging questions, keep it professional.",
+#         "hotel": "You are a receptionist. Help check in, be polite and short."
+#     }
+#     system_prompt = system_prompts.get(scene, "You are a helpful English speaker.")
+#     if memory_context:
+#         system_prompt += f"\n\nConversation memory:\n{memory_context}"
+#     response = Generation.call(
+#         model="qwen-turbo",
+#         messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_text}],
+#         result_format="message"
+#     )
+#     return response.output.choices[0].message["content"]
+
+from dashscope import Generation
+import json
+
+def agent_reply(user_text, scene, conversation_history=None):
+    # ---------------------- 1. 场景角色定义（强化场景感，贴合口语练习） ----------------------
+    scene_roles = {
+        "restaurant": """你是餐厅的服务员，正在和顾客对话，你需要：
+1. 全程使用英文，语气友好专业，符合餐厅服务员的身份
+2. 记住对话历史，根据顾客之前的对话回答，比如顾客点过的餐品、需求
+3. 对话连贯，符合真实餐厅点餐场景，比如顾客点了苹果，你可以问是否需要切片、打包
+4. 不要跳出角色，不要说和场景无关的内容
+5. 回答简洁自然，适合口语练习，用短句，不要复杂从句
+""",
+        "interview": """你是英语面试官，正在面试应聘者，你需要：
+1. 全程使用英文，语气正式礼貌，符合面试官身份
+2. 记住对话历史，根据应聘者的回答继续提问，比如问完自我介绍后问工作经历
+3. 对话连贯，符合真实面试场景，不要跳出角色
+4. 问题循序渐进，适合口语练习，不要太难的问题
+""",
+        "hotel": """你是酒店前台，正在和顾客办理入住，你需要：
+1. 全程使用英文，语气友好专业，符合酒店前台身份
+2. 记住对话历史，根据顾客的需求回答，比如顾客说过的入住日期、房型
+3. 对话连贯，符合真实酒店办理场景，不要跳出角色
+4. 回答简洁自然，适合口语练习
+"""
     }
-    system_prompt = system_prompts.get(scene, "You are a helpful English speaker.")
-    if memory_context:
-        system_prompt += f"\n\nConversation memory:\n{memory_context}"
-    response = Generation.call(
-        model="qwen-turbo",
-        messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_text}],
-        result_format="message"
-    )
-    return response.output.choices[0].message["content"]
+
+    # 初始化对话历史（如果没有传的话）
+    if conversation_history is None:
+        conversation_history = []
+    
+    # ---------------------- 2. 构建带历史的完整Prompt ----------------------
+    # 先加上场景角色设定
+    prompt = scene_roles.get(scene, scene_roles["restaurant"]) + "\n"
+    # 把对话历史按顺序加入，每一轮用户和AI的对话都带上
+    for msg in conversation_history:
+        if msg["role"] == "user":
+            prompt += f"顾客：{msg['content']}\n"
+        elif msg["role"] == "assistant":
+            prompt += f"服务员：{msg['content']}\n"
+    # 加上当前用户的最新输入
+    prompt += f"顾客：{user_text}\n服务员："
+
+    # ---------------------- 3. 调用大模型生成回答 ----------------------
+    try:
+        response = Generation.call(
+            model="qwen-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            result_format="message",
+            max_tokens=200,
+            temperature=0.7 # 0.7 让回答自然不生硬，适合口语场景
+        )
+        return response.output.choices[0].message["content"].strip()
+    except Exception as e:
+        print("❌ 模型调用错误:", e)
+        return "Sorry, I didn't catch that. Could you repeat?"
 
 def get_initial_message(scene):
     initial_messages = {
