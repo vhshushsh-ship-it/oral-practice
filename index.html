@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SceneTalk 口语练习</title>
+    <title>SceneTalk 英语口语练习</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
         }
         body {
-            max-width: 700px;
+            max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
@@ -19,6 +19,15 @@
             text-align: center;
             margin-bottom: 20px;
             color: #2c3e50;
+        }
+        /* 左右双栏容器 */
+        .container {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+        }
+        .left-panel, .right-panel {
+            flex: 1; /* 左右两栏宽度相等 */
         }
         /* 场景选择 */
         .scene-bar {
@@ -31,8 +40,8 @@
             border: 1px solid #ddd;
             font-size: 16px;
         }
-        /* 聊天框 */
-        .chat-box {
+        /* 聊天框 & 翻译框 统一样式 */
+        .chat-box, .translate-box {
             border: 1px solid #eee;
             border-radius: 10px;
             padding: 20px;
@@ -41,6 +50,14 @@
             margin-bottom: 25px;
             background: #f9f9f9;
         }
+        .chat-box::-webkit-scrollbar, .translate-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-box::-webkit-scrollbar-thumb, .translate-box::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+        /* 聊天消息样式 */
         .user-msg {
             text-align: right;
             margin: 10px 0;
@@ -64,6 +81,28 @@
             max-width: 70%;
             float: left;
             clear: both;
+        }
+        /* 翻译区样式 */
+        .right-panel h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .translate-item {
+            margin: 12px 0;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #e8f4ff;
+        }
+        .translate-item .source {
+            font-size: 14px;
+            color: #34495e;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .translate-item .target {
+            font-size: 14px;
+            color: #2980b9;
         }
         /* 输入区域分区：语音 + 打字 */
         .input-container {
@@ -126,32 +165,44 @@
 <body>
     <h1>🎤 SceneTalk 英语口语练习</h1>
 
-    <!-- 场景选择 -->
-    <div class="scene-bar">
-        <select id="sceneSelect">
-            <option value="1">餐厅点餐</option>
-            <option value="2">英语面试</option>
-            <option value="3">酒店入住</option>
-        </select>
-    </div>
+    <!-- 左右双栏容器 -->
+    <div class="container">
+        <!-- 左边：原对话功能 -->
+        <div class="left-panel">
+            <!-- 场景选择 -->
+            <div class="scene-bar">
+                <select id="sceneSelect">
+                    <option value="1">餐厅点餐</option>
+                    <option value="2">英语面试</option>
+                    <option value="3">酒店入住</option>
+                </select>
+            </div>
 
-    <!-- 聊天记录框 -->
-    <div class="chat-box" id="chatBox"></div>
+            <!-- 聊天记录框 -->
+            <div class="chat-box" id="chatBox"></div>
 
-    <!-- 双输入区域：语音 + 打字 分区 -->
-    <div class="input-container">
-        <!-- 语音输入区 -->
-        <div class="voice-input">
-            <h3>🎙️ 语音输入</h3>
-            <button id="recordBtn">开始录音</button>
-            <button id="stopBtn">结束并发送</button>
+            <!-- 双输入区域：语音 + 打字 分区 -->
+            <div class="input-container">
+                <!-- 语音输入区 -->
+                <div class="voice-input">
+                    <span>🎙️ 语音输入</span>
+                    <button id="recordBtn">开始录音</button>
+                    <button id="stopBtn">结束并发送</button>
+                </div>
+
+                <!-- 打字输入区 -->
+                <div class="text-input">
+                    <span>⌨️ 打字输入</span>
+                    <input type="text" id="textInput" placeholder="输入英文对话，按回车/点击发送">
+                    <button id="sendTextBtn">发送</button>
+                </div>
+            </div>
         </div>
 
-        <!-- 打字输入区 -->
-        <div class="text-input">
-            <h3>⌨️ 打字输入</h3>
-            <input type="text" id="textInput" placeholder="输入英文对话，按回车/点击发送">
-            <button id="sendTextBtn">发送</button>
+        <!-- 右边：实时翻译区 -->
+        <div class="right-panel">
+            <h3>📝 实时翻译</h3>
+            <div class="translate-box" id="translateBox"></div>
         </div>
     </div>
 
@@ -167,6 +218,7 @@
         const textInput = document.getElementById("textInput");
         const sendTextBtn = document.getElementById("sendTextBtn");
         const chatBox = document.getElementById("chatBox");
+        const translateBox = document.getElementById("translateBox");
 
         // 初始化场景
         async function initScene() {
@@ -181,13 +233,40 @@
             addMessage(data.initial_message, false);
         }
 
-        // 添加消息到聊天框
-        function addMessage(text, isUser) {
-            const div = document.createElement("div");
-            div.className = isUser ? "user-msg" : "ai-msg";
-            div.textContent = text;
-            chatBox.appendChild(div);
+        // 添加消息到聊天框 + 同步翻译
+        async function addMessage(text, isUser) {
+            // 1. 添加到聊天框
+            const chatDiv = document.createElement("div");
+            chatDiv.className = isUser ? "user-msg" : "ai-msg";
+            chatDiv.textContent = text;
+            chatBox.appendChild(chatDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 2. 同步翻译并添加到翻译区
+            await addTranslation(text, isUser);
+        }
+
+        // 添加翻译内容到翻译区
+        async function addTranslation(text, isUser) {
+            try {
+                const res = await fetch(`${API_BASE}/translate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `text=${encodeURIComponent(text)}`
+                });
+                const data = await res.json();
+                
+                const translateDiv = document.createElement("div");
+                translateDiv.className = "translate-item";
+                translateDiv.innerHTML = `
+                    <div class="source">${isUser ? "你说：" : "AI说："}${text}</div>
+                    <div class="target">中文翻译：${data.translation}</div>
+                `;
+                translateBox.appendChild(translateDiv);
+                translateBox.scrollTop = translateBox.scrollHeight;
+            } catch (err) {
+                console.error("翻译失败:", err);
+            }
         }
 
         // 播放AI语音
@@ -197,7 +276,7 @@
             speechSynthesis.speak(utterance);
         }
 
-        // ==================== 1. 语音输入逻辑（原功能保留） ====================
+        // ==================== 1. 语音输入逻辑 ====================
         async function startRecording() {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -254,7 +333,7 @@
             };
         }
 
-        // ==================== 2. 打字输入逻辑（新增） ====================
+        // ==================== 2. 打字输入逻辑 ====================
         async function sendTextMessage() {
             const userText = textInput.value.trim();
             if (!userText) return;
@@ -329,7 +408,12 @@
         recordBtn.addEventListener("click", startRecording);
         sendTextBtn.addEventListener("click", sendTextMessage);
         textInput.addEventListener("keypress", (e) => e.key === "Enter" && sendTextMessage());
-        sceneSelect.addEventListener("change", initScene);
+        sceneSelect.addEventListener("change", () => {
+            // 切换场景时清空聊天和翻译记录
+            chatBox.innerHTML = "";
+            translateBox.innerHTML = "";
+            initScene();
+        });
 
         // 页面初始化
         initScene();

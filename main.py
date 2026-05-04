@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from utils import save_uploaded_audio, asr, is_exit, save_memory, agent_reply, get_initial_message
+from utils import save_uploaded_audio, asr, is_exit, save_memory, agent_reply, get_initial_message, translate_text
 import os
 
 app = FastAPI(title="SceneTalk Backend")
@@ -64,6 +64,20 @@ async def chat_text(user_text: str = Form(...), scene: str = Form(...)):
     save_memory(scene, user_text, ai_text)
     return {"user_text": user_text, "ai_text": ai_text, "is_exit": False}
 
+# 实时翻译接口（修正版）
+@app.post("/translate")
+async def api_translate(text: str = Form(...)):
+    if not text or not text.strip():
+        return {"translation": ""}
+    try:
+        translation = translate_text(text)
+        return {"translation": translation}
+    except Exception as e:
+        print("❌ 翻译接口异常:", e)
+        return {"translation": "翻译出错，请重试"}
+
+# ====================== 修复点：新增启动代码 ======================
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # 启动服务，固定本机地址
+    uvicorn.run(app, host="127.0.0.1", port=8000)

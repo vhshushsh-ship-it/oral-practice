@@ -8,6 +8,7 @@ import chromadb
 from datetime import datetime
 from pydub import AudioSegment
 
+
 load_dotenv()
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 
@@ -127,3 +128,33 @@ def get_initial_message(scene):
         "hotel": "Welcome. Do you have a reservation?"
     }
     return initial_messages.get(scene, "Hello! How can I help you?")
+
+
+def translate_text(text: str) -> str:
+    """英文对话实时翻译成中文（增强版）"""
+    if not text.strip():
+        return ""
+    
+    prompt = f"""
+    你是一个专业的翻译助手，请将以下英文对话翻译成自然流畅的中文，只输出翻译结果，不要额外解释：
+    原文：{text}
+    翻译：
+    """
+    try:
+        response = Generation.call(
+            model="qwen-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            result_format="message",
+            max_tokens=200,
+            temperature=0.1
+        )
+        if response.status_code != 200:
+            print(f"❌ 翻译接口调用失败: {response.code}, {response.message}")
+            return "翻译出错，请重试"
+        
+        translation = response.output.choices[0].message["content"].strip()
+        translation = translation.replace("翻译：", "").strip()
+        return translation
+    except Exception as e:
+        print(f"❌ 翻译函数异常: {str(e)}")
+        return "翻译出错，请重试"
