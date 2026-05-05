@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>SceneTalk 英语口语练习</title>
     <style>
+        /* 全局重置 */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -11,21 +12,71 @@
             font-family: Arial, sans-serif;
         }
         body {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
+            background: linear-gradient(135deg, #f5f7fb 0%, #eaf1ff 100%);
         }
+
+        /* 整体布局：侧边栏 + 主内容 */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 左侧导航栏 */
+        .sidebar {
+            width: 220px;
+            background-color: #ffffff;
+            border-right: 1px solid #eee;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .nav-item {
+            padding: 14px 24px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 16px;
+        }
+        .nav-item:hover {
+            background-color: #f0f7ff;
+        }
+        .nav-item.active {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* 页面切换：默认隐藏所有页面，active的显示 */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* 口语练习页面原有样式（完全保留） */
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            /* 轻微减小标题底部间距，平衡整体布局 */
+            margin-bottom: 10px; 
             color: #2c3e50;
         }
-        /* 左右双栏容器 */
+
         .container {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr; /* 左边更大（重点） */
             gap: 25px;
-            align-items: flex-start;
+            max-width: 1400px;
+            margin: 50px auto 30px;
         }
+
         .left-panel, .right-panel {
             flex: 1; /* 左右两栏宽度相等 */
         }
@@ -50,6 +101,8 @@
             margin-bottom: 25px;
             background: #f9f9f9;
         }
+
+
         .chat-box::-webkit-scrollbar, .translate-box::-webkit-scrollbar {
             width: 6px;
         }
@@ -63,7 +116,7 @@
             text-align: right;
             margin: 10px 0;
             color: #fff;
-            background: #3498db;
+            background: linear-gradient(135deg, #4facfe, #00c6ff);
             padding: 10px 15px;
             border-radius: 15px 15px 0 15px;
             display: inline-block;
@@ -82,7 +135,7 @@
             text-align: left;
             margin: 10px 0;
             color: #2c3e50;
-            background: #ecf0f1;
+            background: #ecf3f9;
             padding: 10px 15px;
             border-radius: 15px 15px 15px 0;
             display: inline-block;
@@ -124,6 +177,12 @@
             flex-direction: column;
             gap: 15px;
         }
+
+        .voice-input, .text-input {
+            border-radius: 10px;
+            padding: 12px;
+        }
+
         /* 语音输入区域 */
         .voice-input {
             display: flex;
@@ -151,19 +210,31 @@
             font-size: 16px;
         }
         button {
-            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 10px 16px;
             border: none;
-            border-radius: 6px;
             cursor: pointer;
-            font-size: 15px;
-            transition: 0.2s;
+            transition: opacity 0.2s;
         }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+
+        #sendTextBtn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+
         #recordBtn {
-            background: #e74c3c;
+            background: linear-gradient(135deg, #ff6b6b, #e74c3c);
             color: white;
         }
+
         #stopBtn {
-            background: #3498db;
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
             display: none;
         }
@@ -230,69 +301,217 @@
             color: #2c3e50;
             line-height: 1.5;
         }
+
+        /* 单词查询升级样式 */
+        .word-meanings, .word-examples {
+            margin-top: 15px;
+        }
+        .word-meanings h4, .word-examples h4 {
+            margin: 8px 0;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+        .word-meaning {
+            margin: 5px 0;
+            line-height: 1.5;
+            color: #333;
+        }
+        .example-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f5faff;
+            border-radius: 6px;
+        }
+        .example-en {
+            color: #2c3e50;
+            margin-bottom: 3px;
+            font-weight: 500;
+        }
+        .example-zh {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 笔记页面样式 */
+        #notes-page h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .notes-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        #notesTextarea {
+            width: 100%;
+            height: 450px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            line-height: 1.6;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        .notes-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .save-btn {
+            padding: 10px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .clear-btn {
+            padding: 10px 25px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .panel {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            /* 🔥 核心修改：均匀上下内边距，实现对称 */
+            padding: 24px 18px; 
+            box-shadow: 
+                0 8px 30px rgba(0,0,0,0.08),
+                0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 12px 40px rgba(0,0,0,0.12),
+                0 4px 12px rgba(0,0,0,0.08);
+        }
+
+
+        .panel h3 {
+            text-align: left;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .chat-box {
+            background: #f7f9fc;
+            border-radius: 12px;
+            padding: 15px;
+            height: 420px;
+        }
+
+        .translate-box, .word-result {
+            background: #f8fbff;
+            border-radius: 12px;
+            padding: 15px;
+            height: 420px;
+        }
+
+        /* 聊天框 & 翻译框 & 单词结果框 统一高度（同步扩大） */
+        .chat-box, .translate-box, .word-result {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            /* 🔥 核心修改：统一拉高高度，比原来大100px，同步扩大 */
+            height: 520px; 
+            overflow-y: auto;
+            margin-bottom: 25px;
+            background: #f9f9f9;
+        }
         
     </style>
 </head>
 <body>
-    <h1>🎤 SceneTalk 英语口语练习</h1>
+    <div class="app-wrapper">
+        <!-- 1. 左侧导航栏 -->
+        <aside class="sidebar">
+            <div class="nav-item active" data-page="practice">
+                🎤 SceneTalk 英语口语练习
+            </div>
+            <div class="nav-item" data-page="notes">
+                📝 笔记
+            </div>
+        </aside>
 
-    <!-- 左右双栏容器 -->
-    <div class="container">
-        <!-- 左边：原对话功能 -->
-        <div class="left-panel">
-            <!-- 场景选择 -->
-            <div class="scene-bar">
-                <select id="sceneSelect">
-                    <option value="1">餐厅点餐</option>
-                    <option value="2">英语面试</option>
-                    <option value="3">酒店入住</option>
-                </select>
+        <!-- 2. 右侧主内容区（双页面切换） -->
+        <main class="main-content">
+            <!-- 页面1：英语口语练习（默认显示，保留你原来的所有内容） -->
+            <div id="practice-page" class="page active">
+                <h1>🎤 SceneTalk 英语口语练习</h1>
+
+                <!-- 左右双栏容器 -->
+                <div class="container">
+
+                    <!-- ✅ 左：对话 -->
+                    <div class="panel">
+                        <div class="scene-bar">
+                            <select id="sceneSelect">
+                                <option value="1">餐厅点餐</option>
+                                <option value="2">英语面试</option>
+                                <option value="3">酒店入住</option>
+                            </select>
+                        </div>
+
+                        <div class="chat-box" id="chatBox"></div>
+
+                        <div class="input-container">
+                            <div class="voice-input">
+                                <span>🎙️ 语音输入</span>
+                                <button id="recordBtn">开始录音</button>
+                                <button id="stopBtn">结束并发送</button>
+                            </div>
+
+                            <div class="text-input">
+                                <span>⌨️ 打字输入</span>
+                                <input type="text" id="textInput">
+                                <button id="sendTextBtn">发送</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ 中：翻译 -->
+                    <div class="panel">
+                        <h3>📝 实时翻译</h3>
+                        <div class="translate-box" id="translateBox"></div>
+                    </div>
+
+                    <!-- ✅ 右：单词 -->
+                    <div class="panel">
+                        <h3>📚 单词查询</h3>
+                        <div class="word-input-area">
+                            <input type="text" id="wordInput">
+                            <button id="searchWordBtn">查询</button>
+                        </div>
+                        <div class="word-result" id="wordResult"></div>
+                    </div>
+
+                </div>
             </div>
 
-            <!-- 聊天记录框 -->
-            <div class="chat-box" id="chatBox"></div>
-
-            <!-- 双输入区域：语音 + 打字 分区 -->
-            <div class="input-container">
-                <!-- 语音输入区 -->
-                <div class="voice-input">
-                    <span>🎙️ 语音输入</span>
-                    <button id="recordBtn">开始录音</button>
-                    <button id="stopBtn">结束并发送</button>
-                </div>
-
-                <!-- 打字输入区 -->
-                <div class="text-input">
-                    <span>⌨️ 打字输入</span>
-                    <input type="text" id="textInput" placeholder="输入英文对话，按回车/点击发送">
-                    <button id="sendTextBtn">发送</button>
+            <!-- 页面2：笔记页面（初始隐藏） -->
+            <div id="notes-page" class="page">
+                <h2>📝 我的学习笔记</h2>
+                <div class="notes-wrapper">
+                    <textarea id="notesTextarea" placeholder="在这里记录你的口语学习笔记，比如易错单词、常用句型、场景对话要点等..."></textarea>
+                    <div class="notes-actions">
+                        <button id="saveNotesBtn" class="save-btn">保存笔记</button>
+                        <button id="clearNotesBtn" class="clear-btn">清空笔记</button>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- 右边：实时翻译区
-        <div class="right-panel">
-            <h3>📝 实时翻译</h3>
-            <div class="translate-box" id="translateBox"></div>
-            
-
-        </div> -->
-
-        <div class="right-panel">
-            <h3>📝 实时翻译</h3>
-            <div class="translate-box" id="translateBox"></div>
-
-            <!-- ✅ 单词查询模块，加在这里！ -->
-            <div class="word-query-section">
-                <h3>📚 单词查询</h3>
-                <div class="word-input-area">
-                    <input type="text" id="wordInput" placeholder="输入英文单词查询音标和释义">
-                    <button id="searchWordBtn">查询</button>
-                </div>
-                <div class="word-result" id="wordResult"></div>
-            </div>
-        </div>
-
+        </main>
     </div>
 
     <script>
@@ -353,19 +572,6 @@
             }
         }
 
-        // // 添加消息到聊天框 + 同步翻译
-        // async function addMessage(text, isUser) {
-        //     // 1. 添加到聊天框
-        //     const chatDiv = document.createElement("div");
-        //     chatDiv.className = isUser ? "user-msg" : "ai-msg";
-        //     chatDiv.textContent = text;
-        //     chatBox.appendChild(chatDiv);
-        //     chatBox.scrollTop = chatBox.scrollHeight;
-
-        //     // 2. 同步翻译并添加到翻译区
-        //     await addTranslation(text, isUser);
-        // }
-
         // 添加消息到聊天框 + 同步翻译（带点击重放语音功能）
         async function addMessage(text, isUser) {
             if (!text || text === undefined || text === null) {
@@ -415,13 +621,6 @@
             }
         }
 
-        // 播放AI语音
-        // function speakText(text) {
-        //     const utterance = new SpeechSynthesisUtterance(text);
-        //     utterance.lang = "en-US";
-        //     speechSynthesis.speak(utterance);
-        // }
-
         function speakText(text) {
              // 核心修复：立即清空所有正在播放的语音，解决卡顿变慢
             window.speechSynthesis.cancel();
@@ -434,10 +633,8 @@
             window.speechSynthesis.speak(utterance);
         }
 
-
-        // 2. 单词查询核心函数
+        // 最终版：单词音标 + 单词中文释义 + 2句中英例句
         async function searchWord() {
-            console.log("📌 点击了查询按钮，开始执行searchWord函数");
             const word = wordInput.value.trim().toLowerCase();
             if (!word) {
                 wordResult.innerHTML = "<p style='color:#e74c3c;'>请输入英文单词</p>";
@@ -445,54 +642,72 @@
             }
 
             wordResult.innerHTML = "<p>查询中...</p>";
-            console.log("📌 正在查询单词：", word);
 
             try {
-                // 调用免费词典API（支持CORS，Live Server下可用）
+                // 1. 查询单词信息（音标+例句）
                 const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-                console.log("📌 API请求状态：", res.status);
                 if (!res.ok) throw new Error("单词未找到");
-
                 const data = await res.json();
                 const wordData = data[0];
-                console.log("📌 API返回数据：", wordData);
 
-                // 优先取美式音标
+                // 2. 美式音标
                 const phonetic = wordData.phonetic || (wordData.phonetics?.find(p => p.text)?.text || "无音标");
-                const definitions = wordData.meanings?.[0]?.definitions || [];
 
-                // 构建结果HTML
-                let resultHTML = `
-                    <div class="word-phonetic" data-word="${word}">
-                        🔊 ${phonetic}
-                    </div>
-                    <div class="word-definitions">
-                `;
-                definitions.slice(0, 3).forEach((def, index) => {
-                    resultHTML += `
-                        <div class="word-definition">
-                            <strong>${index + 1}.</strong> ${def.definition}
-                        </div>
-                    `;
+                // 3. ✅ 单词本身的中文释义（直接翻译这个单词）
+                const translateRes = await fetch(`${API_BASE}/translate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `text=${encodeURIComponent(word)}`
                 });
-                resultHTML += `</div>`;
-                wordResult.innerHTML = resultHTML;
+                const translateData = await translateRes.json();
+                const chineseMeaning = translateData.translation || "暂无释义";
 
-                // 给音标绑定点击发音事件
-                const phoneticEl = wordResult.querySelector(".word-phonetic");
-                if (phoneticEl) {
-                    phoneticEl.addEventListener("click", function() {
-                        const targetWord = this.dataset.word;
-                        console.log("📌 点击音标，播放单词：", targetWord);
-                        speakText(targetWord);
+                // 4. 获取 2 个例句并翻译成中文
+                const definitions = wordData.meanings?.[0]?.definitions || [];
+                let examples = [];
+                definitions.forEach(def => {
+                    if (def.example && examples.length < 2) examples.push(def.example);
+                });
+                let translatedExamples = [];
+                for (let ex of examples) {
+                    const exRes = await fetch(`${API_BASE}/translate`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `text=${encodeURIComponent(ex)}`
                     });
+                    const exData = await exRes.json();
+                    translatedExamples.push({ en: ex, zh: exData.translation });
                 }
 
+                // 5. 页面展示
+                let html = `
+                    <div class="word-phonetic" data-word="${word}">🔊 ${phonetic}</div>
+                    <div class="word-chinese"><strong>中文释义：</strong>${chineseMeaning}</div>
+                `;
+
+                if (translatedExamples.length > 0) {
+                    html += `<div class="word-examples"><h4>例句</h4>`;
+                    translatedExamples.forEach((ex, i) => {
+                        html += `
+                            <div class="example-item">
+                                <div>${i+1}. ${ex.en}</div>
+                                <div class="zh">${ex.zh}</div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                wordResult.innerHTML = html;
+
+                // 点击音标发音
+                wordResult.querySelector(".word-phonetic").onclick = () => speakText(word);
+
             } catch (err) {
-                console.error("❌ 单词查询失败：", err);
-                wordResult.innerHTML = `<p style='color:#e74c3c;'>查询失败：未找到单词「${word}」，请检查拼写</p>`;
+                wordResult.innerHTML = `<p style='color:red'>未找到单词：${word}</p>`;
             }
         }
+
 
         // 3. 绑定事件（点击+回车）
         if (searchWordBtn && wordInput) {
@@ -545,22 +760,6 @@
                 const resampledBuffer = resample(audioBuffer, audioContext.sampleRate, sampleRate);
                 const wavBlob = createWavBlob(resampledBuffer, sampleRate);
 
-                // const formData = new FormData();
-                // formData.append("audio", wavBlob, "input.wav");
-                // formData.append("scene", currentScene);
-
-                // try {
-                //     const res = await fetch(`${API_BASE}/chat`, { method: "POST", body: formData });
-                //     const data = await res.json();
-                //     addMessage(data.user_text, true);
-                //     addMessage(data.ai_text, false);
-                //     speakText(data.ai_text);
-                // } catch (err) {
-                //     addMessage("网络错误，请重试", false);
-                //     console.error(err);
-                // }
-
-
                 const formData = new FormData();
                 formData.append("audio", wavBlob, "input.wav");
                 formData.append("scene", currentScene);
@@ -595,20 +794,6 @@
             // 清空输入框
             textInput.value = "";
             addMessage(userText, true);
-
-            // try {
-            //     const res = await fetch(`${API_BASE}/chat_text`, {
-            //         method: "POST",
-            //         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            //         body: `user_text=${encodeURIComponent(userText)}&scene=${currentScene}`
-            //     });
-            //     const data = await res.json();
-            //     addMessage(data.ai_text, false);
-            //     speakText(data.ai_text);
-            // } catch (err) {
-            //     addMessage("发送失败，请重试", false);
-            //     console.error(err);
-            // }
 
             try {
                 const res = await fetch(`${API_BASE}/chat_text`, {
@@ -688,6 +873,48 @@
             translateBox.innerHTML = "";
             conversationHistory = [];
             initScene();
+        });
+
+        // ========== 页面切换逻辑 ==========
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有active状态
+                navItems.forEach(i => i.classList.remove('active'));
+                pages.forEach(p => p.classList.remove('active'));
+                // 给当前项加active，显示对应页面
+                this.classList.add('active');
+                const targetPage = this.dataset.page;
+                document.getElementById(`${targetPage}-page`).classList.add('active');
+            });
+        });
+
+        // ========== 笔记页面功能（自动保存到浏览器，刷新不丢） ==========
+        const notesTextarea = document.getElementById('notesTextarea');
+        const saveNotesBtn = document.getElementById('saveNotesBtn');
+        const clearNotesBtn = document.getElementById('clearNotesBtn');
+
+        // 页面加载时读取保存的笔记
+        window.addEventListener('load', () => {
+            const savedNotes = localStorage.getItem('my-english-notes');
+            if (savedNotes) notesTextarea.value = savedNotes;
+        });
+
+        // 保存笔记
+        saveNotesBtn.addEventListener('click', () => {
+            const notes = notesTextarea.value.trim();
+            localStorage.setItem('my-english-notes', notes);
+            alert('✅ 笔记已保存！');
+        });
+
+        // 清空笔记
+        clearNotesBtn.addEventListener('click', () => {
+            if (confirm('确定要清空所有笔记吗？')) {
+                notesTextarea.value = '';
+                localStorage.removeItem('my-english-notes');
+            }
         });
 
         // 页面初始化
