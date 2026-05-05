@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 import dashscope
 from http import HTTPStatus
@@ -6,10 +7,12 @@ from dashscope.audio.asr import Recognition
 from dashscope import Generation
 import chromadb
 from datetime import datetime
+from fastapi import FastAPI
 from pydub import AudioSegment
 
 import json
 
+app = FastAPI()
 
 load_dotenv()
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
@@ -33,29 +36,7 @@ def convert_audio(input_path, output_path, target_sr=16000):
     audio.export(output_path, format="wav")
     return output_path
 
-# def asr(file_path):
-#     # 先转换格式
-#     converted_path = file_path.replace(".wav", "_converted.wav")
-#     try:
-#         convert_audio(file_path, converted_path)
-#     except Exception as e:
-#         print("❌ 音频转换失败:", e)
-#         return ""
 
-#     # 调用ASR
-#     recognition = Recognition(
-#         model="paraformer-realtime-v2",
-#         format="wav",
-#         sample_rate=16000,
-#         language_hints=["en"],
-#         callback=None,
-#     )
-#     result = recognition.call(converted_path)
-#     os.remove(converted_path) # 清理临时文件
-#     if result.status_code != HTTPStatus.OK:
-#         return ""
-#     sentences = result.get_sentence()
-#     return " ".join([item.get("text", "") for item in sentences]).strip() if sentences else ""
 def asr(file_path):
     # 新增：自动转换为16000Hz单声道WAV
     converted_path = file_path.replace(".wav", "_converted.wav")
@@ -217,3 +198,54 @@ def translate_text(text: str) -> str:
     except Exception as e:
         print(f"❌ 翻译函数异常: {str(e)}")
         return "翻译出错，请重试"
+    
+
+
+    # -------------- 原有代码保留 --------------
+app = FastAPI()
+# 你原有的对话、翻译、语音等接口代码...
+
+# -------------- 单词笔记 文件配置 --------------
+NOTES_FILE = Path(__file__).parent / "word_notes.json"
+# 确保文件存在
+if not NOTES_FILE.exists():
+    with open(NOTES_FILE, "w", encoding="utf-8") as f:
+        json.dump([], f)
+
+# 1. 添加单词到文件（原有接口）
+@app.post("/notes/add")
+async def add_word_note(word: str, phonetic: str, meaning: str):
+    with open(NOTES_FILE, "r", encoding="utf-8") as f:
+        notes = json.load(f)
+    if any(item["word"] == word for item in notes):
+        return {"status": "exists", "message": "单词已存在"}
+    notes.append({"word": word, "phonetic": phonetic, "meaning": meaning})
+    with open(NOTES_FILE, "w", encoding="utf-8") as f:
+        json.dump(notes, f, ensure_ascii=False, indent=2)
+    return {"status": "success", "message": "保存成功"}
+
+# 2. ✅ 新增：删除单个单词（同步文件）
+@app.post("/notes/delete")
+async def delete_word_note(word: str):
+    with open(NOTES_FILE, "r", encoding="utf-8") as f:
+        notes = json.load(f)
+    # 过滤掉要删除的单词
+    new_notes = [item for item in notes if item["word"] != word]
+    # 写入文件
+    with open(NOTES_FILE, "w", encoding="utf-8") as f:
+        json.dump(new_notes, f, ensure_ascii=False, indent=2)
+    return {"status": "success", "message": "删除成功"}
+
+# 3. ✅ 新增：清空所有单词（同步文件）
+@app.post("/notes/clear")
+async def clear_all_notes():
+    with open(NOTES_FILE, "w", encoding="utf-8") as f:
+        json.dump([], f, ensure_ascii=False, indent=2)
+    return {"status": "success", "message": "清空成功"}
+
+# 4. 获取所有笔记（原有接口）
+@app.get("/notes/all")
+async def get_all_notes():
+    with open(NOTES_FILE, "r", encoding="utf-8") as f:
+        notes = json.load(f)
+    return {"notes": notes}
