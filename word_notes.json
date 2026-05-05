@@ -3,5 +3,15 @@
     "word": "order",
     "phonetic": "/ˈɔːdə/",
     "meaning": "订单"
+  },
+  {
+    "word": "hello",
+    "phonetic": "/həˈləʊ/",
+    "meaning": "你好"
+  },
+  {
+    "word": "warn",
+    "phonetic": "/wɔːn/",
+    "meaning": "警告"
   }
 ]

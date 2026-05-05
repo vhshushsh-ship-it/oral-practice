@@ -1014,29 +1014,56 @@
             return result;
         }
 
+        // 修复版：生成标准16kHz/16bit/单声道WAV（ASR专用）
         function createWavBlob(audioData, sampleRate) {
-            const buffer = new ArrayBuffer(44 + audioData.length * 2);
-            const view = new DataView(buffer);
-            writeString(view, 0, 'RIFF');
-            view.setUint32(4, 36 + audioData.length * 2, true);
-            writeString(view, 8, 'WAVE');
-            writeString(view, 12, 'fmt ');
-            view.setUint32(16, 16, true);
-            view.setUint16(20, 1, true);
-            view.setUint16(22, 1, true);
-            view.setUint32(24, sampleRate, true);
-            view.setUint32(28, sampleRate * 2, true);
-            view.setUint16(32, 2, true);
-            view.setUint16(34, 16, true);
-            writeString(view, 36, 'data');
-            view.setUint32(40, audioData.length * 2, true);
-
-            let offset = 44;
-            for (let i = 0; i < audioData.length; i++) {
-                const sample = Math.max(-1, Math.min(1, audioData[i]));
-                view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
-                offset += 2;
+            // 强制转成16kHz（ASR通用采样率）
+            const targetSampleRate = 16000;
+            const ratio = sampleRate / targetSampleRate;
+            const newLength = Math.round(audioData.length / ratio);
+            const resampled = new Float32Array(newLength);
+            
+            // 线性插值重采样
+            for (let i = 0; i < newLength; i++) {
+                const idx = i * ratio;
+                const floor = Math.floor(idx);
+                const ceil = Math.min(Math.ceil(idx), audioData.length - 1);
+                const t = idx - floor;
+                resampled[i] = audioData[floor] * (1 - t) + audioData[ceil] * t;
             }
+
+            // 转16位PCM
+            const pcmData = new Int16Array(resampled.length);
+            for (let i = 0; i < resampled.length; i++) {
+                // 限制音量，避免爆音
+                const sample = Math.max(-1, Math.min(1, resampled[i]));
+                pcmData[i] = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+            }
+
+            // 生成WAV头
+            const buffer = new ArrayBuffer(44 + pcmData.length * 2);
+            const view = new DataView(buffer);
+            // RIFF
+            view.setUint8(0, 0x52); view.setUint8(1, 0x49); view.setUint8(2, 0x46); view.setUint8(3, 0x46);
+            view.setUint32(4, 36 + pcmData.length * 2, true);
+            view.setUint8(8, 0x57); view.setUint8(9, 0x41); view.setUint8(10, 0x56); view.setUint8(11, 0x45);
+            // fmt
+            view.setUint8(12, 0x66); view.setUint8(13, 0x6D); view.setUint8(14, 0x74); view.setUint8(15, 0x20);
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true); // PCM格式
+            view.setUint16(22, 1, true); // 单声道
+            view.setUint32(24, targetSampleRate, true); // 16kHz
+            view.setUint32(28, targetSampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true); // 16位
+            // data
+            view.setUint8(36, 0x64); view.setUint8(37, 0x61); view.setUint8(38, 0x74); view.setUint8(39, 0x61);
+            view.setUint32(40, pcmData.length * 2, true);
+
+            // 写入PCM数据
+            for (let i = 0; i < pcmData.length; i++) {
+                view.setInt16(44 + i * 2, pcmData[i], true);
+            }
+
             return new Blob([view], { type: 'audio/wav' });
         }
 
