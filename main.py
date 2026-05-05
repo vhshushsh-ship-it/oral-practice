@@ -107,6 +107,26 @@ async def get_all_notes():
     except Exception as e:
         print("获取笔记失败:", e)
         return {"notes": []}
+    
+
+# -------------------------- 文本对话接口（修复打字输入不回复问题） --------------------------
+@app.post("/chat_text")
+async def chat_text(
+    user_text: str = Form(...), 
+    scene: str = Form(...), 
+    conversation_history: str = Form("[]")
+):
+    try:
+        # 解析对话历史
+        history = json.loads(conversation_history)
+        # 调用AI生成回复（和语音对话共用同一个agent_reply函数）
+        ai_reply_text = agent_reply(user_text, scene, history)
+        return {"user_text": user_text, "ai_text": ai_reply_text}
+    except Exception as e:
+        print(f"文本对话失败: {e}")
+        return {"user_text": user_text, "ai_text": "抱歉，我暂时无法回复，请稍后再试"}
+    
+
 
 # -------------- 5. 启动服务（和原来的代码保持一致）--------------
 if __name__ == "__main__":
