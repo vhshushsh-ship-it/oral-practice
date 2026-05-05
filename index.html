@@ -64,7 +64,6 @@
         /* 口语练习页面原有样式（完全保留） */
         h1 {
             text-align: center;
-            /* 轻微减小标题底部间距，平衡整体布局 */
             margin-bottom: 10px; 
             color: #2c3e50;
         }
@@ -332,7 +331,22 @@
             font-size: 14px;
         }
 
-        /* 笔记页面样式 */
+        /* ✅ 新增：加入笔记按钮样式 */
+        .add-word-btn {
+            margin-top: 15px;
+            padding: 8px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .add-word-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* ✅ 修改：单词笔记页面样式 */
         #notes-page h2 {
             text-align: center;
             color: #2c3e50;
@@ -342,29 +356,62 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        #notesTextarea {
+        /* 单词笔记列表样式 */
+        #wordNotesList {
             width: 100%;
-            height: 450px;
-            padding: 15px;
+            min-height: 450px;
+            max-height: 500px;
+            overflow-y: auto;
+            background: white;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 16px;
-            line-height: 1.6;
-            resize: vertical;
+            padding: 15px;
             margin-bottom: 15px;
+        }
+        .word-note-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        .word-note-item:last-child {
+            border-bottom: none;
+        }
+        .word-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .word-info .word {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        .word-info .phonetic {
+            color: #3498db;
+            font-size: 14px;
+        }
+        .word-info .meaning {
+            color: #666;
+            font-size: 14px;
+        }
+        .delete-word-btn {
+            padding: 5px 10px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .delete-word-btn:hover {
+            opacity: 0.9;
         }
         .notes-actions {
             display: flex;
             gap: 10px;
             justify-content: center;
-        }
-        .save-btn {
-            padding: 10px 25px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
         }
         .clear-btn {
             padding: 10px 25px;
@@ -379,7 +426,6 @@
             background: rgba(255,255,255,0.9);
             backdrop-filter: blur(10px);
             border-radius: 16px;
-            /* 🔥 核心修改：均匀上下内边距，实现对称 */
             padding: 24px 18px; 
             box-shadow: 
                 0 8px 30px rgba(0,0,0,0.08),
@@ -419,12 +465,11 @@
             height: 420px;
         }
 
-        /* 聊天框 & 翻译框 & 单词结果框 统一高度（同步扩大） */
+        /* 聊天框 & 翻译框 & 单词结果框 统一高度 */
         .chat-box, .translate-box, .word-result {
             border: 1px solid #eee;
             border-radius: 10px;
             padding: 20px;
-            /* 🔥 核心修改：统一拉高高度，比原来大100px，同步扩大 */
             height: 520px; 
             overflow-y: auto;
             margin-bottom: 25px;
@@ -441,7 +486,7 @@
                 🎤 SceneTalk 英语口语练习
             </div>
             <div class="nav-item" data-page="notes">
-                📝 笔记
+                📚 单词笔记
             </div>
         </aside>
 
@@ -487,7 +532,7 @@
                         <div class="translate-box" id="translateBox"></div>
                     </div>
 
-                    <!-- ✅ 右：单词 -->
+                    <!-- ✅ 右：单词查询 -->
                     <div class="panel">
                         <h3>📚 单词查询</h3>
                         <div class="word-input-area">
@@ -500,21 +545,21 @@
                 </div>
             </div>
 
-            <!-- 页面2：笔记页面（初始隐藏） -->
+            <!-- ✅ 修改：单词笔记页面 -->
             <div id="notes-page" class="page">
-                <h2>📝 我的学习笔记</h2>
+                <h2>📚 我的单词笔记</h2>
                 <div class="notes-wrapper">
-                    <textarea id="notesTextarea" placeholder="在这里记录你的口语学习笔记，比如易错单词、常用句型、场景对话要点等..."></textarea>
+                    <!-- 单词笔记列表容器 -->
+                    <div id="wordNotesList"></div>
                     <div class="notes-actions">
-                        <button id="saveNotesBtn" class="save-btn">保存笔记</button>
-                        <button id="clearNotesBtn" class="clear-btn">清空笔记</button>
+                        <button id="clearAllNotesBtn" class="clear-btn">清空所有笔记</button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <script>
+  <script>
         // 对话历史维护（格式：[{role: "user/assistant", content: "消息内容"}]）
         let conversationHistory = [];
         // 最大对话历史长度（避免超过模型上下文，10轮足够口语练习）
@@ -537,6 +582,9 @@
         const searchWordBtn = document.getElementById("searchWordBtn");
         const wordResult = document.getElementById("wordResult");
 
+        // ✅ 新增：单词笔记DOM元素
+        const wordNotesList = document.getElementById("wordNotesList");
+        const clearAllNotesBtn = document.getElementById("clearAllNotesBtn");
 
         // 先判断元素是否获取成功
         if (!wordInput || !searchWordBtn || !wordResult) {
@@ -633,7 +681,7 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // 最终版：单词音标 + 单词中文释义 + 2句中英例句
+        // ✅ 修改：单词查询函数，新增加入笔记按钮
         async function searchWord() {
             const word = wordInput.value.trim().toLowerCase();
             if (!word) {
@@ -653,7 +701,7 @@
                 // 2. 美式音标
                 const phonetic = wordData.phonetic || (wordData.phonetics?.find(p => p.text)?.text || "无音标");
 
-                // 3. ✅ 单词本身的中文释义（直接翻译这个单词）
+                // 3. 单词本身的中文释义（直接翻译这个单词）
                 const translateRes = await fetch(`${API_BASE}/translate`, {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -679,10 +727,11 @@
                     translatedExamples.push({ en: ex, zh: exData.translation });
                 }
 
-                // 5. 页面展示
+                // 5. 页面展示（✅ 新增加入笔记按钮）
                 let html = `
                     <div class="word-phonetic" data-word="${word}">🔊 ${phonetic}</div>
                     <div class="word-chinese"><strong>中文释义：</strong>${chineseMeaning}</div>
+                    <button class="add-word-btn" id="addWordBtn">📌 加入单词笔记</button>
                 `;
 
                 if (translatedExamples.length > 0) {
@@ -703,11 +752,145 @@
                 // 点击音标发音
                 wordResult.querySelector(".word-phonetic").onclick = () => speakText(word);
 
+                // ✅ 新增：绑定加入笔记按钮事件
+                document.getElementById("addWordBtn").addEventListener("click", () => {
+                    addWordToNotes(word, phonetic, chineseMeaning);
+                });
+
             } catch (err) {
                 wordResult.innerHTML = `<p style='color:red'>未找到单词：${word}</p>`;
             }
         }
 
+        // ==================== ✅ 单词笔记 完整同步逻辑（唯一版，无冲突）====================
+        // 加载笔记：优先从项目文件(word_notes.json)加载，自动同步浏览器
+        async function loadWordNotes() {
+            try {
+                // 1. 从后端项目文件读取最新笔记（核心！）
+                const res = await fetch(`${API_BASE}/notes/all`);
+                const data = await res.json();
+                const notes = data.notes || [];
+
+                // 2. 同步到浏览器本地存储（保持双向一致）
+                localStorage.setItem("my-word-notes", JSON.stringify(notes));
+
+                // 3. 渲染页面
+                if (notes.length === 0) {
+                    wordNotesList.innerHTML = "<p style='text-align:center; color:#999; padding:20px;'>还没有单词笔记，快去查询单词并添加吧~</p>";
+                    return;
+                }
+
+                let html = "";
+                notes.forEach((item, index) => {
+                    html += `
+                        <div class="word-note-item">
+                            <div class="word-info">
+                                <div class="word">${item.word}</div>
+                                <div class="phonetic">${item.phonetic}</div>
+                                <div class="meaning">${item.meaning}</div>
+                            </div>
+                            <button class="delete-word-btn" data-index="${index}">删除</button>
+                        </div>
+                    `;
+                });
+                wordNotesList.innerHTML = html;
+
+                // 绑定删除事件
+                document.querySelectorAll(".delete-word-btn").forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        deleteWordFromNotes(parseInt(this.dataset.index));
+                    });
+                });
+            } catch (err) {
+                console.error("加载文件笔记失败:", err);
+                // 降级：读取浏览器缓存
+                const localNotes = JSON.parse(localStorage.getItem("my-word-notes") || "[]");
+                renderLocalNotes(localNotes);
+            }
+        }
+
+        // 渲染浏览器本地笔记（降级方案）
+        function renderLocalNotes(notes) {
+            if (notes.length === 0) {
+                wordNotesList.innerHTML = "<p style='text-align:center; color:#999; padding:20px;'>还没有单词笔记，快去查询单词并添加吧~</p>";
+                return;
+            }
+            let html = "";
+            notes.forEach((item, index) => {
+                html += `
+                    <div class="word-note-item">
+                        <div class="word-info">
+                            <div class="word">${item.word}</div>
+                            <div class="phonetic">${item.phonetic}</div>
+                            <div class="meaning">${item.meaning}</div>
+                        </div>
+                        <button class="delete-word-btn" data-index="${index}">删除</button>
+                    </div>
+                `;
+            });
+            wordNotesList.innerHTML = html;
+            document.querySelectorAll(".delete-word-btn").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    deleteWordFromNotes(parseInt(this.dataset.index));
+                });
+            });
+        }
+
+        // ✅ 添加单词：同步保存到 浏览器 + 项目文件
+        async function addWordToNotes(word, phonetic, meaning) {
+            try {
+                // 1. 调用后端接口 → 写入 word_notes.json
+                const res = await fetch(`${API_BASE}/notes/add?word=${encodeURIComponent(word)}&phonetic=${encodeURIComponent(phonetic)}&meaning=${encodeURIComponent(meaning)}`, {
+                    method: "POST"
+                });
+                const data = await res.json();
+
+                if (data.status === "exists") {
+                    alert("✅ 该单词已在笔记中！");
+                    return;
+                }
+
+                // 2. 同步更新浏览器
+                await loadWordNotes();
+                alert("✅ 单词已保存到浏览器 + 项目文件！");
+            } catch (err) {
+                console.error("添加失败:", err);
+                alert("⚠️ 保存到文件失败，请检查后端服务！");
+            }
+        }
+
+        // ✅ 删除单词：同步删除 浏览器 + 项目文件
+        async function deleteWordFromNotes(index) {
+            const notes = JSON.parse(localStorage.getItem("my-word-notes") || "[]");
+            const deletedWord = notes[index].word;
+
+            try {
+                // 1. 调用后端接口 → 删除文件中的单词
+                await fetch(`${API_BASE}/notes/delete?word=${encodeURIComponent(deletedWord)}`, {
+                    method: "POST"
+                });
+                // 2. 刷新列表
+                await loadWordNotes();
+                alert("✅ 已同步删除！");
+            } catch (err) {
+                console.error("删除失败:", err);
+                alert("⚠️ 删除失败，请检查后端服务！");
+            }
+        }
+
+        // ✅ 清空所有笔记：同步清空 浏览器 + 项目文件
+        clearAllNotesBtn.addEventListener("click", async () => {
+            if (confirm("确定要清空所有单词笔记吗？")) {
+                try {
+                    await fetch(`${API_BASE}/notes/clear`, { method: "POST" });
+                    await loadWordNotes();
+                    alert("✅ 已同步清空所有笔记！");
+                } catch (err) {
+                    console.error("清空失败:", err);
+                    alert("⚠️ 清空失败，请检查后端服务！");
+                }
+            }
+        });
 
         // 3. 绑定事件（点击+回车）
         if (searchWordBtn && wordInput) {
@@ -880,7 +1063,7 @@
         const pages = document.querySelectorAll('.page');
 
         navItems.forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener("click", function() {
                 // 移除所有active状态
                 navItems.forEach(i => i.classList.remove('active'));
                 pages.forEach(p => p.classList.remove('active'));
@@ -888,33 +1071,17 @@
                 this.classList.add('active');
                 const targetPage = this.dataset.page;
                 document.getElementById(`${targetPage}-page`).classList.add('active');
+
+                // 切换到单词笔记页面时，自动加载笔记列表
+                if (targetPage === "notes") {
+                    loadWordNotes();
+                }
             });
         });
 
-        // ========== 笔记页面功能（自动保存到浏览器，刷新不丢） ==========
-        const notesTextarea = document.getElementById('notesTextarea');
-        const saveNotesBtn = document.getElementById('saveNotesBtn');
-        const clearNotesBtn = document.getElementById('clearNotesBtn');
-
-        // 页面加载时读取保存的笔记
+        // 页面初始化时加载单词笔记
         window.addEventListener('load', () => {
-            const savedNotes = localStorage.getItem('my-english-notes');
-            if (savedNotes) notesTextarea.value = savedNotes;
-        });
-
-        // 保存笔记
-        saveNotesBtn.addEventListener('click', () => {
-            const notes = notesTextarea.value.trim();
-            localStorage.setItem('my-english-notes', notes);
-            alert('✅ 笔记已保存！');
-        });
-
-        // 清空笔记
-        clearNotesBtn.addEventListener('click', () => {
-            if (confirm('确定要清空所有笔记吗？')) {
-                notesTextarea.value = '';
-                localStorage.removeItem('my-english-notes');
-            }
+            loadWordNotes();
         });
 
         // 页面初始化
