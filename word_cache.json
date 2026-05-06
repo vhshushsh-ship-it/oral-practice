@@ -1,1 +1,333 @@
-{}
+{
+  "hello": {
+    "word": "hello",
+    "phonetic": "/həˈloʊ/",
+    "meanings": [
+      {
+        "part_of_speech": "int./n./v.",
+        "definition": "问候，问好",
+        "example": "Hello, how are you? | 你好，最近怎么样？"
+      }
+    ]
+  },
+  "one": {
+    "word": "one",
+    "phonetic": "/wʌn/",
+    "meanings": [
+      {
+        "part_of_speech": "num.",
+        "definition": "一",
+        "example": "One apple|一个苹果"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "单一的，唯一的",
+        "example": "This is the one book I need|这是我要的那本书"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "一个人，一件东西",
+        "example": "I saw a strange one yesterday|我昨天看到一个奇怪的人"
+      },
+      {
+        "part_of_speech": "pron.",
+        "definition": "一个人，一件事",
+        "example": "One should be careful|一个人应该小心"
+      }
+    ]
+  },
+  "order": {
+    "word": "order",
+    "phonetic": "/ˈɔːrdər/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "顺序",
+        "example": "Please put the books in order.|请把书按顺序摆放。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "点餐",
+        "example": "I ordered a cup of coffee.|我点了一杯咖啡。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "命令",
+        "example": "He gave an order to his soldier.|他给他的士兵下达了命令。"
+      }
+    ]
+  },
+  "welcome": {
+    "word": "welcome",
+    "phonetic": "/ˈwelkəm/",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "受欢迎的",
+        "example": "You are welcome here.|你在这里是受欢迎的。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "欢迎词",
+        "example": "She gave a warm welcome to the guests.|她向客人致以热烈的欢迎。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "欢迎",
+        "example": "They welcomed the new member into the team.|他们欢迎新成员加入团队。"
+      }
+    ]
+  },
+  "enjoy": {
+    "word": "enjoy",
+    "phonetic": "/ɪnˈdʒɔɪ/",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "享受，喜欢",
+        "example": "I enjoy reading books.|我喜欢读书。"
+      }
+    ]
+  },
+  "time": {
+    "word": "time",
+    "phonetic": "/taɪm/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "时间",
+        "example": "What time is it?|现在几点了？"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "安排（某事）在特定时间进行",
+        "example": "I need to time my arrival.|我需要安排我的到达时间。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "时期，时代",
+        "example": "The time of the dinosaurs.|恐龙的时代。"
+      }
+    ]
+  },
+  "mine": {
+    "word": "mine",
+    "phonetic": "/maɪn/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "矿；矿井",
+        "example": "The miners work in the mine.|矿工们在矿井里工作。"
+      },
+      {
+        "part_of_speech": "pron.",
+        "definition": "我的（所有格）",
+        "example": "This book is mine.|这本书是我的。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "开采；挖掘",
+        "example": "They mine coal from the mountain.|他们从山里开采煤。"
+      }
+    ]
+  },
+  "great": {
+    "word": "great",
+    "phonetic": "/ɡreɪt/",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "伟大的，出色的",
+        "example": "He is a great scientist.|他是一位伟大的科学家。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "很大的，重要的",
+        "example": "We had a great time at the party.|我们在派对上玩得很开心。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "伟大人物，杰出人物",
+        "example": "She is a great of the music world.|她是音乐界的一位杰出人物。"
+      }
+    ]
+  },
+  "bring": {
+    "word": "bring",
+    "phonetic": "/brɪŋ/",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "带来，取来",
+        "example": "Can you bring me a glass of water?|你能给我拿一杯水吗？"
+      }
+    ]
+  },
+  ";ike": {
+    "word": ";ike",
+    "phonetic": "/aɪk/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "偶像，名人",
+        "example": "He is a big fan of the pop star and wants to meet his idol.|他是这位流行歌手的粉丝，想见他的偶像。"
+      }
+    ]
+  },
+  "like": {
+    "word": "like",
+    "phonetic": "/laɪk/",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "喜欢",
+        "example": "I like apples|我喜欢苹果"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "相似之处",
+        "example": "There is a lot of like between them|他们有很多相似之处"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "类似的",
+        "example": "She has a like personality|她有类似的性格"
+      },
+      {
+        "part_of_speech": "conj.",
+        "definition": "像...一样",
+        "example": "He runs like the wind|他跑得像风一样快"
+      }
+    ]
+  },
+  "what": {
+    "word": "what",
+    "phonetic": "/wʌt/",
+    "meanings": [
+      {
+        "part_of_speech": "conj./adv./n./pron.",
+        "definition": "什么",
+        "example": "What is your name?|你叫什么名字？"
+      }
+    ]
+  },
+  "coffe": {
+    "word": "coffe",
+    "phonetic": "/ˈkɒfi/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "咖啡",
+        "example": "I would like a cup of coffee.|我想喝一杯咖啡。"
+      }
+    ]
+  },
+  "reponse": {
+    "word": "response",
+    "phonetic": "/rɪˈspɒns/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "回答，反应",
+        "example": "He gave a quick response to the question.|他迅速回答了这个问题。"
+      }
+    ]
+  },
+  "conversation": {
+    "word": "conversation",
+    "phonetic": "/ˌkɑːnvəˈseɪʃn/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "对话，交谈",
+        "example": "They had a long conversation about their future.|他们就他们的未来进行了长时间的交谈。"
+      }
+    ]
+  },
+  "conversations": {
+    "word": "conversations",
+    "phonetic": "/ˌkɑːnvəˈseɪʃnz/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "对话，谈话",
+        "example": "They had long conversations about their future.|他们就他们的未来进行了长时间的谈话。"
+      }
+    ]
+  },
+  "conversatio": {
+    "word": "conversatio",
+    "phonetic": "/kənˈvɜːrsətoʊ/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "谈话，交谈",
+        "example": "They had a long conversatio about their future plans|他们长时间地谈论了他们的未来计划"
+      }
+    ]
+  },
+  "conversa": {
+    "word": "conversa",
+    "phonetic": "/kənˈvɜːrsə/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "对话，交谈",
+        "example": "They had a long conversa about their future plans|他们讨论了他们的未来计划"
+      }
+    ]
+  },
+  "beautiful": {
+    "word": "beautiful",
+    "phonetic": "/ˈbjuːtɪfʊl/",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "美丽的，出色的",
+        "example": "She is a beautiful girl.|她是一个漂亮的女孩。"
+      }
+    ]
+  },
+  "black": {
+    "word": "black",
+    "phonetic": "/blæk/",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "黑色的",
+        "example": "He is wearing a black shirt.|他穿着一件黑衬衫。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "黑色",
+        "example": "This paint is a deep black.|这种油漆是一种深黑色。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "使变黑",
+        "example": "The fire blackened the walls.|火把墙壁烧黑了。"
+      }
+    ]
+  },
+  "back": {
+    "word": "back",
+    "phonetic": "/bæk/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "背部",
+        "example": "He hurt his back while lifting the box|他搬箱子时伤了背"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "返回",
+        "example": "She will back to work next week|她下周将返回工作"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "后面的",
+        "example": "The back seat of the car|汽车的后座"
+      }
+    ]
+  }
+}
