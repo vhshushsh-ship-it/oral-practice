@@ -329,5 +329,296 @@
         "example": "The back seat of the car|汽车的后座"
       }
     ]
+  },
+  "sure": {
+    "word": "sure",
+    "phonetic": "/ʃʊr/",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "确定的，肯定的",
+        "example": "I am sure he will come.|我确定他会来。"
+      },
+      {
+        "part_of_speech": "adv.",
+        "definition": "确实，当然",
+        "example": "Sure, I can help you.|当然，我可以帮助你。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "使牢固，使确定",
+        "example": "They sure the roof to the house.|他们把屋顶固定到房子上。"
+      }
+    ]
+  },
+  "natural": {
+    "word": "natural",
+    "phonetic": "/ˈnætʃərəl/",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "自然的",
+        "example": "This is a natural disaster|这是一场自然灾害"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "天生的，本能的",
+        "example": "She has a natural talent for music|她天生有音乐天赋"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "天然产物",
+        "example": "Natural foods are healthy|天然食物是健康的"
+      }
+    ]
+  },
+  "bake": {
+    "word": "bake",
+    "phonetic": "/beɪk/",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "烤，烘",
+        "example": "The cake is baking in the oven.|蛋糕正在烤箱里烘烤。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "烤制的食品",
+        "example": "She made a fresh bake for the party.|她为聚会做了一道新鲜的烤制食品。"
+      }
+    ]
+  },
+  "wait": {
+    "word": "wait",
+    "phonetic": "/weɪt/",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "等待",
+        "example": "Please wait a moment.|请稍等片刻。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "等待的时间",
+        "example": "The wait was long.|等待的时间很长。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "服务生",
+        "example": "The waiter brought the food.|服务员端来了食物。"
+      }
+    ]
+  },
+  "water": {
+    "word": "water",
+    "phonetic": "/ˈwɔːtər/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "水",
+        "example": "I need a glass of water.|我需要一杯水。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "浇水",
+        "example": "Please water the plants every day.|请每天给植物浇水。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "水域，水体",
+        "example": "There is a lot of fish in the water.|水里有很多鱼。"
+      }
+    ]
+  },
+  "bread": {
+    "word": "bread",
+    "phonetic": "/bred/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "面包",
+        "example": "I bought a loaf of bread.|我买了一条面包。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "食物；营养",
+        "example": "Food is the basic need of life.|食物是生命的基本需求。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "（某物的）主要部分或核心",
+        "example": "The bread and butter of the company is its software sales.|这家公司的主要收入来源是软件销售。"
+      }
+    ]
+  },
+  "milk": {
+    "word": "milk",
+    "phonetic": "/mɪlk/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "牛奶",
+        "example": "She poured a glass of milk.|她倒了一杯牛奶。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "挤奶",
+        "example": "The farmer milks the cows every morning.|农民每天早上挤奶。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "乳白色的",
+        "example": "He wore a milk-colored sweater.|他穿了一件乳白色毛衣。"
+      }
+    ]
+  },
+  "same": {
+    "word": "same",
+    "phonetic": "/seɪm/",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "相同的",
+        "example": "They have the same interests.|他们有相同的兴趣。"
+      }
+    ]
+  },
+  "brear": {
+    "word": "brear",
+    "phonetic": "/bɪr/",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "（苏格兰语）喂养，饲养",
+        "example": "The farmer brears his sheep with hay and grain.|农民用干草和谷物喂养他的羊。"
+      }
+    ]
+  },
+  "brea": {
+    "word": "brea",
+    "phonetic": "/breɪ/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "呼吸",
+        "example": "He took a deep breath.|他深吸了一口气。"
+      }
+    ]
+  },
+  "breath": {
+    "word": "breath",
+    "phonetic": "/breθ/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "呼吸",
+        "example": "Take a deep breath.|深吸一口气。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "喘息",
+        "example": "After running, he was out of breath.|跑完后，他喘不过气来。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "片刻",
+        "example": "For a breath, the room was silent.|片刻间，房间安静下来。"
+      }
+    ]
+  },
+  "medium": {
+    "word": "medium",
+    "phonetic": "/ˈmiːdiəm/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "媒介，手段",
+        "example": "The artist used oil as a medium for his painting.|这位艺术家用油彩作为他绘画的媒介。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "中等的",
+        "example": "This is a medium-sized room.|这是一个中等大小的房间。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "中间状态",
+        "example": "He is neither rich nor poor; he is in the medium of life.|他既不富裕也不贫穷，他处于生活的中间状态。"
+      }
+    ]
+  },
+  "size": {
+    "word": "size",
+    "phonetic": "/saɪz/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "尺寸，大小",
+        "example": "What size shirt do you wear?|你穿多大码的衬衫？"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "测量……的大小",
+        "example": "The room was sized to hold twenty people.|这个房间的大小足以容纳二十人。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "大的，巨大的",
+        "example": "a sizeable profit|一笔可观的利润"
+      }
+    ]
+  },
+  "three": {
+    "word": "three",
+    "phonetic": "/θriː/",
+    "meanings": [
+      {
+        "part_of_speech": "num.",
+        "definition": "三",
+        "example": "There are three apples on the table.|桌子上有一个苹果。"
+      }
+    ]
+  },
+  "would": {
+    "word": "would",
+    "phonetic": "/wʊd/",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "表示意愿或习惯，通常用于过去时态中",
+        "example": "He would read for hours every day.|他每天都会读好几个小时书。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "表示一种假设的情况或可能性",
+        "example": "If I were you, I would take the job.|如果我是你，我会接受这份工作。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "（古语）君主，国王",
+        "example": "The would of the land ruled with justice.|这片土地的君主以公正统治。"
+      }
+    ]
+  },
+  "world": {
+    "word": "world",
+    "phonetic": "/wɜːrld/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "地球；世界",
+        "example": "The world is facing many challenges today.|当今世界面临着许多挑战。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "领域；范围",
+        "example": "She is an expert in the field of computer science.|她是计算机科学领域的专家。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "世间；人世",
+        "example": "He left the world at a young age.|他年轻时离开了人世。"
+      }
+    ]
   }
 }

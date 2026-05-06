@@ -1,27 +1,258 @@
 [
   {
-    "word": "order",
-    "phonetic": "/ˈɔːdə/",
-    "meaning": "订单"
+    "word": "milk",
+    "phonetic": "/mɪlk/",
+    "meaning": "牛奶",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "牛奶",
+        "example": "She poured a glass of milk.|她倒了一杯牛奶。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "挤奶",
+        "example": "The farmer milks the cows every morning.|农民每天早上挤奶。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "乳白色的",
+        "example": "He wore a milk-colored sweater.|他穿了一件乳白色毛衣。"
+      }
+    ],
+    "createTime": 1778057625299
   },
   {
-    "word": "hello",
-    "phonetic": "/həˈləʊ/",
-    "meaning": "你好"
+    "word": "same",
+    "phonetic": "/seɪm/",
+    "meaning": "相同的",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "相同的",
+        "example": "They have the same interests.|他们有相同的兴趣。"
+      }
+    ],
+    "createTime": 1778057633249
   },
   {
-    "word": "warn",
-    "phonetic": "/wɔːn/",
-    "meaning": "警告"
+    "word": "breath",
+    "phonetic": "/breθ/",
+    "meaning": "呼吸",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "呼吸",
+        "example": "Take a deep breath.|深吸一口气。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "喘息",
+        "example": "After running, he was out of breath.|跑完后，他喘不过气来。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "片刻",
+        "example": "For a breath, the room was silent.|片刻间，房间安静下来。"
+      }
+    ],
+    "createTime": 1778057672339
   },
   {
-    "word": "banana",
-    "phonetic": "/bəˈnɑːnə/",
-    "meaning": "香蕉"
+    "word": "welcome",
+    "phonetic": "/ˈwelkəm/",
+    "meaning": "受欢迎的",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "受欢迎的",
+        "example": "You are welcome here.|你在这里是受欢迎的。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "欢迎词",
+        "example": "She gave a warm welcome to the guests.|她向客人致以热烈的欢迎。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "欢迎",
+        "example": "They welcomed the new member into the team.|他们欢迎新成员加入团队。"
+      }
+    ],
+    "createTime": 1778057687811
   },
   {
-    "word": "back",
-    "phonetic": "/bæk/",
-    "meaning": "背部"
+    "word": "like",
+    "phonetic": "/laɪk/",
+    "meaning": "喜欢",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "喜欢",
+        "example": "I like apples|我喜欢苹果"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "相似之处",
+        "example": "There is a lot of like between them|他们有很多相似之处"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "类似的",
+        "example": "She has a like personality|她有类似的性格"
+      },
+      {
+        "part_of_speech": "conj.",
+        "definition": "像...一样",
+        "example": "He runs like the wind|他跑得像风一样快"
+      }
+    ],
+    "createTime": 1778057694988
+  },
+  {
+    "word": "medium",
+    "phonetic": "/ˈmiːdiəm/",
+    "meaning": "媒介，手段",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "媒介，手段",
+        "example": "The artist used oil as a medium for his painting.|这位艺术家用油彩作为他绘画的媒介。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "中等的",
+        "example": "This is a medium-sized room.|这是一个中等大小的房间。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "中间状态",
+        "example": "He is neither rich nor poor; he is in the medium of life.|他既不富裕也不贫穷，他处于生活的中间状态。"
+      }
+    ],
+    "createTime": 1778057707093
+  },
+  {
+    "word": "one",
+    "phonetic": "/wʌn/",
+    "meaning": "一",
+    "meanings": [
+      {
+        "part_of_speech": "num.",
+        "definition": "一",
+        "example": "One apple|一个苹果"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "单一的，唯一的",
+        "example": "This is the one book I need|这是我要的那本书"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "一个人，一件东西",
+        "example": "I saw a strange one yesterday|我昨天看到一个奇怪的人"
+      },
+      {
+        "part_of_speech": "pron.",
+        "definition": "一个人，一件事",
+        "example": "One should be careful|一个人应该小心"
+      }
+    ],
+    "createTime": 1778057961935
+  },
+  {
+    "word": "what",
+    "phonetic": "/wʌt/",
+    "meaning": "什么",
+    "meanings": [
+      {
+        "part_of_speech": "conj./adv./n./pron.",
+        "definition": "什么",
+        "example": "What is your name?|你叫什么名字？"
+      }
+    ],
+    "createTime": 1778057969390
+  },
+  {
+    "word": "size",
+    "phonetic": "/saɪz/",
+    "meaning": "尺寸，大小",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "尺寸，大小",
+        "example": "What size shirt do you wear?|你穿多大码的衬衫？"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "测量……的大小",
+        "example": "The room was sized to hold twenty people.|这个房间的大小足以容纳二十人。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "大的，巨大的",
+        "example": "a sizeable profit|一笔可观的利润"
+      }
+    ],
+    "createTime": 1778057980715
+  },
+  {
+    "word": "three",
+    "phonetic": "/θriː/",
+    "meaning": "三",
+    "meanings": [
+      {
+        "part_of_speech": "num.",
+        "definition": "三",
+        "example": "There are three apples on the table.|桌子上有一个苹果。"
+      }
+    ],
+    "createTime": 1778057989970
+  },
+  {
+    "word": "would",
+    "phonetic": "/wʊd/",
+    "meaning": "表示意愿或习惯，通常用于过去时态中",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "表示意愿或习惯，通常用于过去时态中",
+        "example": "He would read for hours every day.|他每天都会读好几个小时书。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "表示一种假设的情况或可能性",
+        "example": "If I were you, I would take the job.|如果我是你，我会接受这份工作。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "（古语）君主，国王",
+        "example": "The would of the land ruled with justice.|这片土地的君主以公正统治。"
+      }
+    ],
+    "createTime": 1778059460309
+  },
+  {
+    "word": "world",
+    "phonetic": "/wɜːrld/",
+    "meaning": "地球；世界",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "地球；世界",
+        "example": "The world is facing many challenges today.|当今世界面临着许多挑战。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "领域；范围",
+        "example": "She is an expert in the field of computer science.|她是计算机科学领域的专家。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "世间；人世",
+        "example": "He left the world at a young age.|他年轻时离开了人世。"
+      }
+    ],
+    "createTime": 1778060457393
   }
 ]
