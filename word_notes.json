@@ -254,5 +254,23 @@
       }
     ],
     "createTime": 1778060457393
+  },
+  {
+    "word": "engllish",
+    "phonetic": "/ˈɪŋɡlɪʃ/",
+    "meaning": "英语",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "英语",
+        "example": "He is learning English.|他正在学习英语。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "英国的",
+        "example": "This is an English book.|这是一本英语书。"
+      }
+    ],
+    "createTime": 1778067471518
   }
 ]
