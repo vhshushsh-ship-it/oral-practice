@@ -14,16 +14,16 @@ import json
 import re
 import asyncio
 
-# ====================== 初始化配置 ======================
+# ====================== 全局初始化配置 ======================
 app = FastAPI(title="SceneTalk Backend")
 load_dotenv()
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 
-# 向量数据库配置
+# 向量数据库（对话记忆）
 chroma_client = chromadb.PersistentClient(path="./chroma_db")
 memory_collection = chroma_client.get_or_create_collection(name="scene_talk_memory")
 
-# CORS跨域配置（修复语音上传问题）
+# CORS跨域配置
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -45,7 +45,7 @@ if not NOTES_FILE.exists():
     with open(NOTES_FILE, "w", encoding="utf-8") as f:
         json.dump([], f, ensure_ascii=False, indent=2)
 
-# 单词缓存配置
+# 单词缓存文件配置
 CACHE_FILE = "word_cache.json"
 if not os.path.exists(CACHE_FILE):
     with open(CACHE_FILE, "w", encoding="utf-8") as f:
@@ -96,7 +96,6 @@ def is_exit(text):
     exit_keywords = ["exit", "quit", "bye", "goodbye", "stop", "end", "退出", "结束"]
     return any(word in text.lower() for word in exit_keywords) if text else False
 
-# ✅ 修复：函数定义需要 3 个参数 scene, user_text, ai_text
 def save_memory(scene, user_text, ai_text):
     memory_text = f"[scene={scene}] user: {user_text} | ai: {ai_text}"
     memory_id = f"{scene}_{int(datetime.now().timestamp() * 1000)}"
@@ -116,22 +115,10 @@ def get_memory_context(limit=5):
 
 def agent_reply(user_text, scene, conversation_history=None):
     scene_roles = {
-        "restaurant": """你是餐厅的服务员，正在和顾客对话，你需要：
-1. 全程使用英文，语气友好专业，符合餐厅服务员的身份
-2. 记住对话历史，根据顾客之前的对话回答
-3. 对话连贯，符合真实餐厅点餐场景
-4. 回答简洁自然，适合口语练习
-""",
-        "interview": """你是英语面试官，正在面试应聘者：
-1. 全程使用英文，语气正式礼貌
-2. 根据回答循序渐进提问
-3. 适合口语练习
-""",
-        "hotel": """你是酒店前台，办理入住：
-1. 全程使用英文，友好专业
-2. 贴合酒店场景
-3. 简洁自然
-"""
+        "restaurant": """你是餐厅的服务员，全程英文，友好专业，贴合点餐场景，短句口语化""",
+        "interview": """你是英语面试官，全程英文，正式礼貌，循序渐进提问""",
+        "hotel": """你是酒店前台，全程英文，专业友好，贴合入住场景""",
+        "dictionary": """你是专业英语词典，仅返回纯JSON，无任何多余文字"""
     }
 
     if conversation_history is None:
@@ -170,7 +157,7 @@ def translate_text(text: str) -> str:
     if not text.strip():
         return ""
     
-    prompt = f"""翻译英文为自然中文，只输出结果：{text}"""
+    prompt = f"翻译英文为自然中文，仅输出结果：{text}"
     try:
         response = Generation.call(
             model="qwen-turbo",
@@ -183,7 +170,7 @@ def translate_text(text: str) -> str:
         print(f"❌ 翻译失败: {e}")
         return "翻译出错"
 
-# ====================== 缓存工具函数 ======================
+# ====================== 单词缓存工具函数 ======================
 def load_cache():
     with open(CACHE_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -201,7 +188,7 @@ async def init_conversation(scene_choice: str = Form(...)):
     scene = SCENE_MAP.get(scene_choice, "restaurant")
     return {"scene": scene, "initial_message": get_initial_message(scene)}
 
-# 2. ✅ 修复：语音对话接口（save_memory 传全 3 个参数）
+# 2. 语音对话接口
 @app.post("/chat")
 async def chat(
     audio: UploadFile = File(...), 
@@ -218,7 +205,7 @@ async def chat(
         history = json.loads(conversation_history)
         ai_reply = agent_reply(user_text, scene, history)
         
-        # ✅ 核心修复：传入 scene + user_text + ai_text
+        # 保存对话记忆
         save_memory(scene, user_text, ai_reply)
         
         # 清理临时音频
@@ -241,7 +228,6 @@ async def chat_text(
     try:
         history = json.loads(conversation_history)
         ai_reply_text = agent_reply(user_text, scene, history)
-        # 保存文本对话记忆
         save_memory(scene, user_text, ai_reply_text)
         return {"user_text": user_text, "ai_text": ai_reply_text}
     except Exception as e:
@@ -300,25 +286,86 @@ async def get_all_notes():
     except:
         return {"notes": []}
 
-# ====================== AI单词查询接口（纯AI+缓存） ======================
+# ====================== ✅ AI单词查询接口（纯AI+本地缓存） ======================
+# @app.post("/word/query")
+# async def query_word(word: str = Query(...)):
+#     word = word.lower().strip()
+#     cache = load_cache()
+
+#     # 1. 缓存命中 → 直接返回（不调用AI）
+#     if word in cache:
+#         print(f"✅ 缓存命中：{word}，直接返回本地数据")
+#         return cache[word]
+
+#     # 2. 缓存未命中 → 调用AI生成
+#     print(f"🔍 缓存未命中：{word}，调用AI查询")
+#     prompt = f"""
+# 你是专业英语词典，只返回纯JSON，无任何多余文字：
+# {{
+#   "word": "{word}",
+#   "phonetic": "美式音标",
+#   "meanings": [
+#     {{
+#       "part_of_speech": "n./v./adj./adv.",
+#       "definition": "中文释义",
+#       "example": "英文句子|中文翻译"
+#     }}
+#   ]
+# }}
+# """
+#     max_retries = 2
+
+#     for attempt in range(max_retries):
+#         try:
+#             raw = agent_reply(prompt, "dictionary", [])
+#             json_match = re.search(r"\{.*\}", raw, re.DOTALL)
+#             if not json_match:
+#                 raise ValueError("未返回JSON")
+                
+#             clean = json_match.group(0)
+#             clean = re.sub(r",\s*([}\]])", r"\1", clean)
+#             clean = clean.replace("'", '"')
+            
+#             data = json.loads(clean)
+#             if not all(k in data for k in ["word", "phonetic", "meanings"]):
+#                 raise ValueError("缺少字段")
+            
+#             # 3. 保存到本地缓存
+#             save_cache(word, data)
+#             print(f"✅ 已缓存：{word}")
+#             return data
+
+#         except Exception as e:
+#             print(f"AI第{attempt+1}次失败：{e}")
+#             if attempt == max_retries - 1:
+#                 return {"error": "查询失败，请重试"}
+#             await asyncio.sleep(0.5)
+
+# ====================== 最终修复版：AI单词查询接口（POST） ======================
 @app.post("/word/query")
 async def query_word(word: str = Query(...)):
     word = word.lower().strip()
+    if not word:
+        return {"error": "请输入有效单词"}
+    
+    # 1. 读取本地缓存
     cache = load_cache()
-
     if word in cache:
+        print(f"✅ 缓存命中：{word}，直接返回")
         return cache[word]
 
+    # 2. 缓存未命中，调用AI
+    print(f"🔍 调用AI查询单词：{word}")
     prompt = f"""
-你是专业英语词典，只返回纯JSON，无任何多余文字：
+你是专业英语词典，严格只返回纯JSON格式，不要加任何多余的文字、注释、markdown：
 {{
   "word": "{word}",
-  "phonetic": "美式音标",
+  "phonetic": "美式音标，比如/əˈmeɪkə/",
   "meanings": [
     {{
-      "part_of_speech": "n./v./adj./adv.",
-      "definition": "中文释义",
-      "example": "英文句子|中文翻译"
+      "part_of_speech": "词性缩写，比如adj./n./v.",
+      "definition": "中文核心释义",
+      "example": "英文例句|中文翻译"
     }}
   ]
 }}
@@ -327,27 +374,32 @@ async def query_word(word: str = Query(...)):
 
     for attempt in range(max_retries):
         try:
-            raw = agent_reply(prompt, "dictionary", [])
-            json_match = re.search(r"\{.*\}", raw, re.DOTALL)
+            raw_result = agent_reply(prompt, "dictionary", [])
+            # 强制提取JSON，过滤所有多余文字
+            json_match = re.search(r"\{[\s\S]*\}", raw_result)
             if not json_match:
-                raise ValueError("未返回JSON")
-                
-            clean = json_match.group(0)
-            clean = re.sub(r",\s*([}\]])", r"\1", clean)
-            clean = clean.replace("'", '"')
+                raise ValueError("AI未返回JSON格式")
             
-            data = json.loads(clean)
-            if not all(k in data for k in ["word", "phonetic", "meanings"]):
-                raise ValueError("缺少字段")
+            clean_json = json_match.group(0)
+            # 修复AI常见的JSON格式错误
+            clean_json = re.sub(r",\s*([}\]])", r"\1", clean_json)
+            clean_json = clean_json.replace("'", '"')
             
-            save_cache(word, data)
-            return data
+            word_data = json.loads(clean_json)
+            # 校验必填字段
+            if not all(key in word_data for key in ["word", "phonetic", "meanings"]):
+                raise ValueError("JSON缺少必填字段")
+            
+            # 3. 保存到本地缓存
+            save_cache(word, word_data)
+            print(f"✅ 单词{word}已缓存到本地")
+            return word_data
 
         except Exception as e:
-            print(f"AI第{attempt+1}次失败：{e}")
+            print(f"AI第{attempt+1}次查询失败：{str(e)}")
             if attempt == max_retries - 1:
-                return {"error": "查询失败，请重试"}
-            await asyncio.sleep(0.5)
+                return {"error": "单词查询失败，请重试"}
+            await asyncio.sleep(0.3)
 
 # ====================== 启动服务 ======================
 if __name__ == "__main__":
