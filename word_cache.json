@@ -620,5 +620,21 @@
         "example": "He left the world at a young age.|他年轻时离开了人世。"
       }
     ]
+  },
+  "engllish": {
+    "word": "engllish",
+    "phonetic": "/ˈɪŋɡlɪʃ/",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "英语",
+        "example": "He is learning English.|他正在学习英语。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "英国的",
+        "example": "This is an English book.|这是一本英语书。"
+      }
+    ]
   }
 }

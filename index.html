@@ -223,9 +223,10 @@
 
         .voice-input {
             display: flex;
-            gap: 10px;
-            justify-content: center;
-            padding: 15px;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-start;
+            padding: 12px;
             border: 1px solid #ffeded;
             border-radius: 8px;
             background: #fff5f5;
@@ -727,29 +728,21 @@
             opacity: 0.7;
         }
 
-        .phonetic-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 让音标和🔊居中对齐 */
-            margin: 4px 0;
-        }
-
         .play-word:hover {
             opacity: 0.7;
         }
 
-                /* 单词+音标+发音按钮 水平排列 */
+        /* 单词+音标+发音按钮 水平排列 */
         .word-row {
             display: flex;
-            align-items: center; /* 让三者垂直居中对齐 */
-            gap: 8px; /* 单词和音标之间的间距 */
+            align-items: center;
+            gap: 8px;
         }
         /* 音标样式微调 */
         .phonetic {
             color: #3498db;
             font-size: 14px;
         }
-            
     </style>
 </head>
 <body>
@@ -797,7 +790,10 @@
 
                         <div class="input-container">
                             <div class="voice-input">
+                                <!-- 新增：清空当前场景记录按钮（左侧） -->
+                                <button id="clearSceneRecordBtn" style="background: #f44336; color: white;">🗑️ 清空记录</button>
                                 <span>🎙️ 语音输入</span>
+                                <!-- 原语音按钮（右侧） -->
                                 <button id="recordBtn">开始录音</button>
                                 <button id="stopBtn">结束并发送</button>
                             </div>
@@ -893,9 +889,9 @@
         const MAX_HISTORY_LENGTH = 10;
         const API_BASE = "http://127.0.0.1:8000";
         let audioContext;
-        let currentScene = "restaurant";
-        let currentSortType = 'time'; // 排序方式 time-按时间 alphabet-按字母
-        let currentSelectedWord = null; // 当前选中的单词详情
+        let currentScene = "free_talk";
+        let currentSortType = 'time';
+        let currentSelectedWord = null;
 
         // DOM元素
         const sceneSelect = document.getElementById("sceneSelect");
@@ -914,6 +910,43 @@
         const detailClearBtn = document.getElementById("detailClearBtn");
         const exitDetailBtn = document.getElementById("exitDetailBtn");
         const wordDetailContent = document.getElementById("wordDetailContent");
+        const clearSceneRecordBtn = document.getElementById("clearSceneRecordBtn");
+
+        // 加载当前场景的本地聊天记录
+        async function loadSceneHistory() {
+            try {
+                const res = await fetch(`${API_BASE}/chat/history?scene=${currentScene}`);
+                const data = await res.json();
+                const history = data.history || [];
+                
+                chatBox.innerHTML = "";
+                translateBox.innerHTML = "";
+                conversationHistory = [];
+                
+                for (let item of history) {
+                    if (item.role === "user") {
+                        addMessage(item.content, true);
+                    } else if (item.role === "assistant") {
+                        addMessage(item.content, false);
+                    }
+                }
+            } catch (err) {
+                console.error("加载历史记录失败:", err);
+            }
+        }
+
+        // 保存当前场景聊天记录
+        async function saveSceneHistory() {
+            try {
+                await fetch(`${API_BASE}/chat/save`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ scene: currentScene, history: conversationHistory })
+                });
+            } catch (err) {
+                console.error("保存历史记录失败:", err);
+            }
+        }
 
         // 初始化场景
         async function initScene() {
@@ -926,19 +959,37 @@
                 });
                 const data = await res.json();
                 currentScene = data.scene;
-                chatBox.innerHTML = "";
-                translateBox.innerHTML = "";
-                conversationHistory = [];
-
-                const welcomeText = data.initial_message;
-                conversationHistory.push({ "role": "assistant", "content": welcomeText });
-                addMessage(welcomeText, false);
-                speakText(welcomeText);
+                
+                // 加载本地历史记录
+                await loadSceneHistory();
+                
+                // 如果没有历史记录，才发送开场白
+                if (conversationHistory.length === 0) {
+                    const welcomeText = data.initial_message;
+                    conversationHistory.push({ "role": "assistant", "content": welcomeText });
+                    addMessage(welcomeText, false);
+                    speakText(welcomeText);
+                }
             } catch (err) {
                 console.error("初始化场景失败:", err);
                 addMessage("Sorry, the scene failed to load. Please refresh.", false);
             }
         }
+
+        // 清空当前场景聊天记录
+        clearSceneRecordBtn.addEventListener("click", async () => {
+            if (!confirm("确定要清空当前场景的所有聊天记录吗？")) return;
+            try {
+                await fetch(`${API_BASE}/chat/clear?scene=${currentScene}`);
+                chatBox.innerHTML = "";
+                translateBox.innerHTML = "";
+                conversationHistory = [];
+                alert("✅ 当前场景记录已清空！");
+            } catch (err) {
+                console.error("清空失败:", err);
+                alert("❌ 清空失败");
+            }
+        });
 
         // 添加消息
         async function addMessage(text, isUser) {
@@ -1051,7 +1102,6 @@
 
                 wordResult.innerHTML = html;
                 document.querySelector(".word-phonetic").onclick = () => speakText(wordName);
-                // 加入笔记时传递完整单词数据
                 document.getElementById("addWordBtn").addEventListener("click", () => {
                     addWordToNotes(data);
                 });
@@ -1066,31 +1116,22 @@
         wordInput.addEventListener("keypress", (e) => e.key === "Enter" && searchWord());
 
         // ====================== 单词笔记核心逻辑 ======================
-        // 进入详情模式
         function enterDetailMode(wordItem) {
             currentSelectedWord = wordItem;
-            // 切换模式显示
             document.getElementById("notes-fullscreen-mode").classList.remove("active");
             document.getElementById("notes-detail-mode").classList.add("active");
-            // 渲染详情
             renderWordDetail(wordItem);
-            // 同步排序选项
             document.querySelector(`input[name="detailSortType"][value="${currentSortType}"]`).checked = true;
-            // 渲染分栏列表
             loadWordNotes();
         }
 
-        // 退出详情模式
         function exitDetailMode() {
             currentSelectedWord = null;
-            // 切换模式显示
             document.getElementById("notes-detail-mode").classList.remove("active");
             document.getElementById("notes-fullscreen-mode").classList.add("active");
-            // 清空详情
             wordDetailContent.innerHTML = `<div class="empty-detail"><p>请点击左侧单词，查看完整详情</p></div>`;
         }
 
-        // 渲染单词详情
         function renderWordDetail(wordItem) {
             if (!wordItem) {
                 wordDetailContent.innerHTML = `<div class="empty-detail"><p>暂无单词详情</p></div>`;
@@ -1107,31 +1148,19 @@
             if (meanings && meanings.length > 0) {
                 meanings.forEach((item, idx) => {
                     let exampleHtml = "";
-                    // if (item.example) {
-                    //     const exampleParts = item.example.split("|");
-                    //     exampleHtml = `
-                    //         <div class="detail-example-container">
-                    //             <div class="detail-example-en">${exampleParts[0] || ""}</div>
-                    //             <div class="detail-example-zh">${exampleParts[1] || ""}</div>
-                    //         </div>
-                    //     `;
-                    // }
-
-                    // 修改后：在英文例句后面加播放图标，用data-text存句子文本
                     if (item.example) {
-                    const exampleParts = item.example.split("|");
-                    const exampleEn = exampleParts[0] || "";
-                    exampleHtml = `
-                        <div class="detail-example-container">
-                            <div class="detail-example-en">
-                                ${exampleEn}
-                                <!-- 新增：播放按钮，data-text存要读的句子 -->
-                                <span class="play-sentence" data-text="${exampleEn}" style="cursor:pointer; color:#1976d2; margin-left:8px;">🔊</span>
+                        const exampleParts = item.example.split("|");
+                        const exampleEn = exampleParts[0] || "";
+                        exampleHtml = `
+                            <div class="detail-example-container">
+                                <div class="detail-example-en">
+                                    ${exampleEn}
+                                    <span class="play-sentence" data-text="${exampleEn}" style="cursor:pointer; color:#1976d2; margin-left:8px;">🔊</span>
+                                </div>
+                                <div class="detail-example-zh">${exampleParts[1] || ""}</div>
                             </div>
-                            <div class="detail-example-zh">${exampleParts[1] || ""}</div>
-                        </div>
-                    `;
-                }
+                        `;
+                    }
 
                     html += `
                         <div class="detail-meaning-item">
@@ -1146,51 +1175,42 @@
             }
 
             wordDetailContent.innerHTML = html;
-            // 绑定音标发音事件
             document.querySelector(".detail-word-phonetic").onclick = () => speakText(word);
 
-            // 绑定例句发音播放事件
             document.querySelectorAll(".play-sentence").forEach(btn => {
                 btn.addEventListener("click", function(e) {
-                    e.stopPropagation(); // 防止点击冒泡到单词条目
+                    e.stopPropagation();
                     const sentenceText = this.dataset.text;
-                    speakText(sentenceText); // 调用已有的发音函数，直接播放句子
+                    speakText(sentenceText);
                 });
             });
         }
 
-        // 渲染单词列表（通用函数，适配全屏/分栏模式）
         function renderNotesList(container, notes, isDetailMode = false) {
             if (notes.length === 0) {
                 container.innerHTML = "<p style='text-align:center; color:#999; padding:20px;'>还没有单词笔记，快去查询单词并添加吧~</p>";
                 return;
             }
 
-            // 复制数组，不修改原数据
             let sortedNotes = [...notes];
             
-            // 根据排序方式处理
             if (currentSortType === 'alphabet') {
                 sortedNotes.sort((a, b) => a.word.toLowerCase().localeCompare(b.word.toLowerCase()));
             } else {
-                // 修改后：b.createTime - a.createTime → 倒序，最新加入的单词排在最上面
                 sortedNotes.sort((a, b) => b.createTime - a.createTime);
             }
 
             let html = "";
             sortedNotes.forEach((item) => {
-                // 选中态判断
                 const isActive = isDetailMode && currentSelectedWord && currentSelectedWord.word === item.word ? 'active' : '';
                 html += `
                     <div class="word-note-item ${isActive}" data-word='${JSON.stringify(item)}'>
                         <div class="word-info">
-                            <!-- 单词、音标、发音按钮 同一行，垂直居中 -->
                             <div class="word-row">
                                 <span class="word">${item.word}</span>
                                 <span class="phonetic">${item.phonetic || ''}</span>
                                 <span class="play-word" data-text="${item.word}" style="cursor:pointer; color:#1976d2;">🔊</span>
                             </div>
-                            <!-- 中文释义单独一行 -->
                             <div class="meaning">${item.meaning}</div>
                         </div>
                         <button class="delete-word-btn" data-word="${item.word}">删除</button>
@@ -1199,55 +1219,44 @@
             });
             container.innerHTML = html;
 
-            // 绑定点击事件
             container.querySelectorAll(".word-note-item").forEach(item => {
-                // 点击条目进入详情模式
                 item.addEventListener("click", function(e) {
-                    // 点击删除按钮不触发详情
                     if (e.target.classList.contains("delete-word-btn")) return;
                     const wordItem = JSON.parse(this.dataset.word);
                     enterDetailMode(wordItem);
-                    // 重新渲染列表，更新选中态
                     loadWordNotes();
                 });
             });
 
-            // 绑定删除事件
             container.querySelectorAll(".delete-word-btn").forEach(btn => {
                 btn.addEventListener("click", function (e) {
-                    e.stopPropagation(); // 阻止冒泡触发详情
+                    e.stopPropagation();
                     const targetWord = this.dataset.word;
                     deleteWordFromNotes(targetWord);
                 });
             });
 
-            // 绑定单词发音按钮
             container.querySelectorAll(".play-word").forEach(btn => {
                 btn.addEventListener("click", function(e) {
-                    e.stopPropagation(); // 防止点击冒泡触发单词详情
+                    e.stopPropagation();
                     const wordText = this.dataset.text;
-                    speakText(wordText); // 复用你现有的发音函数，直接播放单词
+                    speakText(wordText);
                 });
             });
-
         }
 
-        // 加载单词笔记
         async function loadWordNotes() {
             try {
                 const res = await fetch(`${API_BASE}/notes/all`);
                 const data = await res.json();
                 const notes = data.notes || [];
-                // 给旧数据补充时间戳，兼容历史数据
                 notes.forEach(item => {
                     if (!item.createTime) item.createTime = Date.now();
                     if (!item.meaning && item.meanings) item.meaning = item.meanings[0]?.definition || "暂无释义";
                 });
                 localStorage.setItem("my-word-notes", JSON.stringify(notes));
                 
-                // 渲染全屏列表
                 renderNotesList(wordNotesList, notes, false);
-                // 渲染分栏列表
                 renderNotesList(detailWordNotesList, notes, true);
 
             } catch (err) {
@@ -1258,7 +1267,6 @@
             }
         }
 
-        // ✅ 修改：添加单词笔记，传递完整单词数据
         async function addWordToNotes(wordData) {
             const { word, phonetic, meanings } = wordData;
             const meaning = meanings[0]?.definition || "暂无释义";
@@ -1285,13 +1293,11 @@
             }
         }
 
-        // ✅ 修改：删除单词笔记
         async function deleteWordFromNotes(targetWord) {
             try {
                 await fetch(`${API_BASE}/notes/delete?word=${encodeURIComponent(targetWord)}`, {
                     method: "POST"
                 });
-                // 如果删除的是当前选中的单词，退出详情模式
                 if (currentSelectedWord && currentSelectedWord.word === targetWord) {
                     exitDetailMode();
                 }
@@ -1303,12 +1309,11 @@
             }
         }
 
-        // 清空所有笔记
         async function clearAllNotes() {
             if (confirm("确定要清空所有单词笔记吗？")) {
                 try {
                     await fetch(`${API_BASE}/notes/clear`, { method: "POST" });
-                    exitDetailMode(); // 清空后退出详情模式
+                    exitDetailMode();
                     await loadWordNotes();
                     alert("✅ 已同步清空所有笔记！");
                 } catch (err) {
@@ -1370,6 +1375,9 @@
                     addMessage(data.user_text, true);
                     addMessage(data.ai_text, false);
                     speakText(data.ai_text);
+                    
+                    // 保存聊天记录
+                    await saveSceneHistory();
                 } catch (err) {
                     addMessage("网络错误，请重试", false);
                     console.error(err);
@@ -1399,6 +1407,9 @@
                 
                 addMessage(data.ai_text, false);
                 speakText(data.ai_text);
+                
+                // 保存聊天记录
+                await saveSceneHistory();
             } catch (err) {
                 addMessage("发送失败，请重试", false);
                 console.error(err);
@@ -1468,13 +1479,9 @@
         sendTextBtn.addEventListener("click", sendTextMessage);
         textInput.addEventListener("keypress", (e) => e.key === "Enter" && sendTextMessage());
         sceneSelect.addEventListener("change", () => {
-            chatBox.innerHTML = "";
-            translateBox.innerHTML = "";
-            conversationHistory = [];
             initScene();
         });
 
-        // 页面切换逻辑
         const navItems = document.querySelectorAll('.nav-item');
         const pages = document.querySelectorAll('.page');
 
@@ -1487,13 +1494,12 @@
                 document.getElementById(`${targetPage}-page`).classList.add('active');
 
                 if (targetPage === "notes") {
-                    exitDetailMode(); // 进入笔记页默认回到全屏列表
+                    exitDetailMode();
                     loadWordNotes();
                 }
             });
         });
 
-        // 排序切换事件
         document.querySelectorAll('input[name="sortType"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 currentSortType = this.value;
@@ -1503,23 +1509,19 @@
         document.querySelectorAll('input[name="detailSortType"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 currentSortType = this.value;
-                // 同步全屏排序选项
                 document.querySelector(`input[name="sortType"][value="${currentSortType}"]`).checked = true;
                 loadWordNotes();
             });
         });
 
-        // 退出详情按钮
         exitDetailBtn.addEventListener("click", exitDetailMode);
-        // 清空按钮事件
         clearAllNotesBtn.addEventListener("click", clearAllNotes);
         detailClearBtn.addEventListener("click", clearAllNotes);
 
         window.addEventListener('load', () => {
             loadWordNotes();
+            initScene();
         });
-
-        initScene();
     </script>
 </body>
 </html>

@@ -58,6 +58,10 @@ SCENE_MAP = {
     "16": "housing"         # 租房看房沟通
 }
 
+# 聊天记录总文件夹
+CHAT_DIR = Path(__file__).parent / "chat_records"
+CHAT_DIR.mkdir(exist_ok=True)
+
 # 单词笔记文件配置
 NOTES_FILE = Path(__file__).parent / "word_notes.json"
 if not NOTES_FILE.exists():
@@ -242,8 +246,38 @@ def save_cache(word, data):
 # 1. 初始化对话
 @app.post("/init")
 async def init_conversation(scene_choice: str = Form(...)):
-    scene = SCENE_MAP.get(scene_choice, "restaurant")
+    scene = SCENE_MAP.get(scene_choice, "free_talk")
     return {"scene": scene, "initial_message": get_initial_message(scene)}
+
+# ====================== 本地持久化聊天记录接口 ======================
+# 保存当前场景聊天记录
+@app.post("/chat/save")
+async def save_chat_history(data: dict):
+    scene = data.get("scene")
+    history = data.get("history", [])
+    file_path = CHAT_DIR / f"{scene}.json"
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(history, f, ensure_ascii=False, indent=2)
+    return {"status": "success"}
+
+# 获取当前场景聊天记录
+@app.get("/chat/history")
+async def get_chat_history(scene: str):
+    file_path = CHAT_DIR / f"{scene}.json"
+    if file_path.exists():
+        with open(file_path, "r", encoding="utf-8") as f:
+            history = json.load(f)
+    else:
+        history = []
+    return {"history": history}
+
+# 清空当前场景聊天记录
+@app.get("/chat/clear")
+async def clear_chat_history(scene: str):
+    file_path = CHAT_DIR / f"{scene}.json"
+    if file_path.exists():
+        os.remove(file_path)
+    return {"status": "success"}
 
 # 2. 语音对话接口
 @app.post("/chat")
@@ -295,7 +329,6 @@ async def translate(text: str = Form(...)):
     return {"translation": translate_text(text)}
 
 # ====================== 单词笔记接口（兼容新旧格式）======================
-# ✅ 新增：支持JSON body接收完整单词数据
 @app.post("/notes/add")
 async def add_word_note(
     word: Optional[str] = Query(None),
@@ -304,7 +337,6 @@ async def add_word_note(
     body: Optional[dict] = Body(None)
 ):
     try:
-        # 兼容两种格式：Query参数（旧）和 JSON Body（新）
         if body:
             word_data = body
             word = word_data.get("word")
@@ -313,7 +345,6 @@ async def add_word_note(
             meanings = word_data.get("meanings", [])
             create_time = word_data.get("createTime", int(datetime.now().timestamp() * 1000))
         else:
-            # 旧格式兼容
             meanings = []
             create_time = int(datetime.now().timestamp() * 1000)
 
@@ -323,7 +354,6 @@ async def add_word_note(
         if any(item["word"] == word for item in notes):
             return {"status": "exists", "message": "单词已存在"}
         
-        # 保存完整数据
         notes.append({
             "word": word,
             "phonetic": phonetic,
@@ -368,7 +398,6 @@ async def get_all_notes():
     try:
         with open(NOTES_FILE, "r", encoding="utf-8") as f:
             notes = json.load(f)
-            # 给旧数据补充完整字段
             for item in notes:
                 if "createTime" not in item:
                     item["createTime"] = int(datetime.now().timestamp() * 1000)
