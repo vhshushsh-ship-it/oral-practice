@@ -218,6 +218,8 @@ def translate_text(text: str) -> str:
     if not text.strip():
         return ""
     
+
+    
     prompt = f"翻译英文为自然中文，仅输出结果：{text}"
     try:
         response = Generation.call(
@@ -327,6 +329,26 @@ async def chat_text(
 @app.post("/translate")
 async def translate(text: str = Form(...)):
     return {"translation": translate_text(text)}
+
+# 5. 新增：中文→英文翻译接口（句子翻译用）
+@app.post("/translate_to_en")
+async def translate_to_en(text: str = Form(...)):
+    if not text.strip():
+        return {"translation": ""}
+    
+    prompt = f"翻译中文为自然、地道的英文，仅输出翻译结果，不要添加其他内容：{text}"
+    try:
+        response = Generation.call(
+            model="qwen-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            result_format="message",
+            temperature=0.1
+        )
+        return {"translation": response.output.choices[0].message["content"].strip()}
+    except Exception as e:
+        print(f"❌ 翻译失败: {e}")
+        return {"translation": "翻译出错"}
+
 
 # ====================== 单词笔记接口（兼容新旧格式）======================
 @app.post("/notes/add")

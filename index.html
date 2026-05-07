@@ -812,12 +812,32 @@
                     </div>
 
                     <div class="panel">
-                        <h3>📚 单词查询</h3>
-                        <div class="word-input-area">
-                            <input type="text" id="wordInput">
-                            <button id="searchWordBtn">查询</button>
+                        <!-- 切换按钮（放在最顶部） -->
+                        <div class="mode-toggle" style="margin-bottom:15px; display:flex; gap:10px;">
+                            <button id="toggleWordBtn" class="toggle-btn active" style="flex:1; padding:8px; border:none; border-radius:6px; background:#1976d2; color:white;">单词查询</button>
+                            <button id="toggleTranslateBtn" class="toggle-btn" style="flex:1; padding:8px; border:none; border-radius:6px; background:#eee; color:#333;">句子翻译</button>
                         </div>
-                        <div class="word-result" id="wordResult"></div>
+
+                        <!-- 1. 单词查询模块（默认显示，原有功能完全保留） -->
+                        <div id="wordQueryModule" class="module">
+                            <div class="word-input-area">
+                                <input type="text" id="wordInput" placeholder="输入英文单词">
+                                <button id="searchWordBtn">查询</button>
+                            </div>
+                            <div class="word-result" id="wordResult"></div>
+                        </div>
+
+                        <!-- 2. 句子翻译模块（默认隐藏，新增功能） -->
+                        <div id="sentenceTranslateModule" class="module" style="display:none;">
+                            <div class="translate-input-area" style="display:flex; gap:10px; margin-bottom:15px;">
+                                <input type="text" id="translateInput" placeholder="输入中文句子">
+                                <button id="translateBtn">翻译</button>
+                            </div>
+                            <div class="translate-result-area" style="background:#f5faff; border-radius:8px; padding:15px; min-height:80px;">
+                                <p id="translateResult" style="margin:0; color:#2c3e50; line-height:1.6;"></p>
+                                <button id="copyTranslateBtn" style="margin-top:10px; padding:6px 12px; background:#1976d2; color:white; border:none; border-radius:4px; cursor:pointer; display:none;">复制翻译结果</button>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -912,7 +932,76 @@
         const wordDetailContent = document.getElementById("wordDetailContent");
         const clearSceneRecordBtn = document.getElementById("clearSceneRecordBtn");
 
-        // 加载当前场景的本地聊天记录
+        // 句子翻译相关DOM元素
+        const toggleWordBtn = document.getElementById("toggleWordBtn");
+        const toggleTranslateBtn = document.getElementById("toggleTranslateBtn");
+        const wordQueryModule = document.getElementById("wordQueryModule");
+        const sentenceTranslateModule = document.getElementById("sentenceTranslateModule");
+        const translateInput = document.getElementById("translateInput");
+        const translateBtn = document.getElementById("translateBtn");
+        const translateResult = document.getElementById("translateResult");
+        const copyTranslateBtn = document.getElementById("copyTranslateBtn");
+
+        // 模块切换逻辑
+        toggleWordBtn.addEventListener("click", () => {
+            toggleWordBtn.classList.add("active");
+            toggleTranslateBtn.classList.remove("active");
+            toggleWordBtn.style.background = "#1976d2";
+            toggleTranslateBtn.style.background = "#eee";
+            wordQueryModule.style.display = "block";
+            sentenceTranslateModule.style.display = "none";
+        });
+
+        toggleTranslateBtn.addEventListener("click", () => {
+            toggleTranslateBtn.classList.add("active");
+            toggleWordBtn.classList.remove("active");
+            toggleTranslateBtn.style.background = "#1976d2";
+            toggleWordBtn.style.background = "#eee";
+            sentenceTranslateModule.style.display = "block";
+            wordQueryModule.style.display = "none";
+        });
+
+        // 中文→英文翻译函数
+        async function translateSentence() {
+            const text = translateInput.value.trim();
+            if (!text) {
+                alert("请输入中文句子");
+                return;
+            }
+
+            translateResult.textContent = "翻译中...";
+            copyTranslateBtn.style.display = "none";
+
+            try {
+                const res = await fetch(`${API_BASE}/translate_to_en`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `text=${encodeURIComponent(text)}`
+                });
+                const data = await res.json();
+                translateResult.textContent = data.translation;
+                copyTranslateBtn.style.display = "block"; // 显示复制按钮
+            } catch (err) {
+                console.error("翻译失败:", err);
+                translateResult.textContent = "翻译出错，请检查后端服务";
+            }
+        }
+
+        // 绑定翻译按钮/回车事件
+        translateBtn.addEventListener("click", translateSentence);
+        translateInput.addEventListener("keypress", (e) => e.key === "Enter" && translateSentence());
+
+        // 复制翻译结果
+        copyTranslateBtn.addEventListener("click", () => {
+            const text = translateResult.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("✅ 已复制到剪贴板！");
+            }).catch(err => {
+                console.error("复制失败:", err);
+                alert("⚠️ 复制失败，请手动复制");
+            });
+        });
+
         // 加载当前场景的本地聊天记录（修复版：同时更新conversationHistory）
         async function loadSceneHistory() {
             try {
@@ -982,7 +1071,6 @@
             }
         }
 
-        // 清空当前场景聊天记录
         // 清空当前场景聊天记录（保留开场白）
         clearSceneRecordBtn.addEventListener("click", async () => {
             if (!confirm("确定要清空当前场景的聊天记录吗？开场白会保留。")) return;
