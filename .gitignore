@@ -222,3 +222,10 @@ test.py
 word_cache.json
 word_notes.json
 input.wav
+
+
+# 运行时生成的临时数据
+chroma_db/
+temp_audio/
+chat_records/
+
