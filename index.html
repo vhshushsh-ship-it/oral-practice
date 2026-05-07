@@ -913,16 +913,22 @@
         const clearSceneRecordBtn = document.getElementById("clearSceneRecordBtn");
 
         // 加载当前场景的本地聊天记录
+        // 加载当前场景的本地聊天记录（修复版：同时更新conversationHistory）
         async function loadSceneHistory() {
             try {
                 const res = await fetch(`${API_BASE}/chat/history?scene=${currentScene}`);
                 const data = await res.json();
                 const history = data.history || [];
                 
+                // 清空界面
                 chatBox.innerHTML = "";
                 translateBox.innerHTML = "";
-                conversationHistory = [];
+                conversationHistory = []; // 先清空
                 
+                // 关键：把加载到的历史记录赋值给conversationHistory
+                conversationHistory = [...history];
+                
+                // 渲染历史记录到界面
                 for (let item of history) {
                     if (item.role === "user") {
                         addMessage(item.content, true);
@@ -977,18 +983,38 @@
         }
 
         // 清空当前场景聊天记录
+        // 清空当前场景聊天记录（保留开场白）
         clearSceneRecordBtn.addEventListener("click", async () => {
-            if (!confirm("确定要清空当前场景的所有聊天记录吗？")) return;
+            if (!confirm("确定要清空当前场景的聊天记录吗？开场白会保留。")) return;
+            
+            // 1. 保留第一条AI开场白（如果存在）
+            const welcomeMsg = conversationHistory.find(item => item.role === "assistant");
+            const newHistory = welcomeMsg ? [welcomeMsg] : [];
+            
+            // 2. 更新本地文件，只保留开场白
             try {
-                await fetch(`${API_BASE}/chat/clear?scene=${currentScene}`);
-                chatBox.innerHTML = "";
-                translateBox.innerHTML = "";
-                conversationHistory = [];
-                alert("✅ 当前场景记录已清空！");
+                await fetch(`${API_BASE}/chat/save`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ scene: currentScene, history: newHistory })
+                });
             } catch (err) {
-                console.error("清空失败:", err);
+                console.error("保存记录失败:", err);
                 alert("❌ 清空失败");
+                return;
             }
+            
+            // 3. 更新界面和conversationHistory
+            conversationHistory = newHistory;
+            chatBox.innerHTML = "";
+            translateBox.innerHTML = "";
+            
+            // 渲染开场白（如果存在）
+            if (welcomeMsg) {
+                addMessage(welcomeMsg.content, false);
+            }
+            
+            alert("✅ 聊天记录已清空，开场白已保留！");
         });
 
         // 添加消息
@@ -1077,11 +1103,17 @@
                     html += `<div class="word-meanings"><h4>📖 释义与例句</h4>`;
                     meanings.forEach((item, idx) => {
                         let exampleHtml = "";
+                        // 修改后：带发音按钮的例句渲染
                         if (item.example) {
                             const exampleParts = item.example.split("|");
+                            const exampleEn = exampleParts[0] || "";
                             exampleHtml = `
                                 <div class="example-container">
-                                    <div class="example-en">例句：${exampleParts[0] || ""}</div>
+                                    <div class="example-en">
+                                        例句：${exampleEn}
+                                        <!-- 新增：发音按钮，data-text存句子文本 -->
+                                        <span class="play-sentence" data-text="${exampleEn}" style="cursor:pointer; color:#1976d2; margin-left:8px;">🔊</span>
+                                    </div>
                                     <div class="example-zh">翻译：${exampleParts[1] || ""}</div>
                                 </div>
                             `;
@@ -1101,6 +1133,16 @@
                 }
 
                 wordResult.innerHTML = html;
+
+                // 给单词查询的例句发音按钮绑定事件
+                document.querySelectorAll(".play-sentence").forEach(btn => {
+                    btn.addEventListener("click", function(e) {
+                        e.stopPropagation(); // 防止冒泡
+                        const sentenceText = this.dataset.text;
+                        speakText(sentenceText); // 复用你已有的发音函数
+                    });
+                });
+                
                 document.querySelector(".word-phonetic").onclick = () => speakText(wordName);
                 document.getElementById("addWordBtn").addEventListener("click", () => {
                     addWordToNotes(data);
