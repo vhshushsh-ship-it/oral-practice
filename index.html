@@ -1052,6 +1052,7 @@
                 </div>
             </div>
 
+            
             <!-- 情景对话范本页面 -->
             <div id="dialogues-page" class="page">
                 <h1>📖 情景对话范本</h1>
@@ -2064,20 +2065,32 @@
             }
         }
 
+        // 新增：过滤文本中的表情符号（核心工具函数）
+        function removeEmojis(text) {
+            // 匹配所有常见emoji的正则表达式（覆盖绝大部分表情符号）
+            const emojiRegex = /[\u{1F600}-\u{1F6FF}\u{1F300}-\u{1F5FF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE00}-\u{FE0F}]/gu;
+            // 移除表情符号并去除首尾空格
+            return text.replace(emojiRegex, '').trim();
+        }
+
+        // 修改后的speakText函数（先过滤表情再朗读）
         function speakText(text) {
             if (!text) return;
+            // 第一步：过滤掉所有表情符号
+            const cleanText = removeEmojis(text);
+            if (!cleanText) return; // 过滤后为空则不朗读
+            
             // 取消当前朗读
             window.speechSynthesis.cancel();
 
-            // 创建话语对象
-            const utterance = new SpeechSynthesisUtterance(text);
+            // 创建话语对象（使用过滤后的纯文本）
+            const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.lang = "en-US";
             const rateSelect = document.getElementById("speechRateSelect");
             utterance.rate = rateSelect ? parseFloat(rateSelect.value) : 1.0;
 
             // 轮询直到队列空闲再播放，避免异步冲突
             function trySpeak() {
-                // 如果引擎还在 speaking 或 pending 状态，稍等再试
                 if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
                     setTimeout(trySpeak, 20);
                 } else {
