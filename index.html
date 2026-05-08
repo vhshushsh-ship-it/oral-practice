@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>  
+<head>
     <meta charset="UTF-8">
     <title>SceneTalk 英语口语练习</title>
     <style>
@@ -68,7 +68,7 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 10px; 
+            margin-bottom: 10px;
             color: #2c3e50;
         }
 
@@ -103,7 +103,7 @@
             border: 1px solid #eee;
             border-radius: 10px;
             padding: 20px;
-            height: 600px; 
+            height: 600px;
             margin-bottom: 25px;
             background: #f9f9f9;
             overflow-y: auto;
@@ -248,7 +248,7 @@
         }
         button {
             border-radius: 8px;
-            font-weight: 500;
+            font-weight: 50;
             padding: 10px 16px;
             border: none;
             cursor: pointer;
@@ -723,7 +723,7 @@
             cursor: pointer;
             transition: opacity 0.2s;
         }
-        
+
         .play-sentence:hover {
             opacity: 0.7;
         }
@@ -743,6 +743,172 @@
             color: #3498db;
             font-size: 14px;
         }
+
+        /* ====================== 情景对话范本页面专属样式 ====================== */
+        #dialogues-page {
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        #dialogues-page.active {
+            display: flex;
+        }
+
+        .dialogues-container {
+            max-width: 1000px;
+            width: 100%;
+            height: calc(100vh - 100px);
+            display: flex;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* 左侧场景选择列表：独立滚动 */
+        .dialogue-scene-list {
+            width: 300px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .dialogue-scene-list h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 16px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .scene-list-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 8px;
+        }
+        .scene-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: #f5faff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+        .scene-item:hover {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .scene-item.active {
+            background: #1976d2;
+            color: white;
+        }
+
+        /* 右侧对话展示区：独立滚动 */
+        .dialogue-display {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .dialogue-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .dialogue-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 8px;
+        }
+        .dialogue-turn {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #f8fbff;
+            border-radius: 8px;
+        }
+        .dialogue-speaker {
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dialogue-en {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 15px;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .dialogue-en:hover {
+            color: #1976d2;
+        }
+        .dialogue-zh {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .dialogue-play-btn {
+            cursor: pointer;
+            color: #1976d2;
+            transition: opacity 0.2s;
+        }
+        .dialogue-play-btn:hover {
+            opacity: 0.7;
+        }
+
+        /* 翻译面板切换按钮样式 */
+        #toggleTranslatePanelBtn {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            transition: 0.2s;
+        }
+        #toggleTranslatePanelBtn:hover {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        /* 麦克风波形动画 */
+        .wave-bar {
+            width: 3px;
+            height: 100%;
+            background: #e74c3c;
+            border-radius: 3px;
+            animation: wave 1s infinite ease-in-out;
+        }
+        .wave-bar:nth-child(2) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.4s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.6s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.8s; }
+
+        @keyframes wave {
+            0% { height: 5px; }
+            50% { height: 20px; }
+            100% { height: 5px; }
+        }
     </style>
 </head>
 <body>
@@ -754,22 +920,23 @@
             <div class="nav-item" data-page="notes">
                 📚 单词笔记
             </div>
+            <div class="nav-item" data-page="dialogues">
+                📖 情景对话范本
+            </div>
         </aside>
 
         <main class="main-content">
             <div id="practice-page" class="page active">
                 <h1>🎤 SceneTalk 英语口语练习</h1>
                 <div class="container">
-                    <div class="panel">
+                    <!-- 左侧面板：场景对话 -->
+                    <div class="panel" id="leftPanel">
                         <div class="scene-bar">
                             <select id="sceneSelect">
-                                <!-- 新增：最顶部的英语自由交流 -->
                                 <option value="0">英语自由交流</option>
-                                <!-- 原有场景（保留不变） -->
                                 <option value="1">餐厅点餐用餐</option>
                                 <option value="2">职场英文面试</option>
                                 <option value="3">酒店入住办理</option>
-                                <!-- 新增场景 -->
                                 <option value="4">日常居家交流</option>
                                 <option value="5">出行问路乘车</option>
                                 <option value="6">商场购物逛街</option>
@@ -782,20 +949,42 @@
                                 <option value="13">电话微信沟通</option>
                                 <option value="14">兴趣爱好闲聊</option>
                                 <option value="15">机场高铁出行</option>
-                                <option value="16">租房看房沟通</option>                                
+                                <option value="16">租房看房沟通</option>
                             </select>
+
+                            <span style="margin-left: 15px;">语速：</span>
+                            <select id="speechRateSelect">
+                                <option value="0.7">慢速</option>
+                                <option value="1.0" selected>标准</option>
+                                <option value="1.5">快速</option>
+                            </select>
+
+                            <!-- 翻译面板切换按钮 -->
+                            <button id="toggleTranslatePanelBtn">📝 显示翻译面板</button>
                         </div>
 
                         <div class="chat-box" id="chatBox"></div>
 
                         <div class="input-container">
                             <div class="voice-input">
-                                <!-- 新增：清空当前场景记录按钮（左侧） -->
                                 <button id="clearSceneRecordBtn" style="background: #f44336; color: white;">🗑️ 清空记录</button>
                                 <span>🎙️ 语音输入</span>
-                                <!-- 原语音按钮（右侧） -->
+                                
+                                <!-- 新增：波形动画 -->
+                                <div id="waveform" style="display:none; align-items:center; gap:2px; height:20px; margin:0 8px;">
+                                    <span class="wave-bar"></span>
+                                    <span class="wave-bar"></span>
+                                    <span class="wave-bar"></span>
+                                    <span class="wave-bar"></span>
+                                    <span class="wave-bar"></span>
+                                </div>
+                                <!-- 新增：倒计时 -->
+                                <span id="recordTimer" style="display:none; color:#e74c3c; font-weight:bold; margin:0 8px;">00:00</span>
+                                
                                 <button id="recordBtn">开始录音</button>
                                 <button id="stopBtn">结束并发送</button>
+                                <!-- 新增：取消按钮 -->
+                                <button id="cancelBtn" style="display:none; background:#999; color:white;">取消录音</button>
                             </div>
 
                             <div class="text-input">
@@ -806,19 +995,19 @@
                         </div>
                     </div>
 
-                    <div class="panel">
+                    <!-- 中间面板：实时翻译（默认隐藏） -->
+                    <div class="panel" id="translatePanel" style="display:none;">
                         <h3>📝 实时翻译</h3>
                         <div class="translate-box" id="translateBox"></div>
                     </div>
 
+                    <!-- 右侧面板：单词查询/句子翻译 -->
                     <div class="panel">
-                        <!-- 切换按钮（放在最顶部） -->
                         <div class="mode-toggle" style="margin-bottom:15px; display:flex; gap:10px;">
                             <button id="toggleWordBtn" class="toggle-btn active" style="flex:1; padding:8px; border:none; border-radius:6px; background:#1976d2; color:white;">单词查询</button>
                             <button id="toggleTranslateBtn" class="toggle-btn" style="flex:1; padding:8px; border:none; border-radius:6px; background:#eee; color:#333;">句子翻译</button>
                         </div>
 
-                        <!-- 1. 单词查询模块（默认显示，原有功能完全保留） -->
                         <div id="wordQueryModule" class="module">
                             <div class="word-input-area">
                                 <input type="text" id="wordInput" placeholder="输入英文单词">
@@ -827,7 +1016,6 @@
                             <div class="word-result" id="wordResult"></div>
                         </div>
 
-                        <!-- 2. 句子翻译模块（默认隐藏，新增功能） -->
                         <div id="sentenceTranslateModule" class="module" style="display:none;">
                             <div class="translate-input-area" style="display:flex; gap:10px; margin-bottom:15px;">
                                 <input type="text" id="translateInput" placeholder="输入中文句子">
@@ -839,13 +1027,26 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <!-- ✅ 单词笔记页面：全屏模式 + 分栏详情模式 -->
+            <!-- 情景对话范本页面 -->
+            <div id="dialogues-page" class="page">
+                <h1>📖 情景对话范本</h1>
+                <div class="dialogues-container">
+                    <div class="dialogue-scene-list">
+                        <h3>选择场景</h3>
+                        <div class="scene-list-wrapper" id="dialogueSceneList"></div>
+                    </div>
+                    <div class="dialogue-display">
+                        <h2 class="dialogue-title" id="dialogueTitle">请选择一个场景</h2>
+                        <div class="dialogue-content" id="dialogueContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 单词笔记页面：全屏模式 + 分栏详情模式 -->
             <div id="notes-page" class="page">
-                <!-- 全屏列表模式（默认） -->
                 <div id="notes-fullscreen-mode" class="notes-mode active">
                     <h2>📚 我的单词笔记</h2>
                     <div class="sort-area">
@@ -865,10 +1066,8 @@
                     </div>
                 </div>
 
-                <!-- 分栏详情模式 -->
                 <div id="notes-detail-mode" class="notes-mode">
                     <div class="detail-layout">
-                        <!-- 左侧列表区 -->
                         <div class="detail-left-panel">
                             <h3>📚 我的单词笔记</h3>
                             <div class="sort-area">
@@ -885,8 +1084,6 @@
                                 <button id="detailClearBtn" class="clear-btn">清空所有笔记</button>
                             </div>
                         </div>
-
-                        <!-- 右侧详情区 -->
                         <div class="detail-right-panel">
                             <div class="detail-header">
                                 <button id="exitDetailBtn" class="back-btn">← 返回列表</button>
@@ -903,7 +1100,7 @@
         </main>
     </div>
 
-  <script>
+    <script>
         // 全局变量
         let conversationHistory = [];
         const MAX_HISTORY_LENGTH = 10;
@@ -912,6 +1109,11 @@
         let currentScene = "free_talk";
         let currentSortType = 'time';
         let currentSelectedWord = null;
+        let currentDialogueScene = null;
+        // 新增：UI控制变量（完全不动你原来的识别变量）
+        let recordingTimer = null;
+        let recordingSeconds = 0;
+        let cancelRecordingFlag = false;
 
         // DOM元素
         const sceneSelect = document.getElementById("sceneSelect");
@@ -942,36 +1144,741 @@
         const translateResult = document.getElementById("translateResult");
         const copyTranslateBtn = document.getElementById("copyTranslateBtn");
 
-        // 模块切换逻辑
-        toggleWordBtn.addEventListener("click", () => {
+        // 情景对话范本相关DOM元素
+        const dialogueSceneList = document.getElementById("dialogueSceneList");
+        const dialogueTitle = document.getElementById("dialogueTitle");
+        const dialogueContent = document.getElementById("dialogueContent");
+
+        // 翻译面板切换相关
+        const leftPanel = document.getElementById("leftPanel");
+        const translatePanel = document.getElementById("translatePanel");
+        const toggleTranslatePanelBtn = document.getElementById("toggleTranslatePanelBtn");
+        let isTranslateVisible = false; // 默认隐藏翻译面板，场景对话占两列
+
+        // 存储每个场景的滚动位置
+        const sceneScrollPositions = {};
+
+        // 新增：UI元素获取
+        const cancelBtn = document.getElementById("cancelBtn");
+        const waveform = document.getElementById("waveform");
+        const recordTimer = document.getElementById("recordTimer");
+
+
+
+        
+
+
+        // ====================== 翻译面板切换逻辑 ======================
+        toggleTranslatePanelBtn.addEventListener("click", function() {
+            if (isTranslateVisible) {
+                // 隐藏翻译面板，场景对话占两列
+                leftPanel.style.gridColumn = "1 / 3";
+                translatePanel.style.display = "none";
+                toggleTranslatePanelBtn.textContent = "📝 显示翻译面板";
+                isTranslateVisible = false;
+            } else {
+                // 显示翻译面板，恢复两栏并排
+                leftPanel.style.gridColumn = "1 / 2";
+                translatePanel.style.display = "flex";
+                toggleTranslatePanelBtn.textContent = "📝 隐藏翻译面板";
+                isTranslateVisible = true;
+            }
+        });
+
+        // 初始化时设置场景对话占两列
+        leftPanel.style.gridColumn = "1 / 3";
+        translatePanel.style.display = "none";
+
+        // ====================== 单词查询/句子翻译 模块切换 ======================
+        toggleWordBtn.addEventListener("click", function() {
             toggleWordBtn.classList.add("active");
-            toggleTranslateBtn.classList.remove("active");
             toggleWordBtn.style.background = "#1976d2";
+            toggleWordBtn.style.color = "white";
+            toggleTranslateBtn.classList.remove("active");
             toggleTranslateBtn.style.background = "#eee";
+            toggleTranslateBtn.style.color = "#333";
             wordQueryModule.style.display = "block";
             sentenceTranslateModule.style.display = "none";
         });
 
-        toggleTranslateBtn.addEventListener("click", () => {
+        toggleTranslateBtn.addEventListener("click", function() {
             toggleTranslateBtn.classList.add("active");
-            toggleWordBtn.classList.remove("active");
             toggleTranslateBtn.style.background = "#1976d2";
+            toggleTranslateBtn.style.color = "white";
+            toggleWordBtn.classList.remove("active");
             toggleWordBtn.style.background = "#eee";
-            sentenceTranslateModule.style.display = "block";
+            toggleWordBtn.style.color = "#333";
             wordQueryModule.style.display = "none";
+            sentenceTranslateModule.style.display = "block";
         });
 
-        // 中文→英文翻译函数
+        // ====================== 情景对话范本：预设数据 ======================
+        const defaultDialogues = [
+            {
+                id: "restaurant",
+                name: "🍽️ 餐厅点餐用餐",
+                turns: [
+                    { speaker: "Waiter", en: "Welcome! How many people are dining today?", zh: "欢迎光临！请问几位用餐？" },
+                    { speaker: "You", en: "Table for two, please.", zh: "麻烦安排两个人的座位。" },
+                    { speaker: "Waiter", en: "Would you like to sit indoors or outdoors?", zh: "您想坐室内还是室外？" },
+                    { speaker: "You", en: "I prefer a seat by the window.", zh: "我想要靠窗的位置。" },
+                    { speaker: "Waiter", en: "Here is the menu. Take your time to look.", zh: "这是菜单，您慢慢看。" },
+                    { speaker: "You", en: "Thank you. I need a few more minutes.", zh: "谢谢，我还需要再看几分钟。" },
+                    { speaker: "Waiter", en: "May I take your order now?", zh: "现在可以为您点餐了吗？" },
+                    { speaker: "You", en: "Sure, I'm ready to order.", zh: "可以的，我准备好点餐了。" },
+                    { speaker: "Waiter", en: "What kind of beverage would you like?", zh: "您想喝点什么饮品？" },
+                    { speaker: "You", en: "A cup of hot milk tea, please.", zh: "请给我一杯热奶茶。" },
+                    { speaker: "Waiter", en: "How would you like your steak cooked?", zh: "您的牛排想要几分熟？" },
+                    { speaker: "You", en: "Medium rare, please.", zh: "麻烦三分熟。" },
+                    { speaker: "Waiter", en: "Do you have any food allergies?", zh: "请问您有食物过敏吗？" },
+                    { speaker: "You", en: "I'm allergic to seafood.", zh: "我对海鲜过敏。" },
+                    { speaker: "Waiter", en: "Would you like spicy food or not?", zh: "您需要吃辣还是不吃辣？" },
+                    { speaker: "You", en: "No spicy food at all, please.", zh: "请完全不要放辣。" },
+                    { speaker: "Waiter", en: "Would you like rice or bread as staple?", zh: "主食您要米饭还是面包？" },
+                    { speaker: "You", en: "I'd like a bowl of vegetable rice.", zh: "我要一份蔬菜米饭。" },
+                    { speaker: "Waiter", en: "Your food will be served soon.", zh: "您的菜品马上就上桌。" },
+                    { speaker: "You", en: "Okay, I'll wait patiently.", zh: "好的，我耐心等待。" },
+                    { speaker: "Waiter", en: "Enjoy your meal!", zh: "祝您用餐愉快！" },
+                    { speaker: "You", en: "Thank you so much for your service.", zh: "非常感谢你的服务。" },
+                    { speaker: "Waiter", en: "How do you like your meal today?", zh: "您觉得今天的餐食怎么样？" },
+                    { speaker: "You", en: "It tastes fresh and delicious.", zh: "味道很新鲜也很好吃。" },
+                    { speaker: "Waiter", en: "Would you like some dessert after dinner?", zh: "餐后需要来点甜点吗？" },
+                    { speaker: "You", en: "Yes, please give me a small cheesecake.", zh: "要的，给我一小块芝士蛋糕。" },
+                    { speaker: "Waiter", en: "Can I get you some more water?", zh: "需要再给您添点水吗？" },
+                    { speaker: "You", en: "Yes, please refill my glass.", zh: "好的，麻烦帮我续杯。" },
+                    { speaker: "Waiter", en: "Would you like to pay now?", zh: "请问现在需要结账吗？" },
+                    { speaker: "You", en: "Yes, please bring me the bill.", zh: "麻烦帮我结下账。" },
+                    { speaker: "Waiter", en: "Cash or mobile payment, sir?", zh: "先生，现金还是手机支付？" },
+                    { speaker: "You", en: "I will pay with my phone.", zh: "我用手机支付。" },
+                    { speaker: "Waiter", en: "Thanks for coming, hope to see you again.", zh: "感谢光临，期待您下次再来。" },
+                    { speaker: "You", en: "I will definitely come back next time.", zh: "我下次一定会再来的。" }
+                ]
+            },
+            {
+                id: "interview",
+                name: "💼 职场英文面试",
+                turns: [
+                    { speaker: "Interviewer", en: "Thank you for coming in today. Can you tell me a little about yourself?", zh: "感谢您今天能来。能简单介绍一下您自己吗？" },
+                    { speaker: "You", en: "Thank you for having me. I have three years of experience in software development, and I'm passionate about creating user-friendly applications.", zh: "感谢您的邀请。我有三年软件开发经验，热衷于创建用户友好的应用程序。" },
+                    { speaker: "Interviewer", en: "That's impressive. What's your greatest strength in the workplace?", zh: "很出色。您在工作中最大的优点是什么？" },
+                    { speaker: "You", en: "I'm a very good problem solver. When faced with a challenge, I stay calm and systematically work through it until I find a solution.", zh: "我很善于解决问题。面对挑战时，我会保持冷静，系统地分析直到找到解决方案。" },
+                    { speaker: "Interviewer", en: "Great. Where do you see yourself in five years?", zh: "很好。您对自己五年内的职业规划是什么？" },
+                    { speaker: "You", en: "I hope to have grown into a senior developer role, leading projects and mentoring junior team members.", zh: "我希望能成长为高级开发人员，领导项目并指导初级团队成员。" },
+                    { speaker: "Interviewer", en: "Could you describe a time when you worked in a team?", zh: "您能描述一次团队合作的经历吗？" },
+                    { speaker: "You", en: "Last year, I worked with a 5-person team to develop a customer management system. I was responsible for the front-end development and communicated closely with back-end colleagues to ensure smooth collaboration.", zh: "去年，我和一个5人团队合作开发客户管理系统，我负责前端开发，与后端同事密切沟通，确保协作顺畅。" },
+                    { speaker: "Interviewer", en: "What was the biggest challenge you faced in that project?", zh: "那个项目中你遇到的最大挑战是什么？" },
+                    { speaker: "You", en: "We had a tight deadline, and the requirements changed halfway. We adjusted our work plan, divided tasks reasonably, and finally completed the project on time.", zh: "我们的截止日期很紧，而且中途需求有变更。我们调整了工作计划，合理分配任务，最终按时完成了项目。" },
+                    { speaker: "Interviewer", en: "How do you handle feedback from your superiors?", zh: "您如何处理上级的反馈？" },
+                    { speaker: "You", en: "I take feedback seriously. I listen carefully to understand the problems, ask questions if I'm unsure, and make timely adjustments to improve my work.", zh: "我认真对待反馈，仔细倾听以理解问题，不确定时会主动提问，并及时调整以改进工作。" },
+                    { speaker: "Interviewer", en: "Why do you want to work for our company?", zh: "您为什么想加入我们公司？" },
+                    { speaker: "You", en: "I've always admired your company's focus on innovation and user experience. Your products are well-known in the industry, and I believe I can learn a lot and contribute my skills here.", zh: "我一直很欣赏贵公司对创新和用户体验的重视，贵公司的产品在行业内很有名气，我相信在这里能学到很多，也能发挥自己的技能。" },
+                    { speaker: "Interviewer", en: "What are your salary expectations?", zh: "您的薪资期望是多少？" },
+                    { speaker: "You", en: "Based on my experience and the market average, I expect a monthly salary of 15,000 to 18,000 yuan. I'm also looking forward to the company's training and promotion opportunities.", zh: "根据我的经验和市场平均水平，我期望月薪在15000到18000元之间，同时也期待公司的培训和晋升机会。" },
+                    { speaker: "Interviewer", en: "Do you have any questions for us?", zh: "您有什么问题要问我们吗？" },
+                    { speaker: "You", en: "Yes, could you tell me about the team I will be working with if I get the job?", zh: "有，请问如果我得到这份工作，我将加入的团队是什么样的？" },
+                    { speaker: "Interviewer", en: "Our team is young and energetic, with an open communication atmosphere. Most members have 2-5 years of experience, and we often hold technical sharing sessions.", zh: "我们的团队年轻有活力，沟通氛围开放，大部分成员有2-5年经验，我们经常举办技术分享会。" },
+                    { speaker: "You", en: "That sounds great. Thank you for your detailed explanation.", zh: "听起来很棒，感谢您的详细解答。" },
+                    { speaker: "Interviewer", en: "We will contact you within 3 working days to inform you of the result.", zh: "我们会在3个工作日内联系您，告知您面试结果。" },
+                    { speaker: "You", en: "Thank you very much. I look forward to your reply.", zh: "非常感谢，期待您的回复。" },
+                    { speaker: "Interviewer", en: "It was a pleasure talking to you. Have a nice day!", zh: "和您交谈很愉快，祝您愉快！" },
+                    { speaker: "You", en: "The pleasure is mine. Have a nice day too!", zh: "我也很愉快，祝您也愉快！" },
+                    { speaker: "Interviewer", en: "By the way, do you have any other job offers currently?", zh: "对了，您目前还有其他工作机会吗？" },
+                    { speaker: "You", en: "I have one other offer, but your company is my top choice.", zh: "我还有一个其他的offer，但贵公司是我的首选。" },
+                    { speaker: "Interviewer", en: "We appreciate your recognition. We will make a decision as soon as possible.", zh: "感谢您的认可，我们会尽快做出决定。" },
+                    { speaker: "You", en: "Thank you. I will wait patiently.", zh: "谢谢，我会耐心等待。" },
+                    { speaker: "Interviewer", en: "Do you have any experience with our company's products?", zh: "您有使用过我们公司的产品吗？" },
+                    { speaker: "You", en: "Yes, I've used your company's mobile app for a year. I think it's very user-friendly, but I also have some small suggestions for optimization.", zh: "有，我使用贵公司的移动应用已经一年了，我觉得它非常易用，但我也有一些小的优化建议。" },
+                    { speaker: "Interviewer", en: "We'd love to hear your suggestions. Could you share one?", zh: "我们很乐意听取您的建议，能分享一个吗？" },
+                    { speaker: "You", en: "I think the search function could be improved to make it faster and more accurate when looking for specific content.", zh: "我觉得搜索功能可以改进一下，查找特定内容时更快速、更准确。" },
+                    { speaker: "Interviewer", en: "That's a good suggestion. We will consider it. Thank you again for coming.", zh: "这是个好建议，我们会考虑的。再次感谢您的到来。" },
+                    { speaker: "You", en: "Thank you for giving me this opportunity. Goodbye!", zh: "感谢您给我这个机会，再见！" }
+                ]
+            },
+            {
+                id: "hotel",
+                name: "🏨 酒店入住办理",
+                turns: [
+                    { speaker: "Receptionist", en: "Good afternoon, welcome to our hotel. How may I assist you?", zh: "下午好，欢迎光临我们酒店。有什么可以帮您的吗？" },
+                    { speaker: "You", en: "Hi, I have a reservation for a double room for three nights.", zh: "你好，我预订了一间双人房，住三晚。" },
+                    { speaker: "Receptionist", en: "Certainly. May I have your name and passport, please?", zh: "好的。请问您的姓名和护照？" },
+                    { speaker: "You", en: "Here you are. My name is Zhang Wei.", zh: "给你。我叫张伟。" },
+                    { speaker: "Receptionist", en: "Thank you, Mr. Zhang. Could you please fill out this registration form? And would you prefer a smoking or non-smoking room?", zh: "谢谢您，张先生。请填写这张登记表。您想要吸烟房还是无烟房？" },
+                    { speaker: "You", en: "Non-smoking, please. What time is breakfast served?", zh: "无烟房，谢谢。早餐几点供应？" },
+                    { speaker: "Receptionist", en: "Breakfast is from 7 to 10 AM on the second floor. Here's your key card. Enjoy your stay!", zh: "早餐在二楼，早上7点到10点。这是您的房卡。祝您入住愉快！" },
+                    { speaker: "You", en: "Thank you. What's the room number?", zh: "谢谢。房间号是多少？" },
+                    { speaker: "Receptionist", en: "Your room number is 1208, on the 12th floor. The elevator is on your right.", zh: "您的房间号是1208，在12楼。电梯在您的右边。" },
+                    { speaker: "You", en: "Got it. Is there a laundry service in the hotel?", zh: "知道了。酒店有洗衣服务吗？" },
+                    { speaker: "Receptionist", en: "Yes, we have a laundry service. You can put your clothes in the laundry bag and hang it outside your room door. We will pick it up at 9 AM every day.", zh: "有的，我们有洗衣服务。您可以把衣服放进洗衣袋，挂在房间门外，我们每天早上9点会来收取。" },
+                    { speaker: "You", en: "How much does the laundry service cost?", zh: "洗衣服务多少钱？" },
+                    { speaker: "Receptionist", en: "It's 20 yuan per piece for ordinary clothes, and 50 yuan for coats. The price list is in your room.", zh: "普通衣物每件20元，外套每件50元，价目表在您的房间里。" },
+                    { speaker: "You", en: "Okay. What if I need extra towels?", zh: "好的。如果我需要额外的毛巾怎么办？" },
+                    { speaker: "Receptionist", en: "You can call the front desk at extension 8888, and we will send them to your room immediately.", zh: "您可以拨打前台分机8888，我们会立即把毛巾送到您的房间。" },
+                    { speaker: "You", en: "Thank you. Is there a gym in the hotel?", zh: "谢谢。酒店有健身房吗？" },
+                    { speaker: "Receptionist", en: "Yes, the gym is on the 1st floor, open from 6 AM to 10 PM. You can use it for free with your room card.", zh: "有的，健身房在1楼，早上6点到晚上10点开放，您可以用房卡免费使用。" },
+                    { speaker: "You", en: "Great. What time is check-out?", zh: "太好了。退房时间是几点？" },
+                    { speaker: "Receptionist", en: "Check-out time is 12 PM noon. If you need to check out later, you can apply for a late check-out, which will cost half the room rate if it's before 6 PM.", zh: "退房时间是中午12点。如果您需要延迟退房，下午6点前可以申请，需要支付半价房费。" },
+                    { speaker: "You", en: "Understood. Can I leave my luggage at the front desk after check-out?", zh: "明白了。退房后我可以把行李寄存在前台吗？" },
+                    { speaker: "Receptionist", en: "Of course. We provide free luggage storage service. You can pick it up at any time before 8 PM.", zh: "当然可以。我们提供免费行李寄存服务，您可以在晚上8点前随时来取。" },
+                    { speaker: "You", en: "Thank you very much for your help.", zh: "非常感谢你的帮助。" },
+                    { speaker: "Receptionist", en: "You're welcome. If you have any other questions, please feel free to contact us.", zh: "不客气。如果您有其他问题，随时联系我们。" },
+                    { speaker: "You", en: "By the way, is there a restaurant in the hotel?", zh: "对了，酒店里有餐厅吗？" },
+                    { speaker: "Receptionist", en: "Yes, we have a Chinese restaurant on the 3rd floor and a Western restaurant on the 4th floor. Both are open from 11 AM to 10 PM.", zh: "有的，我们3楼有中餐厅，4楼有西餐厅，两者都是早上11点到晚上10点开放。" },
+                    { speaker: "You", en: "Perfect. I might have dinner there tonight.", zh: "太好了，我今晚可能会去那里吃晚饭。" },
+                    { speaker: "Receptionist", en: "We look forward to serving you. Have a nice stay in our hotel!", zh: "我们期待为您服务，祝您在酒店入住愉快！" },
+                    { speaker: "You", en: "Thank you. I will.", zh: "谢谢，我会的。" },
+                    { speaker: "Receptionist", en: "Oh, and one more thing: the Wi-Fi password is the hotel's phone number, 86789012.", zh: "哦，还有一件事：Wi-Fi密码是酒店的电话号码，86789012。" },
+                    { speaker: "You", en: "Got it, thank you for reminding me.", zh: "知道了，谢谢你提醒我。" },
+                    { speaker: "Receptionist", en: "You're welcome. Enjoy your room!", zh: "不客气，祝您享受您的房间！" },
+                    { speaker: "You", en: "I will. Goodbye!", zh: "我会的，再见！" },
+                    { speaker: "Receptionist", en: "Goodbye, Mr. Zhang! We hope to see you again.", zh: "再见，张先生！期待您下次再来。" }
+                ]
+            },
+            {
+                id: "home_life",
+                name: "🏠 日常居家交流",
+                turns: [
+                    { speaker: "Family Member", en: "Good morning! Did you sleep well last night?", zh: "早上好！你昨晚睡得好吗？" },
+                    { speaker: "You", en: "Good morning! I slept very well. The bed was so comfortable.", zh: "早上好！我睡得很好，床太舒服了。" },
+                    { speaker: "Family Member", en: "Great! I made breakfast. It's your favorite porridge and steamed buns.", zh: "太好了！我做了早餐，是你最喜欢的粥和包子。" },
+                    { speaker: "You", en: "Thank you so much! It smells delicious. I'm so hungry.", zh: "非常感谢！闻起来好香，我好饿。" },
+                    { speaker: "Family Member", en: "Take your time. Do you want a glass of milk?", zh: "慢慢吃，你想要一杯牛奶吗？" },
+                    { speaker: "You", en: "Yes, please. That would be perfect.", zh: "好的，谢谢。那样就太完美了。" },
+                    { speaker: "Family Member", en: "After breakfast, can you help me clean the living room?", zh: "早餐后，你能帮我打扫一下客厅吗？" },
+                    { speaker: "You", en: "Of course! No problem. What do I need to do?", zh: "当然可以！没问题。我需要做什么？" },
+                    { speaker: "Family Member", en: "Just sweep the floor and wipe the coffee table. I will mop the floor later.", zh: "只要扫扫地、擦擦茶几就好，我等会儿来拖地。" },
+                    { speaker: "You", en: "Got it. I'll do it right after breakfast.", zh: "知道了，我早餐后马上就做。" },
+                    { speaker: "Family Member", en: "Thank you. By the way, do we have any vegetables left in the fridge?", zh: "谢谢。对了，冰箱里还有蔬菜吗？" },
+                    { speaker: "You", en: "Let me check... No, we only have some tomatoes and carrots left.", zh: "我看看……没有了，只剩下一些西红柿和胡萝卜了。" },
+                    { speaker: "Family Member", en: "Okay, I'll go to the supermarket to buy some vegetables this afternoon. Do you want anything?", zh: "好的，我今天下午去超市买些蔬菜，你想要什么吗？" },
+                    { speaker: "You", en: "Can you buy some apples and oranges? I want to eat fruit after dinner.", zh: "你能买些苹果和橙子吗？我晚饭后想吃水果。" },
+                    { speaker: "Family Member", en: "Sure. Anything else?", zh: "当然可以，还有别的吗？" },
+                    { speaker: "You", en: "No, that's all. Thank you, mom/dad.", zh: "没有了，就这些。谢谢妈妈/爸爸。" },
+                    { speaker: "Family Member", en: "You're welcome. Oh, your phone rang just now. It was your friend Li Ming.", zh: "不客气。哦，你刚才电话响了，是你的朋友李明打来的。" },
+                    { speaker: "You", en: "Really? Did he leave a message?", zh: "真的吗？他留消息了吗？" },
+                    { speaker: "Family Member", en: "Yes, he said he wants to come to our house tomorrow afternoon to play with you.", zh: "留了，他说他明天下午想来我们家找你玩。" },
+                    { speaker: "You", en: "Great! I haven't seen him for a long time. I'm looking forward to it.", zh: "太好了！我好久没见他了，我很期待。" },
+                    { speaker: "Family Member", en: "Me too. I'll prepare some snacks for you two tomorrow.", zh: "我也是，我明天给你们俩准备些零食。" },
+                    { speaker: "You", en: "Thank you so much! You're the best.", zh: "非常感谢！你最好了。" },
+                    { speaker: "Family Member", en: "Finish your breakfast quickly. It's getting cold.", zh: "快点吃完早餐吧，要凉了。" },
+                    { speaker: "You", en: "Okay, I will. By the way, what's for dinner tonight?", zh: "好的，我会的。对了，今晚晚饭吃什么？" },
+                    { speaker: "Family Member", en: "I'll make braised pork and stir-fried vegetables. Is that okay?", zh: "我做红烧肉和炒青菜，可以吗？" },
+                    { speaker: "You", en: "That's my favorite! I can't wait.", zh: "那是我最喜欢的！我等不及了。" },
+                    { speaker: "Family Member", en: "Haha, I know you like it. After cleaning, you can watch TV for a while.", zh: "哈哈，我知道你喜欢。打扫完后，你可以看一会儿电视。" },
+                    { speaker: "You", en: "Great! Thank you so much.", zh: "太好了！非常感谢。" },
+                    { speaker: "Family Member", en: "You're welcome. We're a family, after all.", zh: "不客气，我们终究是一家人。" },
+                    { speaker: "You", en: "Yes, I love our family.", zh: "是的，我爱我们的家。" },
+                    { speaker: "Family Member", en: "I love you too, my dear.", zh: "我也爱你，亲爱的。" },
+                    { speaker: "You", en: "I'll finish my breakfast now and start cleaning.", zh: "我现在就吃完早餐，开始打扫。" },
+                    { speaker: "Family Member", en: "Good boy/girl. Take your time.", zh: "好孩子，慢慢來。" }
+                ]
+            },
+            {
+                id: "directions",
+                name: "🗺️ 出行问路乘车",
+                turns: [
+                    { speaker: "You", en: "Excuse me, sir. Can you tell me how to get to the city center?", zh: "打扰一下，先生。你能告诉我怎么去市中心吗？" },
+                    { speaker: "Stranger", en: "Of course! You can take the No. 10 bus here. It will take you directly to the city center.", zh: "当然可以！你可以在这里坐10路公交车，它会直接带你到市中心。" },
+                    { speaker: "You", en: "Thank you. Where is the bus stop?", zh: "谢谢。公交车站在哪里？" },
+                    { speaker: "Stranger", en: "It's just across the street, next to the convenience store. You can see the bus sign there.", zh: "就在街对面，便利店旁边，你可以在那里看到公交站牌。" },
+                    { speaker: "You", en: "Got it. How often does the No. 10 bus come?", zh: "知道了。10路公交车多久来一趟？" },
+                    { speaker: "Stranger", en: "It comes every 15 minutes. You won't have to wait long.", zh: "每15分钟一趟，你不用等太久。" },
+                    { speaker: "You", en: "Great. How many stops do I need to take?", zh: "太好了。我需要坐几站？" },
+                    { speaker: "Stranger", en: "You need to take 8 stops. The last stop is the city center square.", zh: "你需要坐8站，最后一站就是市中心广场。" },
+                    { speaker: "You", en: "Thank you. Do I need to transfer buses?", zh: "谢谢。我需要转车吗？" },
+                    { speaker: "You", en: "No, you don't. The No. 10 bus goes directly there. Just remember to get off at the last stop.", zh: "不需要，10路公交车直接到那里，你只要记得在最后一站下车就行。" },
+                    { speaker: "You", en: "Understood. How much is the bus fare?", zh: "明白了。公交车费是多少？" },
+                    { speaker: "Stranger", en: "It's 2 yuan per person. You can pay with your phone or cash.", zh: "每人2元，你可以用手机支付或者现金。" },
+                    { speaker: "You", en: "Okay. What if I miss the stop?", zh: "好的。如果我坐过站了怎么办？" },
+                    { speaker: "Stranger", en: "Don't worry. You can get off at the next stop and take the No. 10 bus back. It's very convenient.", zh: "别担心，你可以在下一站下车，然后坐10路公交车回来，非常方便。" },
+                    { speaker: "You", en: "Thank you so much. One more question: is there a subway that can go to the city center?", zh: "非常感谢。还有一个问题：有地铁可以去市中心吗？" },
+                    { speaker: "Stranger", en: "Yes, there is. You can take Line 2 from the nearby subway station, but it's a bit far from here, about 10 minutes' walk.", zh: "有的，你可以从附近的地铁站坐2号线，但是离这里有点远，大约步行10分钟。" },
+                    { speaker: "You", en: "Okay, I think taking the bus is more convenient. Thank you again for your help.", zh: "好的，我觉得坐公交车更方便。再次感谢你的帮助。" },
+                    { speaker: "Stranger", en: "You're welcome. Have a nice trip!", zh: "不客气，旅途愉快！" },
+                    { speaker: "You", en: "Thank you, you too!", zh: "谢谢，你也是！" },
+                    { speaker: "You", en: "Wait a minute, sir. Is the bus stop on the left or right side of the convenience store?", zh: "等一下，先生。公交车站在便利店的左边还是右边？" },
+                    { speaker: "Stranger", en: "It's on the right side of the convenience store. You can't miss it.", zh: "在便利店的右边，你不会错过的。" },
+                    { speaker: "You", en: "Got it. Thank you so much!", zh: "知道了，非常感谢！" },
+                    { speaker: "Stranger", en: "You're welcome. The bus is coming soon, look!", zh: "不客气，你看，公交车马上就来了！" },
+                    { speaker: "You", en: "Oh, yes! Thank you for reminding me. Goodbye!", zh: "哦，是的！谢谢你提醒我，再见！" },
+                    { speaker: "Stranger", en: "Goodbye! Have a good time in the city center!", zh: "再见！祝你在市中心玩得开心！" },
+                    { speaker: "You", en: "I will! Thank you again!", zh: "我会的！再次感谢！" },
+                    { speaker: "Bus Driver", en: "Please get on the bus quickly! The bus is leaving.", zh: "请快点上车！公交车要开了。" },
+                    { speaker: "You", en: "Coming! Excuse me, is this the No. 10 bus to the city center?", zh: "来了！打扰一下，这是去市中心的10路公交车吗？" },
+                    { speaker: "Bus Driver", en: "Yes, it is. Please pay and take a seat.", zh: "是的，请付款并找座位坐下。" },
+                    { speaker: "You", en: "Thank you. Here's 2 yuan.", zh: "谢谢，这是2元。" },
+                    { speaker: "Bus Driver", en: "Thank you. The next stop is the park. Please get ready if you need to get off.", zh: "谢谢，下一站是公园，需要下车的乘客请做好准备。" },
+                    { speaker: "You", en: "Okay, thank you.", zh: "好的，谢谢。" }
+                ]
+            },
+            {
+                id: "shopping",
+                name: "🛍️ 商场购物逛街",
+                turns: [
+                    { speaker: "Salesperson", en: "Hi there! Can I help you find anything today?", zh: "您好！需要我帮您找什么吗？" },
+                    { speaker: "You", en: "I'm just browsing, thank you. But I am looking for a nice jacket for the winter.", zh: "我只是随便看看，谢谢。不过我在找一件适合冬天穿的夹克。" },
+                    { speaker: "Salesperson", en: "We have some great new arrivals over here. What size do you wear?", zh: "我们这边有一些很棒的新款。您穿什么尺码？" },
+                    { speaker: "You", en: "I'm a medium. Do you have this in black?", zh: "我穿M码。这件有黑色的吗？" },
+                    { speaker: "Salesperson", en: "Let me check... Yes, we do! Would you like to try it on?", zh: "我查一下...是的，有！您想试穿一下吗？" },
+                    { speaker: "You", en: "Sure, where are the fitting rooms?", zh: "当然，试衣间在哪里？" },
+                    { speaker: "Salesperson", en: "Right over there. Let me know if you need any help!", zh: "就在那边。如果需要帮助请告诉我！" },
+                    { speaker: "You", en: "Thank you. I'll go try it on now.", zh: "谢谢，我现在就去试穿。" },
+                    { speaker: "Salesperson", en: "You're welcome. Take your time!", zh: "不客气，慢慢试！" },
+                    { speaker: "You", en: "Hi, I tried it on. It's a bit tight. Do you have a large size?", zh: "你好，我试穿了一下，有点紧，有L码吗？" },
+                    { speaker: "Salesperson", en: "Of course! Let me get it for you right away. Just a minute.", zh: "当然有！我马上给您拿，稍等一下。" },
+                    { speaker: "You", en: "Thank you so much.", zh: "非常感谢。" },
+                    { speaker: "Salesperson", en: "Here you are, sir/madam. This is size large. You can try it on again.", zh: "给您，先生/女士，这是L码，您可以再试穿一下。" },
+                    { speaker: "You", en: "Okay, I'll go try it again.", zh: "好的，我再去试穿一下。" },
+                    { speaker: "You", en: "Perfect! This size fits me well. How much is it?", zh: "太完美了！这个尺码很适合我，多少钱？" },
+                    { speaker: "Salesperson", en: "It's 399 yuan. We're having a promotion now: if you buy it today, you can get a 10% discount.", zh: "399元，我们现在有活动，今天购买可以打9折。" },
+                    { speaker: "You", en: "Great! That's a good deal. Do you accept mobile payment?", zh: "太好了！很划算，你们支持手机支付吗？" },
+                    { speaker: "Salesperson", en: "Yes, we do. We accept WeChat Pay and Alipay.", zh: "支持，我们支持微信支付和支付宝。" },
+                    { speaker: "You", en: "Perfect. I'll take it.", zh: "太好了，我买了。" },
+                    { speaker: "Salesperson", en: "Thank you! Let me wrap it up for you. Do you need a bag?", zh: "谢谢！我帮您包起来，需要袋子吗？" },
+                    { speaker: "You", en: "Yes, please. A paper bag is fine.", zh: "需要，谢谢，一个纸袋就好。" },
+                    { speaker: "Salesperson", en: "Okay, here you are. This is your jacket and receipt. Please keep it.", zh: "好的，给您。这是您的夹克和收据，请收好。" },
+                    { speaker: "You", en: "Thank you. What if it doesn't fit after I go home? Can I return it?", zh: "谢谢。如果我回家后发现不合适，可以退货吗？" },
+                    { speaker: "Salesperson", en: "Of course! You can return or exchange it within 7 days, as long as the tag is still on and there's no damage.", zh: "当然可以！7天内可以退货或换货，只要吊牌还在，没有损坏就行。" },
+                    { speaker: "You", en: "Understood. Thank you so much for your service.", zh: "明白了，非常感谢你的服务。" },
+                    { speaker: "Salesperson", en: "You're welcome. Do you want to look at other clothes? We have new sweaters too.", zh: "不客气，您还想看看其他衣服吗？我们还有新款毛衣。" },
+                    { speaker: "You", en: "No, thank you. I just need this jacket today.", zh: "不用了，谢谢，我今天只需要这件夹克。" },
+                    { speaker: "Salesperson", en: "Okay. We hope to see you again soon!", zh: "好的，我们期待您下次再来！" },
+                    { speaker: "You", en: "I will. Goodbye!", zh: "我会的，再见！" },
+                    { speaker: "Salesperson", en: "Goodbye! Have a nice day!", zh: "再见！祝您愉快！" },
+                    { speaker: "You", en: "Thank you, you too!", zh: "谢谢，你也是！" }
+                ]
+            },
+            {
+                id: "medical",
+                name: "🏥 看病就医问诊",
+                turns: [
+                    { speaker: "Nurse", en: "Good morning, sir/madam. What's wrong with you?", zh: "早上好，先生/女士。您哪里不舒服？" },
+                    { speaker: "You", en: "Good morning. I have a bad headache and a fever.", zh: "早上好，我头疼得厉害，还发烧。" },
+                    { speaker: "Nurse", en: "I'm sorry to hear that. Do you have a cough or a runny nose?", zh: "听到您这么说我很抱歉，您有咳嗽或者流鼻涕吗？" },
+                    { speaker: "You", en: "Yes, I have a cough and a runny nose. I feel very tired.", zh: "有，我咳嗽、流鼻涕，感觉非常累。" },
+                    { speaker: "Nurse", en: "Okay. Please take your temperature first. Here's the thermometer.", zh: "好的，请先量一下体温，这是体温计。" },
+                    { speaker: "You", en: "Thank you. How long do I need to take it?", zh: "谢谢，需要量多久？" },
+                    { speaker: "Nurse", en: "About 5 minutes. Please put it under your arm and don't move.", zh: "大约5分钟，请把它夹在腋下，不要动。" },
+                    { speaker: "You", en: "Okay, I will.", zh: "好的，我会的。" },
+                    { speaker: "Nurse", en: "While waiting, please fill out this form with your name, age and contact information.", zh: "等待的时候，请填写这张表格，写上您的姓名、年龄和联系方式。" },
+                    { speaker: "You", en: "Okay, thank you.", zh: "好的，谢谢。" },
+                    { speaker: "Nurse", en: "Time's up. Please give me the thermometer.", zh: "时间到了，请把体温计分我。" },
+                    { speaker: "You", en: "Here you are.", zh: "给你。" },
+                    { speaker: "Nurse", en: "38.5 degrees Celsius. You have a moderate fever. Please follow me to the doctor's office.", zh: "38.5摄氏度，您有中度发烧，请跟我去医生办公室。" },
+                    { speaker: "You", en: "Thank you.", zh: "谢谢。" },
+                    { speaker: "Doctor", en: "Good morning. What's your symptom?", zh: "早上好，您有什么症状？" },
+                    { speaker: "You", en: "I have a headache, fever, cough and runny nose. I feel very tired and have no appetite.", zh: "我头疼、发烧、咳嗽、流鼻涕，感觉非常累，而且没有胃口。" },
+                    { speaker: "Doctor", en: "Okay. Let me check your throat. Open your mouth and say 'ah'.", zh: "好的，让我检查一下您的喉咙，张开嘴说“啊”。" },
+                    { speaker: "You", en: "Ah...", zh: "啊……" },
+                    { speaker: "Doctor", en: "Your throat is red and swollen. You have a cold and a mild throat infection. Don't worry, it's not serious.", zh: "您的喉咙又红又肿，您感冒了，还有轻微的喉咙感染，别担心，不严重。" },
+                    { speaker: "You", en: "Thank you, doctor. What should I do?", zh: "谢谢医生，我该怎么办？" },
+                    { speaker: "Doctor", en: "I will prescribe some medicine for you. Take the medicine on time, drink plenty of water, and get enough rest.", zh: "我会给您开一些药，按时吃药，多喝水，保证充足的休息。" },
+                    { speaker: "You", en: "Okay. How many times a day should I take the medicine?", zh: "好的，我一天需要吃几次药？" },
+                    { speaker: "Doctor", en: "Take it three times a day, after meals. One pill each time.", zh: "一天三次，饭后吃，每次一片。" },
+                    { speaker: "You", en: "Understood. Can I go to work tomorrow?", zh: "明白了，我明天可以去上班吗？" },
+                    { speaker: "Doctor", en: "I suggest you take a day off tomorrow to rest. You will recover faster.", zh: "我建议您明天请假休息一天，这样恢复得更快。" },
+                    { speaker: "You", en: "Okay, I will. Thank you, doctor. How much is the medicine?", zh: "好的，我会的。谢谢医生，药多少钱？" },
+                    { speaker: "Doctor", en: "It's 58 yuan. Here's the prescription. You can go to the pharmacy to get the medicine.", zh: "58元，这是处方，您可以去药房拿药。" },
+                    { speaker: "You", en: "Thank you so much, doctor. Is there anything else I need to pay attention to?", zh: "非常感谢医生，还有什么需要我注意的吗？" },
+                    { speaker: "Doctor", en: "Yes, don't eat spicy, cold or greasy food. Avoid staying up late and exercising strenuously.", zh: "有，不要吃辛辣、生冷、油腻的食物，避免熬夜和剧烈运动。" },
+                    { speaker: "You", en: "Understood. Thank you again.", zh: "明白了，再次感谢。" },
+                    { speaker: "Doctor", en: "You're welcome. If you don't get better in three days, please come back to see me again.", zh: "不客气，如果三天后还没有好转，请再来找我。" },
+                    { speaker: "You", en: "Okay, I will. Goodbye, doctor.", zh: "好的，我会的，再见医生。" },
+                    { speaker: "Doctor", en: "Goodbye. Get well soon!", zh: "再见，早日康复！" }
+                ]
+            },
+            {
+                id: "campus",
+                name: "🎓 校园师生交流",
+                turns: [
+                    { speaker: "Teacher", en: "Good morning, class! How are you today?", zh: "早上好，同学们！你们今天过得怎么样？" },
+                    { speaker: "You", en: "Good morning, teacher! We are all fine, thank you.", zh: "早上好，老师！我们都很好，谢谢。" },
+                    { speaker: "Teacher", en: "Great! Today we will learn a new lesson about environmental protection. Does anyone know what environmental protection is?", zh: "太好了！今天我们要学习一堂关于环境保护的新课，有人知道什么是环境保护吗？" },
+                    { speaker: "You", en: "I know! Environmental protection means protecting our environment and reducing pollution.", zh: "我知道！环境保护就是保护我们的环境，减少污染。" },
+                    { speaker: "Teacher", en: "Very good! That's a perfect answer. Can you give an example of environmental protection?", zh: "非常好！这是一个完美的答案，你能举一个环境保护的例子吗？" },
+                    { speaker: "You", en: "Yes. We can use reusable bags instead of plastic bags to reduce white pollution.", zh: "可以，我们可以用环保袋代替塑料袋，减少白色污染。" },
+                    { speaker: "Teacher", en: "Excellent! You did a great job. What about other students?", zh: "太棒了！你做得很好，其他同学呢？" },
+                    { speaker: "You", en: "Teacher, we can also save water and electricity in our daily life.", zh: "老师，我们还可以在日常生活中节约用水和用电。" },
+                    { speaker: "Teacher", en: "That's right! Saving resources is also a kind of environmental protection. Now, let's look at the textbook on page 20.", zh: "没错！节约资源也是一种环境保护，现在，我们来看课本第20页。" },
+                    { speaker: "You", en: "Okay, teacher.", zh: "好的，老师。" },
+                    { speaker: "Teacher", en: "Please read the first paragraph aloud together. Ready? Go!", zh: "请大家一起朗读第一段，准备好了吗？开始！" },
+                    { speaker: "You", en: "Environmental protection is crucial for our planet. It helps to keep our air clean, our water pure, and our land healthy...", zh: "环境保护对我们的星球至关重要，它有助于保持空气清新、水质纯净、土地健康……" },
+                    { speaker: "Teacher", en: "Very good! Your pronunciation is very standard. Now, let's discuss a question in groups: what can we do to protect the environment at school?", zh: "非常好！你们的发音很标准，现在，我们分组讨论一个问题：我们在学校可以做些什么来保护环境？" },
+                    { speaker: "You", en: "Okay, teacher. Can we discuss in pairs?", zh: "好的，老师，我们可以两人一组讨论吗？" },
+                    { speaker: "Teacher", en: "Of course! You can discuss in pairs or small groups. I will walk around and help you if you have any questions.", zh: "当然可以！你们可以两人一组或小组讨论，我会走动，有问题可以问我。" },
+                    { speaker: "You", en: "Thank you, teacher.", zh: "谢谢老师。" },
+                    { speaker: "Teacher", en: "Time's up! Which group wants to share your ideas?", zh: "时间到了！哪个小组愿意分享你们的想法？" },
+                    { speaker: "You", en: "We think we can put trash in the correct trash cans and not litter.", zh: "我们认为我们可以把垃圾放进正确的垃圾桶，不乱扔垃圾。" },
+                    { speaker: "Teacher", en: "Great idea! What else?", zh: "好主意！还有吗？" },
+                    { speaker: "You", en: "We can plant more trees on the campus to make the school more beautiful and clean the air.", zh: "我们可以在校园里多种树，让学校更漂亮，净化空气。" },
+                    { speaker: "Teacher", en: "Perfect! You are all very thoughtful. Now, let's summarize what we have learned today.", zh: "太完美了！你们都很有想法，现在，我们总结一下今天学到的内容。" },
+                    { speaker: "You", en: "Okay, teacher.", zh: "好的，老师。" },
+                    { speaker: "Teacher", en: "Today we learned the meaning of environmental protection and some ways to protect the environment. Remember, environmental protection is everyone's responsibility.", zh: "今天我们学习了环境保护的意义和一些保护环境的方法，记住，环境保护是每个人的责任。" },
+                    { speaker: "You", en: "Yes, teacher! We will remember it.", zh: "是的，老师！我们会记住的。" },
+                    { speaker: "Teacher", en: "Good. For homework, please write a short essay about how you will protect the environment in your daily life. It should be 100-150 words.", zh: "很好，作业是写一篇短文，关于你将如何在日常生活中保护环境，100-150词。" },
+                    { speaker: "You", en: "Okay, teacher. When is it due?", zh: "好的，老师，什么时候交？" },
+                    { speaker: "Teacher", en: "It's due next Monday. If you have any questions about the homework, you can ask me after class.", zh: "下周一交，如果作业有问题，课后可以问我。" },
+                    { speaker: "You", en: "Thank you, teacher. We will finish it on time.", zh: "谢谢老师，我们会按时完成的。" },
+                    { speaker: "Teacher", en: "Great! Class is over. Have a nice break!", zh: "太好了！下课了，休息愉快！" },
+                    { speaker: "You", en: "Thank you, teacher! Goodbye!", zh: "谢谢老师！再见！" },
+                    { speaker: "Teacher", en: "Goodbye, class!", zh: "再见，同学们！" }
+                ]
+            },
+            {
+                id: "social",
+                name: "👋 日常社交寒暄",
+                turns: [
+                    { speaker: "Friend", en: "Hi! Long time no see. How have you been?", zh: "嗨！好久不见，你最近怎么样？" },
+                    { speaker: "You", en: "Hi! I've been great, thank you. How about you?", zh: "嗨！我一直很好，谢谢，你呢？" },
+                    { speaker: "Friend", en: "I'm good too. I just got back from a trip to Beijing last week.", zh: "我也很好，我上周刚从北京旅行回来。" },
+                    { speaker: "You", en: "Really? That sounds amazing! How was your trip?", zh: "真的吗？听起来太棒了！你的旅行怎么样？" },
+                    { speaker: "Friend", en: "It was wonderful! I visited the Forbidden City and the Great Wall. The scenery was breathtaking.", zh: "太赞了！我去了故宫和长城，景色真的太美了。" },
+                    { speaker: "You", en: "Wow, I've always wanted to go there. Did you take a lot of photos?", zh: "哇，我一直想去那里。你拍了很多照片吗？" },
+                    { speaker: "Friend", en: "Yes! I have hundreds of photos. I'll show you sometime.", zh: "拍了！我有几百张照片，找时间给你看。" },
+                    { speaker: "You", en: "That would be great! I can't wait to see them.", zh: "太好了！我迫不及待想看了。" },
+                    { speaker: "Friend", en: "By the way, are you free this weekend? There's a new movie I want to watch.", zh: "对了，你这周末有空吗？有部新电影我想去看。" },
+                    { speaker: "You", en: "I'm free on Saturday afternoon. What movie is it?", zh: "我周六下午有空，是什么电影？" },
+                    { speaker: "Friend", en: "It's a comedy movie. I heard it's really funny and relaxing.", zh: "是一部喜剧片，听说又搞笑又解压。" },
+                    { speaker: "You", en: "Perfect! I love comedy movies. Let's go together.", zh: "太棒了！我超爱喜剧片，我们一起去吧。" },
+                    { speaker: "Friend", en: "Great! Let's meet at the cinema at 2 PM. I'll buy the tickets.", zh: "太好了！我们下午2点在电影院见，我来买票。" },
+                    { speaker: "You", en: "Thank you so much! I'll treat you to popcorn and soda.", zh: "太感谢了！我请你吃爆米花和可乐。" },
+                    { speaker: "Friend", en: "That's a deal! I'm looking forward to it.", zh: "一言为定！我超期待的。" },
+                    { speaker: "You", en: "Me too. By the way, how's your new job going?", zh: "我也是。对了，你的新工作怎么样了？" },
+                    { speaker: "Friend", en: "It's going really well! My colleagues are friendly and the work is interesting.", zh: "很顺利！同事们都很友好，工作也很有意思。" },
+                    { speaker: "You", en: "That's awesome! I'm so happy for you.", zh: "太棒了！真为你开心。" },
+                    { speaker: "Friend", en: "Thanks! I heard you're learning English now. How's it going?", zh: "谢谢！我听说你现在在学英语，学得怎么样了？" },
+                    { speaker: "You", en: "It's a bit challenging, but I'm enjoying it. I practice every day with this app.", zh: "有点挑战，但我很喜欢，我每天都用这个APP练习。" },
+                    { speaker: "Friend", en: "That's great! Keep it up. I'm sure you'll improve quickly.", zh: "太厉害了！坚持下去，你肯定会进步很快的。" },
+                    { speaker: "You", en: "Thank you! I hope so too. Maybe we can practice together sometime.", zh: "谢谢！我也希望如此，说不定我们可以找时间一起练习。" },
+                    { speaker: "Friend", en: "That sounds like a great idea! I'd love to help you.", zh: "好主意！我很乐意帮你。" },
+                    { speaker: "You", en: "You're the best! I really appreciate it.", zh: "你太好了！真的很感谢。" },
+                    { speaker: "Friend", en: "Anytime! Friends are here to help each other.", zh: "随时找我！朋友就是互相帮忙的嘛。" },
+                    { speaker: "You", en: "You're right. I'm so glad we're friends.", zh: "你说得对，我真庆幸我们是朋友。" },
+                    { speaker: "Friend", en: "Me too. Okay, I have to go now. See you on Saturday!", zh: "我也是。好了，我得走了，周六见！" },
+                    { speaker: "You", en: "See you! Have a nice day!", zh: "再见！祝你愉快！" },
+                    { speaker: "Friend", en: "You too! Bye!", zh: "你也是！拜拜！" },
+                    { speaker: "You", en: "Bye!", zh: "拜拜！" }
+                ]
+            },
+            {
+                id: "travel",
+                name: "🏖️ 旅游景点沟通",
+                turns: [
+                    { speaker: "Tour Guide", en: "Good morning, everyone! Welcome to the West Lake Scenic Area. I'm your tour guide today.", zh: "大家早上好！欢迎来到西湖景区，我是你们今天的导游。" },
+                    { speaker: "You", en: "Good morning! It's nice to meet you.", zh: "早上好！很高兴认识你。" },
+                    { speaker: "Tour Guide", en: "Nice to meet you too. First, let me give you a brief introduction to West Lake.", zh: "我也很高兴认识大家。首先，我给大家简单介绍一下西湖。" },
+                    { speaker: "You", en: "Okay, we're all listening.", zh: "好的，我们都在听。" },
+                    { speaker: "Tour Guide", en: "West Lake is one of the most famous scenic spots in China, known for its beautiful scenery and cultural history.", zh: "西湖是中国最著名的景点之一，以美丽的风景和文化历史闻名。" },
+                    { speaker: "You", en: "Wow, it's even more beautiful in person than in the photos.", zh: "哇，现场比照片里还要美。" },
+                    { speaker: "Tour Guide", en: "Thank you! Today we will visit three main spots: Broken Bridge, Su Causeway, and Leifeng Pagoda.", zh: "谢谢！今天我们会游览三个主要景点：断桥、苏堤和雷峰塔。" },
+                    { speaker: "You", en: "That sounds great! How long will we stay at each spot?", zh: "听起来太棒了！每个景点我们会停留多久？" },
+                    { speaker: "Tour Guide", en: "We will spend about 40 minutes at each spot, so you have enough time to take photos and enjoy the scenery.", zh: "每个景点大约停留40分钟，大家有足够的时间拍照和欣赏风景。" },
+                    { speaker: "You", en: "Perfect! Can we buy souvenirs here?", zh: "太好了！我们可以在这里买纪念品吗？" },
+                    { speaker: "Tour Guide", en: "Yes, there are many souvenir shops near the exit. You can buy tea, silk scarves, and other local products.", zh: "可以的，出口附近有很多纪念品商店，大家可以买茶叶、丝巾和其他当地特产。" },
+                    { speaker: "You", en: "Great! Is there any place to eat around here?", zh: "太好了！这附近有吃饭的地方吗？" },
+                    { speaker: "Tour Guide", en: "We will have lunch at a local restaurant nearby at 12:30. They serve delicious Hangzhou-style food.", zh: "我们12点半会在附近的一家本地餐厅吃午饭，那里有美味的杭帮菜。" },
+                    { speaker: "You", en: "That's wonderful! I'm already hungry.", zh: "太棒了！我已经饿了。" },
+                    { speaker: "Tour Guide", en: "Haha, don't worry, lunch will be ready soon. Now, let's start our tour!", zh: "哈哈，别担心，午饭很快就到了。现在，我们开始游览吧！" },
+                    { speaker: "You", en: "Okay, lead the way!", zh: "好的，你带路吧！" },
+                    { speaker: "Tour Guide", en: "Look at that bridge over there. That's the famous Broken Bridge.", zh: "大家看那边的桥，那就是著名的断桥。" },
+                    { speaker: "You", en: "It's so beautiful! Can I take a photo here?", zh: "太美了！我可以在这里拍张照吗？" },
+                    { speaker: "Tour Guide", en: "Of course! Take your time. It's one of the most popular photo spots.", zh: "当然可以！慢慢拍，这是最热门的拍照点之一。" },
+                    { speaker: "You", en: "Thank you. Is there any legend about this bridge?", zh: "谢谢。这座桥有什么传说吗？" },
+                    { speaker: "Tour Guide", en: "Yes, it's related to the Legend of the White Snake. Do you know it?", zh: "有的，和《白蛇传》的传说有关，你们知道吗？" },
+                    { speaker: "You", en: "Yes! I heard the story when I was a kid. It's very touching.", zh: "知道！我小时候听过这个故事，很感人。" },
+                    { speaker: "Tour Guide", en: "That's right. The bridge is a symbol of true love in Chinese culture.", zh: "没错，这座桥在中国文化里是真爱的象征。" },
+                    { speaker: "You", en: "That's so romantic. I love this place already.", zh: "太浪漫了，我已经爱上这里了。" },
+                    { speaker: "Tour Guide", en: "I'm glad you like it. Next, we will walk along Su Causeway. It's a beautiful walk with willow trees on both sides.", zh: "很高兴你喜欢这里。接下来，我们会沿着苏堤走，两边都是柳树，风景很美。" },
+                    { speaker: "You", en: "That sounds lovely. Let's go!", zh: "听起来很棒，我们走吧！" },
+                    { speaker: "Tour Guide", en: "Okay, please follow me and stay together. Don't get lost.", zh: "好的，请跟紧我，不要走散了。" },
+                    { speaker: "You", en: "Don't worry, we'll stay close.", zh: "别担心，我们会跟紧的。" },
+                    { speaker: "Tour Guide", en: "Great. If you have any questions during the tour, please feel free to ask me.", zh: "太好了。游览过程中有任何问题，随时问我。" },
+                    { speaker: "You", en: "Thank you so much for your help. You're a great guide!", zh: "非常感谢你的帮助，你是个很棒的导游！" },
+                    { speaker: "Tour Guide", en: "Thank you! I'm happy to help. Enjoy your trip!", zh: "谢谢！能帮到大家我很开心，祝大家旅途愉快！" }
+                ]
+            },
+            {
+                id: "workplace",
+                name: "👔 职场工作沟通",
+                turns: [
+                    { speaker: "Colleague", en: "Good morning! Did you finish the report we discussed yesterday?", zh: "早上好！你完成我们昨天讨论的报告了吗？" },
+                    { speaker: "You", en: "Good morning! Yes, I finished it last night. I sent it to your email.", zh: "早上好！是的，我昨晚完成了，已经发到你邮箱了。" },
+                    { speaker: "Colleague", en: "Great! Thank you so much. I'll check it this morning.", zh: "太好了！非常感谢，我今天上午会看的。" },
+                    { speaker: "You", en: "You're welcome. Let me know if you have any questions or need changes.", zh: "不客气，有任何问题或者需要修改的地方，随时告诉我。" },
+                    { speaker: "Colleague", en: "Sure. By the way, the team meeting is at 3 PM today. Don't forget to prepare your presentation.", zh: "好的。对了，团队会议今天下午3点，别忘了准备你的汇报。" },
+                    { speaker: "You", en: "Oh right! I almost forgot. I'm almost done with my slides.", zh: "哦对！我差点忘了，我的PPT快做完了。" },
+                    { speaker: "Colleague", en: "Perfect! I can help you practice if you want. I have some free time before the meeting.", zh: "太好了！如果你需要的话，我可以帮你排练一下，会议前我有时间。" },
+                    { speaker: "You", en: "That would be amazing! Thank you so much. When is good for you?", zh: "那太好了！非常感谢，你什么时候方便？" },
+                    { speaker: "Colleague", en: "How about 2 PM in the meeting room? It's quiet there.", zh: "下午2点在会议室怎么样？那里比较安静。" },
+                    { speaker: "You", en: "Perfect! I'll be there with my laptop.", zh: "太好了！我会带着笔记本电脑过去的。" },
+                    { speaker: "Colleague", en: "Great. Also, the manager wants us to discuss the new project plan in the meeting.", zh: "好的。还有，经理想让我们在会议上讨论新项目的计划。" },
+                    { speaker: "You", en: "Okay, I have some ideas about that. I'll bring my notes.", zh: "好的，我有一些想法，我会带上我的笔记。" },
+                    { speaker: "Colleague", en: "Perfect! I think your ideas will be very helpful.", zh: "太好了！我觉得你的想法会很有帮助。" },
+                    { speaker: "You", en: "Thank you. Do you know if the client has replied to our proposal?", zh: "谢谢。你知道客户有没有回复我们的提案吗？" },
+                    { speaker: "Colleague", en: "Yes, they replied this morning. They are very interested and want to schedule a meeting next week.", zh: "回复了，他们今天早上回复的，他们很感兴趣，想下周安排一次会议。" },
+                    { speaker: "You", en: "That's wonderful news! We need to prepare for the meeting.", zh: "真是个好消息！我们需要为会议做准备。" },
+                    { speaker: "Colleague", en: "Right. I'll send you the client's feedback later. Let's discuss it together.", zh: "没错，我稍后会把客户的反馈发给你，我们一起讨论一下。" },
+                    { speaker: "You", en: "Okay, I'll look forward to it. By the way, do you know where the new office supplies are kept?", zh: "好的，我等着。对了，你知道新的办公用品放在哪里吗？" },
+                    { speaker: "Colleague", en: "They are in the storage room on the second floor. The key is with the admin.", zh: "在二楼的储物间里，钥匙在行政那里。" },
+                    { speaker: "You", en: "Got it. I need to get some new pens and notebooks.", zh: "知道了，我需要拿一些新的笔和笔记本。" },
+                    { speaker: "Colleague", en: "I'll go with you if you want. I need to get some folders too.", zh: "如果你需要的话，我可以和你一起去，我也需要拿一些文件夹。" },
+                    { speaker: "You", en: "That would be great! Let's go after lunch.", zh: "太好了！我们午饭后去吧。" },
+                    { speaker: "Colleague", en: "Okay, that works for me. Let's meet by the elevator at 1 PM.", zh: "好的，没问题，我们下午1点在电梯口见。" },
+                    { speaker: "You", en: "Perfect. Thank you for all your help today.", zh: "太好了，谢谢你今天帮了我这么多。" },
+                    { speaker: "Colleague", en: "You're welcome. We're a team, right?", zh: "不客气，我们是一个团队，不是吗？" },
+                    { speaker: "You", en: "That's right. I really enjoy working with you.", zh: "没错，我很喜欢和你一起工作。" },
+                    { speaker: "Colleague", en: "Me too. You're a great team player.", zh: "我也是，你是个很棒的团队成员。" },
+                    { speaker: "You", en: "Thank you. I'll see you at 2 PM for the presentation practice.", zh: "谢谢，我们下午2点见，排练汇报。" },
+                    { speaker: "Colleague", en: "See you then! Good luck with the meeting later.", zh: "到时候见！祝你下午的会议顺利。" },
+                    { speaker: "You", en: "Thank you! You too. Have a great day!", zh: "谢谢！你也是，祝你今天愉快！" },
+                    { speaker: "Colleague", en: "You too!", zh: "你也是！" }
+                ]
+            },
+            {
+                id: "service",
+                name: "📞 生活办事咨询",
+                turns: [
+                    { speaker: "Staff", en: "Hello, welcome to the city service hotline. How may I assist you today?", zh: "您好，欢迎致电城市服务热线，请问有什么可以帮您的吗？" },
+                    { speaker: "You", en: "Hello! I want to apply for a new ID card. Can you tell me the process?", zh: "你好！我想申请补办身份证，你能告诉我流程吗？" },
+                    { speaker: "Staff", en: "Of course. First, you need to go to the local police station with your household registration book.", zh: "当然可以。首先，您需要带上户口本去当地派出所。" },
+                    { speaker: "You", en: "Okay. Do I need to bring anything else?", zh: "好的，我还需要带其他东西吗？" },
+                    { speaker: "Staff", en: "You will also need to fill out an application form and take a new photo at the station.", zh: "您还需要填写申请表，并在派出所拍摄新照片。" },
+                    { speaker: "You", en: "Got it. How long will it take to get the new ID card?", zh: "知道了。拿到新身份证需要多久？" },
+                    { speaker: "Staff", en: "It usually takes about 15 working days. You can choose to pick it up in person or have it mailed to you.", zh: "通常需要15个工作日左右，您可以选择自己去取，或者邮寄给您。" },
+                    { speaker: "You", en: "Okay. Is there a fee for the application?", zh: "好的，申请需要费用吗？" },
+                    { speaker: "Staff", en: "Yes, there is a 20 yuan fee for the new ID card.", zh: "是的，新身份证的工本费是20元。" },
+                    { speaker: "You", en: "Understood. Where is the nearest police station to my address?", zh: "明白了。离我地址最近的派出所在哪里？" },
+                    { speaker: "Staff", en: "Let me check. Your address is No. 123, Green Street, right?", zh: "我帮您查一下，您的地址是格林街123号，对吗？" },
+                    { speaker: "You", en: "Yes, that's correct.", zh: "是的，没错。" },
+                    { speaker: "Staff", en: "The nearest police station is the West Street Police Station. It's about 10 minutes by bus.", zh: "最近的是西街派出所，坐公交车大约10分钟。" },
+                    { speaker: "You", en: "Okay. What are their working hours?", zh: "好的，他们的工作时间是什么时候？" },
+                    { speaker: "Staff", en: "They are open from 9 AM to 5 PM, Monday to Friday. They are closed on weekends and public holidays.", zh: "周一到周五上午9点到下午5点开放，周末和法定节假日休息。" },
+                    { speaker: "You", en: "Got it. I will go there next Monday morning.", zh: "知道了，我下周一上午过去。" },
+                    { speaker: "Staff", en: "Great. Is there anything else I can help you with today?", zh: "好的。今天还有其他可以帮您的吗？" },
+                    { speaker: "You", en: "Yes, I also want to ask about applying for a library card. What do I need to do?", zh: "有，我还想问一下办理图书馆借书证需要做什么？" },
+                    { speaker: "Staff", en: "You just need to bring your ID card to the main library and fill out a form. It's free to apply.", zh: "您只需要带上身份证去市图书馆填写一张表格就可以了，申请是免费的。" },
+                    { speaker: "You", en: "That's easy! How many books can I borrow at once?", zh: "这么简单！我一次可以借几本书？" },
+                    { speaker: "Staff", en: "You can borrow up to 5 books at a time, and the loan period is 30 days. You can renew them once if you need more time.", zh: "一次最多可以借5本书，借阅期是30天，如果需要更多时间，可以续借一次。" },
+                    { speaker: "You", en: "Perfect! Thank you so much for your help.", zh: "太好了！非常感谢你的帮助。" },
+                    { speaker: "Staff", en: "You're welcome. If you have any other questions, please feel free to call us again.", zh: "不客气，如果您有其他问题，欢迎再次致电我们。" },
+                    { speaker: "You", en: "Okay, I will. Have a nice day!", zh: "好的，我会的，祝你愉快！" },
+                    { speaker: "Staff", en: "You too! Goodbye.", zh: "您也是，再见。" },
+                    { speaker: "You", en: "Goodbye.", zh: "再见。" }
+                ]
+            },
+            {
+                id: "phone_chat",
+                name: "📱 电话微信沟通",
+                turns: [
+                    { speaker: "Friend", en: "Hello! Is that Li Ming speaking?", zh: "喂！是李明吗？" },
+                    { speaker: "You", en: "Hi! This is Li Ming speaking. Who's calling?", zh: "嗨！我是李明，请问你是谁？" },
+                    { speaker: "Friend", en: "It's me, Zhang Wei! I'm calling to ask if you're free this Saturday evening.", zh: "是我，张伟！我打电话来问问你这周六晚上有空吗？" },
+                    { speaker: "You", en: "Hi Zhang Wei! I'm free. What's up?", zh: "嗨张伟！我有空，怎么了？" },
+                    { speaker: "Friend", en: "A group of us are planning to have dinner together at the new hot pot restaurant. Do you want to come?", zh: "我们一群人打算去新开的火锅店一起吃晚饭，你想来吗？" },
+                    { speaker: "You", en: "That sounds great! I love hot pot. What time is it?", zh: "听起来太棒了！我超爱火锅，几点？" },
+                    { speaker: "Friend", en: "We plan to meet at 6:30 PM at the restaurant. The address is No. 45, Red Street.", zh: "我们计划晚上6点半在餐厅集合，地址是红街45号。" },
+                    { speaker: "You", en: "Got it. How many people are coming?", zh: "知道了，有多少人来？" },
+                    { speaker: "Friend", en: "There are 8 of us in total, including you. It's a small group.", zh: "包括你一共8个人，是个小团体。" },
+                    { speaker: "You", en: "Perfect! That's not too big. I'll be there on time.", zh: "太好了！人不多，我会准时到的。" },
+                    { speaker: "Friend", en: "Great! Do you have any food allergies or preferences we should know about?", zh: "太好了！你有什么食物过敏或者忌口需要我们知道吗？" },
+                    { speaker: "You", en: "No, I don't have any allergies. I like all kinds of food.", zh: "没有，我没有过敏，什么都吃。" },
+                    { speaker: "Friend", en: "Perfect! I'll add you to our WeChat group so we can keep in touch.", zh: "太好了！我把你拉进我们的微信群，这样我们可以保持联系。" },
+                    { speaker: "You", en: "Okay, thank you. I'll check my WeChat later.", zh: "好的，谢谢，我等会儿看一下微信。" },
+                    { speaker: "Friend", en: "No problem. By the way, do you know how to get to the restaurant?", zh: "不客气。对了，你知道怎么去那家餐厅吗？" },
+                    { speaker: "You", en: "I think I know where it is. I can take the subway to Red Street Station and walk there.", zh: "我大概知道在哪里，我可以坐地铁到红街站，然后走过去。" },
+                    { speaker: "Friend", en: "That's right. The restaurant is just a 5-minute walk from the station.", zh: "没错，餐厅离车站只有5分钟的步行路程。" },
+                    { speaker: "You", en: "Great! I'm looking forward to the dinner.", zh: "太好了！我很期待这次聚餐。" },
+                    { speaker: "Friend", en: "Me too! It's been a long time since we all got together.", zh: "我也是！我们好久没聚在一起了。" },
+                    { speaker: "You", en: "Yes, it has. I miss hanging out with everyone.", zh: "是啊，好久了，我很想念和大家一起玩的日子。" },
+                    { speaker: "Friend", en: "Same here. Okay, I have to go now. See you on Saturday!", zh: "我也是。好了，我得挂电话了，周六见！" },
+                    { speaker: "You", en: "See you! Have a nice day!", zh: "再见！祝你愉快！" },
+                    { speaker: "Friend", en: "You too! Bye!", zh: "你也是！拜拜！" },
+                    { speaker: "You", en: "Bye!", zh: "拜拜！" }
+                ]
+            },
+            {
+                id: "hobbies",
+                name: "🎮 兴趣爱好闲聊",
+                turns: [
+                    { speaker: "Friend", en: "Hey! What are you doing this weekend?", zh: "嘿！你这周末打算做什么？" },
+                    { speaker: "You", en: "Hi! I'm planning to stay home and play video games. How about you?", zh: "嗨！我打算待在家里玩电子游戏，你呢？" },
+                    { speaker: "Friend", en: "That sounds fun! What games are you playing?", zh: "听起来很有意思！你在玩什么游戏？" },
+                    { speaker: "You", en: "I'm playing a new open-world game. It's called Genshin Impact. Have you heard of it?", zh: "我在玩一款新的开放世界游戏，叫《原神》，你听说过吗？" },
+                    { speaker: "Friend", en: "Oh, yes! I've heard a lot about it. It's very popular. Is it good?", zh: "哦，听说过！我听过很多关于它的消息，很火的，好玩吗？" },
+                    { speaker: "You", en: "It's amazing! The graphics are beautiful, and the story is very interesting.", zh: "超棒的！画面很美，故事也很有意思。" },
+                    { speaker: "Friend", en: "Wow, that sounds great. I might try it sometime.", zh: "哇，听起来不错，我可能找时间试试。" },
+                    { speaker: "You", en: "You should! I think you'll like it. Do you play any video games?", zh: "你应该试试！我觉得你会喜欢的。你玩电子游戏吗？" },
+                    { speaker: "Friend", en: "I don't play video games much, but I love reading books. I just finished a great novel.", zh: "我不怎么玩电子游戏，但我很喜欢看书，我刚看完一本很棒的小说。" },
+                    { speaker: "You", en: "Really? What's the name of the novel?", zh: "真的吗？小说叫什么名字？" },
+                    { speaker: "Friend", en: "It's called 'The Three-Body Problem'. It's a science fiction novel. Have you read it?", zh: "叫《三体》，是一本科幻小说，你看过吗？" },
+                    { speaker: "You", en: "Yes! I read it last year. It's one of my favorite books.", zh: "看过！我去年看的，是我最喜欢的书之一。" },
+                    { speaker: "Friend", en: "That's awesome! I loved the story about the alien civilization. It's so creative.", zh: "太棒了！我超爱关于外星文明的故事，太有创意了。" },
+                    { speaker: "You", en: "I agree! The author has a great imagination. Have you read the other books in the trilogy?", zh: "我同意！作者的想象力太丰富了，你看过三部曲里的其他书吗？" },
+                    { speaker: "Friend", en: "Not yet. I plan to read the second one this weekend.", zh: "还没有，我打算这周末看第二本。" },
+                    { speaker: "You", en: "Great! I hope you like it. It's even better than the first one.", zh: "太好了！希望你喜欢，比第一本还要好看。" },
+                    { speaker: "Friend", en: "That's good to hear. Besides reading, I also like playing the guitar.", zh: "太好了。除了看书，我还喜欢弹吉他。" },
+                    { speaker: "You", en: "Wow, that's cool! Do you play any songs?", zh: "哇，好酷！你会弹什么歌？" },
+                    { speaker: "Friend", en: "I like playing pop songs. My favorite is 'Let It Be' by The Beatles.", zh: "我喜欢弹流行歌，最喜欢披头士的《Let It Be》。" },
+                    { speaker: "You", en: "That's a classic! I love that song. Maybe you can play it for me sometime.", zh: "经典老歌！我超爱那首歌，说不定什么时候你可以弹给我听。" },
+                    { speaker: "Friend", en: "Sure! I'd love to. Do you have any hobbies besides playing games?", zh: "当然可以！我很乐意。除了玩游戏，你还有其他爱好吗？" },
+                    { speaker: "You", en: "I also like taking photos. I usually take photos of the scenery when I go out.", zh: "我还喜欢拍照，我出去的时候通常会拍风景照。" },
+                    { speaker: "Friend", en: "That's great! Do you have any photos you can show me?", zh: "太棒了！你有照片可以给我看看吗？" },
+                    { speaker: "You", en: "Yes! I'll send you some photos I took last week. They are of the park near my house.", zh: "有！我给你发几张我上周拍的照片，是我家附近的公园。" },
+                    { speaker: "Friend", en: "Perfect! I can't wait to see them. They must be beautiful.", zh: "太好了！我迫不及待想看了，肯定很美。" },
+                    { speaker: "You", en: "Thank you. I'm not a professional, but I enjoy it.", zh: "谢谢，我不是专业的，但我很享受拍照的过程。" },
+                    { speaker: "Friend", en: "That's the most important thing. You don't have to be professional to enjoy your hobbies.", zh: "这才是最重要的，爱好不需要专业，自己喜欢就好。" },
+                    { speaker: "You", en: "You're right. Hobbies are for fun, not for being perfect.", zh: "你说得对，爱好就是为了开心，不是为了做到完美。" },
+                    { speaker: "Friend", en: "Exactly! It's great that we both have hobbies we love.", zh: "没错！我们都有自己热爱的爱好，真好。" },
+                    { speaker: "You", en: "I agree. It makes life more interesting.", zh: "我同意，这让生活变得更有趣了。" },
+                    { speaker: "Friend", en: "That's right. Okay, I have to go now. Let's talk more about our hobbies later!", zh: "没错。好了，我得走了，我们以后再聊爱好吧！" },
+                    { speaker: "You", en: "Sure! Have a nice weekend!", zh: "好的！祝你周末愉快！" },
+                    { speaker: "Friend", en: "You too! Bye!", zh: "你也是！拜拜！" }
+                ]
+            },
+            {
+                id: "transport",
+                name: "✈️ 机场高铁出行",
+                turns: [
+                    { speaker: "Airport Staff", en: "Good morning, sir/madam. Welcome to the airport. May I see your passport and flight ticket, please?", zh: "早上好，先生/女士。欢迎来到机场，请出示您的护照和机票？" },
+                    { speaker: "You", en: "Good morning! Here you are. I'm flying to Shanghai today.", zh: "早上好！给你，我今天要飞去上海。" },
+                    { speaker: "Airport Staff", en: "Thank you. Are you checking in any luggage today?", zh: "谢谢。您今天有托运行李吗？" },
+                    { speaker: "You", en: "Yes, I have one suitcase to check in.", zh: "有，我有一个行李箱要托运。" },
+                    { speaker: "Airport Staff", en: "Okay, please put it on the scale. The weight limit is 20 kilograms.", zh: "好的，请把它放在秤上，行李限重20公斤。" },
+                    { speaker: "You", en: "Got it. Is it okay if it's 22 kilograms?", zh: "知道了。如果是22公斤可以吗？" },
+                    { speaker: "Airport Staff", en: "It's a little over the limit. You will need to pay an extra fee of 100 yuan.", zh: "有点超重了，您需要额外支付100元的超重费。" },
+                    { speaker: "You", en: "Okay, I'll pay the fee. No problem.", zh: "好的，我付这个费用，没问题。" },
+                    { speaker: "Airport Staff", en: "Thank you. Would you like a window seat or an aisle seat?", zh: "谢谢。您想要靠窗座位还是靠过道座位？" },
+                    { speaker: "You", en: "A window seat, please. I love looking at the clouds.", zh: "靠窗座位，谢谢。我喜欢看云。" },
+                    { speaker: "Airport Staff", en: "Great. Here's your boarding pass. Your gate number is 12, and boarding starts at 9:30 AM.", zh: "好的。这是您的登机牌，登机口是12号，上午9点半开始登机。" },
+                    { speaker: "You", en: "Thank you. How long is the flight to Shanghai?", zh: "谢谢。去上海的航班要飞多久？" },
+                    { speaker: "Airport Staff", en: "The flight time is about 2 hours. You will arrive at Shanghai Pudong Airport at 11:30 AM local time.", zh: "飞行时间大约2小时，您会在当地时间上午11点半到达上海浦东机场。" },
+                    { speaker: "You", en: "Got it. Where is the security check?", zh: "知道了。安检在哪里？" },
+                    { speaker: "Airport Staff", en: "It's just down the hall, to your left. Please make sure you don't have any liquids over 100ml in your carry-on bag.", zh: "就在大厅那边，您的左边。请确保您的随身行李里没有超过100毫升的液体。" },
+                    { speaker: "You", en: "Okay, I checked my bag. I don't have any liquids with me.", zh: "好的，我检查过包了，我没有带液体。" },
+                    { speaker: "Airport Staff", en: "Perfect. Have a nice flight! Enjoy your time in Shanghai.", zh: "太好了。祝您旅途愉快！祝您在上海玩得开心。" },
+                    { speaker: "You", en: "Thank you so much! Have a nice day!", zh: "非常感谢！祝你愉快！" },
+                    { speaker: "Airport Staff", en: "You too! Goodbye.", zh: "您也是，再见。" },
+                    { speaker: "You", en: "Goodbye.", zh: "再见。" }
+                ]
+            },
+            {
+                id: "housing",
+                name: "🏠 租房看房沟通",
+                turns: [
+                    { speaker: "Landlord", en: "Hello! Thank you for coming to see the apartment. Let me show you around.", zh: "你好！谢谢你来看房，我带你参观一下。" },
+                    { speaker: "You", en: "Hi! Thank you for showing me around. The location looks great.", zh: "嗨！谢谢你带我参观，位置看起来很不错。" },
+                    { speaker: "Landlord", en: "Yes, it's very convenient. The subway station is just a 5-minute walk away.", zh: "没错，这里很方便，地铁站步行只要5分钟。" },
+                    { speaker: "You", en: "That's perfect! I need to take the subway to work every day.", zh: "太完美了！我每天都要坐地铁上班。" },
+                    { speaker: "Landlord", en: "Great! Let's start with the living room. It's very bright with large windows.", zh: "太好了！我们先从客厅开始，窗户很大，很明亮。" },
+                    { speaker: "You", en: "Wow, it's much bigger than I expected. The sofa looks very comfortable.", zh: "哇，比我想象的要大很多，沙发看起来很舒服。" },
+                    { speaker: "Landlord", en: "Thank you. The sofa is new. The apartment was just renovated last month.", zh: "谢谢，沙发是新的，这套公寓上个月刚装修过。" },
+                    { speaker: "You", en: "That's wonderful! No need to worry about old furniture then.", zh: "太棒了！那不用担心旧家具的问题了。" },
+                    { speaker: "Landlord", en: "Right. Let's go to the bedroom. It has a big wardrobe and a comfortable bed.", zh: "没错。我们去卧室看看，有一个大衣柜和一张舒适的床。" },
+                    { speaker: "You", en: "The bed looks great. How big is the wardrobe?", zh: "床看起来很棒，衣柜有多大？" },
+                    { speaker: "Landlord", en: "It's a 4-door wardrobe. You can fit all your clothes in there easily.", zh: "是四门衣柜，你可以轻松放下所有的衣服。" },
+                    { speaker: "You", en: "Perfect! That's exactly what I need. What about the kitchen?", zh: "太好了！这正是我需要的，厨房呢？" },
+                    { speaker: "Landlord", en: "The kitchen is over here. It has a new refrigerator, stove, and microwave.", zh: "厨房在这里，有新的冰箱、炉灶和微波炉。" },
+                    { speaker: "You", en: "Wow, all the appliances are new. That's great!", zh: "哇，所有的电器都是新的，太棒了！" },
+                    { speaker: "Landlord", en: "Yes, I bought them all new for the apartment. The bathroom is also renovated with a new shower and toilet.", zh: "是的，我为这套公寓买了全新的电器，浴室也重新装修过，有新的淋浴和马桶。" },
+                    { speaker: "You", en: "That's amazing! The apartment is even better than I thought.", zh: "太赞了！这套公寓比我想象的还要好。" },
+                    { speaker: "Landlord", en: "I'm glad you like it. The rent is 2500 yuan per month, and it includes water and electricity.", zh: "很高兴你喜欢。租金是每月2500元，包含水电。" },
+                    { speaker: "You", en: "That's a reasonable price. Do I need to pay a deposit?", zh: "价格很合理，需要付押金吗？" },
+                    { speaker: "Landlord", en: "Yes, the deposit is one month's rent, which is 2500 yuan. It will be returned to you when you move out if there's no damage.", zh: "需要，押金是一个月的租金，也就是2500元，如果没有损坏，退租时会退还给你。" },
+                    { speaker: "You", en: "Got it. How long is the lease term?", zh: "知道了，租期是多久？" },
+                    { speaker: "Landlord", en: "The minimum lease term is one year. If you want to renew after that, we can discuss it.", zh: "最短租期是一年，如果之后你想续租，我们可以再商量。" },
+                    { speaker: "You", en: "Okay, that works for me. Can I move in next week?", zh: "好的，没问题。我下周可以搬进来吗？" },
+                    { speaker: "Landlord", en: "Of course! When do you want to move in exactly?", zh: "当然可以！你具体想什么时候搬进来？" },
+                    { speaker: "You", en: "How about next Monday? That would give me time to pack my things.", zh: "下周一怎么样？这样我有时间收拾东西。" },
+                    { speaker: "Landlord", en: "Perfect! Let's sign the lease contract today. I'll prepare it for you.", zh: "太好了！我们今天就签租赁合同吧，我给你准备合同。" },
+                    { speaker: "You", en: "Okay, thank you so much. I really like this apartment.", zh: "好的，非常感谢，我真的很喜欢这套公寓。" },
+                    { speaker: "Landlord", en: "I'm glad you do. It's a great apartment for someone like you.", zh: "我也很高兴你喜欢，这是一套很适合你的公寓。" },
+                    { speaker: "You", en: "Thank you! I'm looking forward to moving in.", zh: "谢谢！我很期待搬进来。" },
+                    { speaker: "Landlord", en: "Me too! I'll see you next Monday. Have a nice day!", zh: "我也是！我们下周一见，祝你愉快！" },
+                    { speaker: "You", en: "You too! Goodbye!", zh: "你也是！再见！" }
+                ]
+            }
+        ];
+
+        // 初始化对话
+        function initDialogues() {
+            localStorage.setItem("scene-dialogues", JSON.stringify(defaultDialogues));
+            renderDialogueSceneList(defaultDialogues);
+        }
+
+        function renderDialogueSceneList(dialogues) {
+            let html = "";
+            dialogues.forEach((scene, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                html += `<div class="scene-item ${isActive}" data-index="${index}">${scene.name}</div>`;
+            });
+            dialogueSceneList.innerHTML = html;
+
+            if (dialogues.length > 0) {
+                currentDialogueScene = dialogues[0];
+                renderDialogueContent(dialogues[0]);
+                setTimeout(() => {
+                    dialogueContent.scrollTop = sceneScrollPositions[dialogues[0].id] || 0;
+                }, 0);
+            }
+        }
+
+        function renderDialogueContent(scene) {
+            dialogueTitle.textContent = scene.name;
+            dialogueContent.innerHTML = "";
+            let html = "";
+            scene.turns.forEach(turn => {
+                html += `
+                    <div class="dialogue-turn">
+                        <div class="dialogue-speaker">
+                            ${turn.speaker}
+                            <span class="dialogue-play-btn" data-text="${turn.en}">🔊</span>
+                        </div>
+                        <div class="dialogue-en" data-text="${turn.en}">${turn.en}</div>
+                        <div class="dialogue-zh">${turn.zh}</div>
+                    </div>
+                `;
+            });
+            dialogueContent.innerHTML = html;
+
+            document.querySelectorAll(".dialogue-play-btn, .dialogue-en").forEach(el => {
+                el.addEventListener("click", function() {
+                    const text = this.dataset.text;
+                    if (text) speakText(text);
+                });
+            });
+        }
+
+        dialogueSceneList.addEventListener("click", function(e) {
+            const targetItem = e.target.closest(".scene-item");
+            if (!targetItem) return;
+
+            if (currentDialogueScene) {
+                sceneScrollPositions[currentDialogueScene.id] = dialogueContent.scrollTop;
+            }
+
+            document.querySelectorAll(".scene-item").forEach(i => i.classList.remove("active"));
+            targetItem.classList.add("active");
+
+            const index = parseInt(targetItem.dataset.index);
+            const dialogues = JSON.parse(localStorage.getItem("scene-dialogues"));
+            const selectedScene = dialogues[index];
+            currentDialogueScene = selectedScene;
+            renderDialogueContent(selectedScene);
+
+            const savedScrollTop = sceneScrollPositions[selectedScene.id] || 0;
+            setTimeout(() => {
+                dialogueContent.scrollTop = savedScrollTop;
+            }, 0);
+        });
+
+        // 中文→英文翻译
         async function translateSentence() {
             const text = translateInput.value.trim();
             if (!text) {
                 alert("请输入中文句子");
                 return;
             }
-
             translateResult.textContent = "翻译中...";
             copyTranslateBtn.style.display = "none";
-
             try {
                 const res = await fetch(`${API_BASE}/translate_to_en`, {
                     method: "POST",
@@ -980,18 +1887,16 @@
                 });
                 const data = await res.json();
                 translateResult.textContent = data.translation;
-                copyTranslateBtn.style.display = "block"; // 显示复制按钮
+                copyTranslateBtn.style.display = "block";
             } catch (err) {
                 console.error("翻译失败:", err);
                 translateResult.textContent = "翻译出错，请检查后端服务";
             }
         }
 
-        // 绑定翻译按钮/回车事件
         translateBtn.addEventListener("click", translateSentence);
         translateInput.addEventListener("keypress", (e) => e.key === "Enter" && translateSentence());
 
-        // 复制翻译结果
         copyTranslateBtn.addEventListener("click", () => {
             const text = translateResult.textContent;
             navigator.clipboard.writeText(text).then(() => {
@@ -1002,22 +1907,14 @@
             });
         });
 
-        // 加载当前场景的本地聊天记录（修复版：同时更新conversationHistory）
+        // 加载场景聊天记录
         async function loadSceneHistory() {
             try {
-                const res = await fetch(`${API_BASE}/chat/history?scene=${currentScene}`);
-                const data = await res.json();
-                const history = data.history || [];
-                
-                // 清空界面
+                const historyStr = localStorage.getItem(`chat_history_${currentScene}`);
+                const history = historyStr ? JSON.parse(historyStr) : [];
                 chatBox.innerHTML = "";
                 translateBox.innerHTML = "";
-                conversationHistory = []; // 先清空
-                
-                // 关键：把加载到的历史记录赋值给conversationHistory
                 conversationHistory = [...history];
-                
-                // 渲染历史记录到界面
                 for (let item of history) {
                     if (item.role === "user") {
                         addMessage(item.content, true);
@@ -1030,20 +1927,14 @@
             }
         }
 
-        // 保存当前场景聊天记录
         async function saveSceneHistory() {
             try {
-                await fetch(`${API_BASE}/chat/save`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ scene: currentScene, history: conversationHistory })
-                });
+                localStorage.setItem(`chat_history_${currentScene}`, JSON.stringify(conversationHistory));
             } catch (err) {
                 console.error("保存历史记录失败:", err);
             }
         }
 
-        // 初始化场景
         async function initScene() {
             const sceneChoice = sceneSelect.value;
             try {
@@ -1054,11 +1945,7 @@
                 });
                 const data = await res.json();
                 currentScene = data.scene;
-                
-                // 加载本地历史记录
                 await loadSceneHistory();
-                
-                // 如果没有历史记录，才发送开场白
                 if (conversationHistory.length === 0) {
                     const welcomeText = data.initial_message;
                     conversationHistory.push({ "role": "assistant", "content": welcomeText });
@@ -1071,58 +1958,34 @@
             }
         }
 
-        // 清空当前场景聊天记录（保留开场白）
         clearSceneRecordBtn.addEventListener("click", async () => {
             if (!confirm("确定要清空当前场景的聊天记录吗？开场白会保留。")) return;
-            
-            // 1. 保留第一条AI开场白（如果存在）
             const welcomeMsg = conversationHistory.find(item => item.role === "assistant");
             const newHistory = welcomeMsg ? [welcomeMsg] : [];
-            
-            // 2. 更新本地文件，只保留开场白
-            try {
-                await fetch(`${API_BASE}/chat/save`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ scene: currentScene, history: newHistory })
-                });
-            } catch (err) {
-                console.error("保存记录失败:", err);
-                alert("❌ 清空失败");
-                return;
-            }
-            
-            // 3. 更新界面和conversationHistory
+            localStorage.setItem(`chat_history_${currentScene}`, JSON.stringify(newHistory));
             conversationHistory = newHistory;
             chatBox.innerHTML = "";
             translateBox.innerHTML = "";
-            
-            // 渲染开场白（如果存在）
             if (welcomeMsg) {
                 addMessage(welcomeMsg.content, false);
             }
-            
             alert("✅ 聊天记录已清空，开场白已保留！");
         });
 
-        // 添加消息
         async function addMessage(text, isUser) {
-            if (!text || text === undefined || text === null) return;
+            if (!text) return;
             const chatDiv = document.createElement("div");
             chatDiv.className = isUser ? "user-msg" : "ai-msg";
             chatDiv.textContent = text;
             chatBox.appendChild(chatDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
-
             chatDiv.addEventListener('click', function() {
                 const messageText = this.textContent.trim();
                 if (messageText) speakText(messageText);
             });
-
             await addTranslation(text, isUser);
         }
 
-        // 翻译
         async function addTranslation(text, isUser) {
             try {
                 const res = await fetch(`${API_BASE}/translate`, {
@@ -1131,7 +1994,6 @@
                     body: `text=${encodeURIComponent(text)}`
                 });
                 const data = await res.json();
-                
                 const translateDiv = document.createElement("div");
                 translateDiv.className = "translate-item";
                 translateDiv.innerHTML = `
@@ -1145,53 +2007,58 @@
             }
         }
 
-        // 语音播放
         function speakText(text) {
-            window.speechSynthesis.cancel();
             if (!text) return;
+            // 取消当前朗读
+            window.speechSynthesis.cancel();
+
+            // 创建话语对象
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = "en-US";
-            utterance.rate = 1.0; 
-            window.speechSynthesis.speak(utterance);
+            const rateSelect = document.getElementById("speechRateSelect");
+            utterance.rate = rateSelect ? parseFloat(rateSelect.value) : 1.0;
+
+            // 轮询直到队列空闲再播放，避免异步冲突
+            function trySpeak() {
+                // 如果引擎还在 speaking 或 pending 状态，稍等再试
+                if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                    setTimeout(trySpeak, 20);
+                } else {
+                    window.speechSynthesis.speak(utterance);
+                }
+            }
+            trySpeak();
         }
 
-        // 单词查询
         async function searchWord() {
             const word = wordInput.value.trim().toLowerCase();
             if (!word) {
                 wordResult.innerHTML = "<p style='color:#e74c3c;'>请输入英文单词</p>";
                 return;
             }
-
             wordResult.innerHTML = "<p style='text-align:center; color:#666;'>AI查询中...</p>";
-
             try {
                 const res = await fetch(`${API_BASE}/word/query?word=${encodeURIComponent(word)}`, {
                     method: "POST"
                 });
-
                 if (!res.ok) throw new Error(`请求失败，状态码：${res.status}`);
                 const data = await res.json();
                 if (data.error) {
                     wordResult.innerHTML = `<p style='color:red; text-align:center;'>${data.error}</p>`;
                     return;
                 }
-
                 const wordName = data.word || word;
                 const phonetic = data.phonetic || "无音标";
                 const meanings = data.meanings || [];
-
                 let html = `
                     <h3 class="word-title">${wordName}</h3>
                     <div class="word-phonetic" data-word="${wordName}">🔊 ${phonetic}</div>
                     <button class="add-word-btn" id="addWordBtn">📌 加入单词笔记</button>
                 `;
-
                 if (meanings.length > 0) {
                     html += `<div class="word-meanings"><h4>📖 释义与例句</h4>`;
                     meanings.forEach((item, idx) => {
                         let exampleHtml = "";
-                        // 修改后：带发音按钮的例句渲染
                         if (item.example) {
                             const exampleParts = item.example.split("|");
                             const exampleEn = exampleParts[0] || "";
@@ -1199,14 +2066,12 @@
                                 <div class="example-container">
                                     <div class="example-en">
                                         例句：${exampleEn}
-                                        <!-- 新增：发音按钮，data-text存句子文本 -->
                                         <span class="play-sentence" data-text="${exampleEn}" style="cursor:pointer; color:#1976d2; margin-left:8px;">🔊</span>
                                     </div>
                                     <div class="example-zh">翻译：${exampleParts[1] || ""}</div>
                                 </div>
                             `;
                         }
-
                         html += `
                             <div class="meaning-item">
                                 <div class="part-of-speech">${idx+1}. ${item.part_of_speech}</div>
@@ -1219,23 +2084,18 @@
                 } else {
                     html += `<p style='color:#666; text-align:center;'>暂无释义</p>`;
                 }
-
                 wordResult.innerHTML = html;
-
-                // 给单词查询的例句发音按钮绑定事件
                 document.querySelectorAll(".play-sentence").forEach(btn => {
                     btn.addEventListener("click", function(e) {
-                        e.stopPropagation(); // 防止冒泡
+                        e.stopPropagation();
                         const sentenceText = this.dataset.text;
-                        speakText(sentenceText); // 复用你已有的发音函数
+                        speakText(sentenceText);
                     });
                 });
-                
                 document.querySelector(".word-phonetic").onclick = () => speakText(wordName);
                 document.getElementById("addWordBtn").addEventListener("click", () => {
                     addWordToNotes(data);
                 });
-
             } catch (err) {
                 console.error("单词查询错误：", err);
                 wordResult.innerHTML = `<p style='color:red; text-align:center;'>查询失败，请检查后端服务</p>`;
@@ -1245,7 +2105,7 @@
         searchWordBtn.addEventListener("click", searchWord);
         wordInput.addEventListener("keypress", (e) => e.key === "Enter" && searchWord());
 
-        // ====================== 单词笔记核心逻辑 ======================
+        // 单词笔记核心逻辑
         function enterDetailMode(wordItem) {
             currentSelectedWord = wordItem;
             document.getElementById("notes-fullscreen-mode").classList.remove("active");
@@ -1267,14 +2127,12 @@
                 wordDetailContent.innerHTML = `<div class="empty-detail"><p>暂无单词详情</p></div>`;
                 return;
             }
-
             const { word, phonetic, meanings } = wordItem;
             let html = `
                 <div class="detail-word-title">${word}</div>
                 <div class="detail-word-phonetic" data-word="${word}">🔊 ${phonetic}</div>
                 <h4 class="detail-meanings-title">📖 全词性释义与例句</h4>
             `;
-
             if (meanings && meanings.length > 0) {
                 meanings.forEach((item, idx) => {
                     let exampleHtml = "";
@@ -1291,7 +2149,6 @@
                             </div>
                         `;
                     }
-
                     html += `
                         <div class="detail-meaning-item">
                             <div class="detail-part-of-speech">${idx+1}. ${item.part_of_speech}</div>
@@ -1303,10 +2160,8 @@
             } else {
                 html += `<p style='color:#999; text-align:center; padding:20px;'>暂无释义</p>`;
             }
-
             wordDetailContent.innerHTML = html;
             document.querySelector(".detail-word-phonetic").onclick = () => speakText(word);
-
             document.querySelectorAll(".play-sentence").forEach(btn => {
                 btn.addEventListener("click", function(e) {
                     e.stopPropagation();
@@ -1321,15 +2176,12 @@
                 container.innerHTML = "<p style='text-align:center; color:#999; padding:20px;'>还没有单词笔记，快去查询单词并添加吧~</p>";
                 return;
             }
-
             let sortedNotes = [...notes];
-            
             if (currentSortType === 'alphabet') {
                 sortedNotes.sort((a, b) => a.word.toLowerCase().localeCompare(b.word.toLowerCase()));
             } else {
                 sortedNotes.sort((a, b) => b.createTime - a.createTime);
             }
-
             let html = "";
             sortedNotes.forEach((item) => {
                 const isActive = isDetailMode && currentSelectedWord && currentSelectedWord.word === item.word ? 'active' : '';
@@ -1348,7 +2200,6 @@
                 `;
             });
             container.innerHTML = html;
-
             container.querySelectorAll(".word-note-item").forEach(item => {
                 item.addEventListener("click", function(e) {
                     if (e.target.classList.contains("delete-word-btn")) return;
@@ -1357,7 +2208,6 @@
                     loadWordNotes();
                 });
             });
-
             container.querySelectorAll(".delete-word-btn").forEach(btn => {
                 btn.addEventListener("click", function (e) {
                     e.stopPropagation();
@@ -1365,7 +2215,6 @@
                     deleteWordFromNotes(targetWord);
                 });
             });
-
             container.querySelectorAll(".play-word").forEach(btn => {
                 btn.addEventListener("click", function(e) {
                     e.stopPropagation();
@@ -1376,108 +2225,122 @@
         }
 
         async function loadWordNotes() {
-            try {
-                const res = await fetch(`${API_BASE}/notes/all`);
-                const data = await res.json();
-                const notes = data.notes || [];
-                notes.forEach(item => {
-                    if (!item.createTime) item.createTime = Date.now();
-                    if (!item.meaning && item.meanings) item.meaning = item.meanings[0]?.definition || "暂无释义";
-                });
-                localStorage.setItem("my-word-notes", JSON.stringify(notes));
-                
-                renderNotesList(wordNotesList, notes, false);
-                renderNotesList(detailWordNotesList, notes, true);
-
-            } catch (err) {
-                console.error("加载文件笔记失败:", err);
-                const localNotes = JSON.parse(localStorage.getItem("my-word-notes") || "[]");
-                renderNotesList(wordNotesList, localNotes, false);
-                renderNotesList(detailWordNotesList, localNotes, true);
-            }
+            const localNotes = JSON.parse(localStorage.getItem("my-word-notes") || "[]");
+            renderNotesList(wordNotesList, localNotes, false);
+            renderNotesList(detailWordNotesList, localNotes, true);
         }
 
         async function addWordToNotes(wordData) {
             const { word, phonetic, meanings } = wordData;
             const meaning = meanings[0]?.definition || "暂无释义";
             const createTime = Date.now();
-
-            try {
-                const res = await fetch(`${API_BASE}/notes/add`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ word, phonetic, meaning, meanings, createTime })
-                });
-                const data = await res.json();
-
-                if (data.status === "exists") {
-                    alert("✅ 该单词已在笔记中！");
-                    return;
-                }
-
-                await loadWordNotes();
-                alert("✅ 单词已保存到浏览器 + 项目文件！");
-            } catch (err) {
-                console.error("添加失败:", err);
-                alert("⚠️ 保存到文件失败，请检查后端服务！");
+            let notes = JSON.parse(localStorage.getItem("my-word-notes") || "[]");
+            const exists = notes.some(item => item.word === word);
+            if (exists) {
+                alert("✅ 该单词已在笔记中！");
+                return;
             }
+            notes.push({ word, phonetic, meaning, meanings, createTime });
+            localStorage.setItem("my-word-notes", JSON.stringify(notes));
+            await loadWordNotes();
+            alert("✅ 单词已保存到浏览器本地！");
         }
 
         async function deleteWordFromNotes(targetWord) {
-            try {
-                await fetch(`${API_BASE}/notes/delete?word=${encodeURIComponent(targetWord)}`, {
-                    method: "POST"
-                });
-                if (currentSelectedWord && currentSelectedWord.word === targetWord) {
-                    exitDetailMode();
-                }
-                await loadWordNotes();
-                alert("✅ 已同步删除！");
-            } catch (err) {
-                console.error("删除失败:", err);
-                alert("⚠️ 删除失败，请检查后端服务！");
+            let notes = JSON.parse(localStorage.getItem("my-word-notes") || "[]");
+            notes = notes.filter(item => item.word !== targetWord);
+            localStorage.setItem("my-word-notes", JSON.stringify(notes));
+            if (currentSelectedWord && currentSelectedWord.word === targetWord) {
+                exitDetailMode();
             }
+            await loadWordNotes();
+            alert("✅ 删除成功！");
         }
 
         async function clearAllNotes() {
             if (confirm("确定要清空所有单词笔记吗？")) {
-                try {
-                    await fetch(`${API_BASE}/notes/clear`, { method: "POST" });
-                    exitDetailMode();
-                    await loadWordNotes();
-                    alert("✅ 已同步清空所有笔记！");
-                } catch (err) {
-                    console.error("清空失败:", err);
-                    alert("⚠️ 清空失败，请检查后端服务！");
-                }
+                localStorage.removeItem("my-word-notes");
+                exitDetailMode();
+                await loadWordNotes();
+                alert("✅ 已清空所有本地笔记！");
             }
         }
 
-        // ====================== 语音/文本对话逻辑 ======================
+
+
+        // 新增：倒计时格式化
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        // 新增：启动UI
+        function startRecordingUI() {
+            cancelRecordingFlag = false;
+            recordBtn.style.display = "none";
+            stopBtn.style.display = "inline-block";
+            cancelBtn.style.display = "inline-block";
+            waveform.style.display = "flex";
+            recordTimer.style.display = "inline";
+            recordingSeconds = 0;
+            recordTimer.textContent = "00:00";
+            // 启动倒计时
+            recordingTimer = setInterval(() => {
+                recordingSeconds++;
+                recordTimer.textContent = formatTime(recordingSeconds);
+            }, 1000);
+        }
+
+        // 新增：停止UI
+        function stopRecordingUI() {
+            if (recordingTimer) clearInterval(recordingTimer);
+            waveform.style.display = "none";
+            recordTimer.style.display = "none";
+            stopBtn.style.display = "none";
+            cancelBtn.style.display = "none";
+            recordBtn.style.display = "inline-block";
+            recordingSeconds = 0;
+        }
+
+        // 新增：取消录音
+        cancelBtn.addEventListener("click", () => {
+            cancelRecordingFlag = true;
+            stopRecordingUI();
+            // 这里你可以加一句：如果原来的代码有停止麦克风流的逻辑，在这里调用
+            // 比如：if(mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+
+            
+        });
+
+
+
         async function startRecording() {
+
+                // 【新增】启动UI
+            startRecordingUI();
+
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const source = audioContext.createMediaStreamSource(stream);
             const processor = audioContext.createScriptProcessor(4096, 1, 1);
-
             source.connect(processor);
             processor.connect(audioContext.destination);
-
             const recordedData = [];
             processor.onaudioprocess = (e) => {
                 const inputData = e.inputBuffer.getChannelData(0);
                 recordedData.push(new Float32Array(inputData));
             };
-
             recordBtn.style.display = "none";
             stopBtn.style.display = "inline-block";
-
             stopBtn.onclick = async () => {
+                // 1. 停止音频流（原有逻辑保留）
                 stream.getTracks().forEach(track => track.stop());
                 processor.disconnect();
                 source.disconnect();
                 audioContext.close();
 
+                // 2. 处理音频数据（原有逻辑保留）
                 const sampleRate = 16000;
                 const totalLength = recordedData.reduce((acc, arr) => acc + arr.length, 0);
                 const audioBuffer = new Float32Array(totalLength);
@@ -1486,44 +2349,43 @@
                     audioBuffer.set(arr, offset);
                     offset += arr.length;
                 }
-
                 const resampledBuffer = resample(audioBuffer, audioContext.sampleRate, sampleRate);
                 const wavBlob = createWavBlob(resampledBuffer, sampleRate);
-
                 const formData = new FormData();
                 formData.append("audio", wavBlob, "input.wav");
                 formData.append("scene", currentScene);
                 formData.append("conversation_history", JSON.stringify(conversationHistory.slice(-MAX_HISTORY_LENGTH)));
 
+                // ====================== 核心修改区域开始 ======================
                 try {
                     const res = await fetch(`${API_BASE}/chat`, { method: "POST", body: formData });
                     const data = await res.json();
-                    
                     conversationHistory.push({"role": "user", "content": data.user_text});
                     conversationHistory.push({"role": "assistant", "content": data.ai_text});
-                    
                     addMessage(data.user_text, true);
                     addMessage(data.ai_text, false);
                     speakText(data.ai_text);
-                    
-                    // 保存聊天记录
                     await saveSceneHistory();
                 } catch (err) {
                     addMessage("网络错误，请重试", false);
                     console.error(err);
+                } finally {
+                    // 【关键修改】无论成功或失败，强制重置所有UI状态
+                    stopRecordingUI();
                 }
-                recordBtn.style.display = "inline-block";
-                stopBtn.style.display = "none";
+                // ====================== 核心修改区域结束 ======================
+                
+                // 【删除】原来下面这两行手动改按钮的代码删掉，不要了
+                // recordBtn.style.display = "inline-block";
+                // stopBtn.style.display = "none";
             };
         }
 
         async function sendTextMessage() {
             const userText = textInput.value.trim();
             if (!userText) return;
-
             textInput.value = "";
             addMessage(userText, true);
-
             try {
                 const res = await fetch(`${API_BASE}/chat_text`, {
                     method: "POST",
@@ -1531,14 +2393,10 @@
                     body: `user_text=${encodeURIComponent(userText)}&scene=${currentScene}&conversation_history=${encodeURIComponent(JSON.stringify(conversationHistory.slice(-MAX_HISTORY_LENGTH)))}`
                 });
                 const data = await res.json();
-                
                 conversationHistory.push({"role": "user", "content": userText});
                 conversationHistory.push({"role": "assistant", "content": data.ai_text});
-                
                 addMessage(data.ai_text, false);
                 speakText(data.ai_text);
-                
-                // 保存聊天记录
                 await saveSceneHistory();
             } catch (err) {
                 addMessage("发送失败，请重试", false);
@@ -1546,7 +2404,6 @@
             }
         }
 
-        // 工具函数
         function resample(audioData, fromSampleRate, toSampleRate) {
             const ratio = fromSampleRate / toSampleRate;
             const newLength = Math.round(audioData.length / ratio);
@@ -1566,7 +2423,6 @@
             const ratio = sampleRate / targetSampleRate;
             const newLength = Math.round(audioData.length / ratio);
             const resampled = new Float32Array(newLength);
-            
             for (let i = 0; i < newLength; i++) {
                 const idx = i * ratio;
                 const floor = Math.floor(idx);
@@ -1574,13 +2430,11 @@
                 const t = idx - floor;
                 resampled[i] = audioData[floor] * (1 - t) + audioData[ceil] * t;
             }
-
             const pcmData = new Int16Array(resampled.length);
             for (let i = 0; i < resampled.length; i++) {
                 const sample = Math.max(-1, Math.min(1, resampled[i]));
                 pcmData[i] = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
             }
-
             const buffer = new ArrayBuffer(44 + pcmData.length * 2);
             const view = new DataView(buffer);
             view.setUint8(0, 0x52); view.setUint8(1, 0x49); view.setUint8(2, 0x46); view.setUint8(3, 0x46);
@@ -1596,15 +2450,12 @@
             view.setUint16(34, 16, true);
             view.setUint8(36, 0x64); view.setUint8(37, 0x61); view.setUint8(38, 0x74); view.setUint8(39, 0x61);
             view.setUint32(40, pcmData.length * 2, true);
-
             for (let i = 0; i < pcmData.length; i++) {
                 view.setInt16(44 + i * 2, pcmData[i], true);
             }
-
             return new Blob([view], { type: 'audio/wav' });
         }
 
-        // 事件绑定
         recordBtn.addEventListener("click", startRecording);
         sendTextBtn.addEventListener("click", sendTextMessage);
         textInput.addEventListener("keypress", (e) => e.key === "Enter" && sendTextMessage());
@@ -1614,7 +2465,6 @@
 
         const navItems = document.querySelectorAll('.nav-item');
         const pages = document.querySelectorAll('.page');
-
         navItems.forEach(item => {
             item.addEventListener("click", function() {
                 navItems.forEach(i => i.classList.remove('active'));
@@ -1622,10 +2472,11 @@
                 this.classList.add('active');
                 const targetPage = this.dataset.page;
                 document.getElementById(`${targetPage}-page`).classList.add('active');
-
                 if (targetPage === "notes") {
                     exitDetailMode();
                     loadWordNotes();
+                } else if (targetPage === "dialogues") {
+                    initDialogues();
                 }
             });
         });
@@ -1647,10 +2498,18 @@
         exitDetailBtn.addEventListener("click", exitDetailMode);
         clearAllNotesBtn.addEventListener("click", clearAllNotes);
         detailClearBtn.addEventListener("click", clearAllNotes);
-
+        
         window.addEventListener('load', () => {
             loadWordNotes();
             initScene();
+
+            // 【新增】预加载语音合成引擎，减少首次点击延迟
+            const preloadUtterance = new SpeechSynthesisUtterance('');
+            preloadUtterance.volume = 0;          // 静音
+            preloadUtterance.rate = 1;
+            window.speechSynthesis.speak(preloadUtterance);
+            // 立刻取消，只用于激活引擎
+            window.speechSynthesis.cancel();
         });
     </script>
 </body>
