@@ -941,6 +941,10 @@
             <div class="nav-item" data-page="dialogues">
                 📖 情景对话范本
             </div>
+
+            <div class="nav-item" data-page="sentences">
+                💾 句子收藏
+            </div>
         </aside>
 
         <main class="main-content">
@@ -1126,6 +1130,19 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 句子收藏页面 -->
+            <div id="sentences-page" class="page">
+                <h1>💾 我的句子收藏</h1>
+                <div style="max-width: 900px; margin: 0 auto; padding: 20px;">
+                    <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
+                        <button id="clearAllSentencesBtn" class="clear-btn" style="background: #f44336; color: white; padding: 10px 20px; border-radius: 6px;">🗑️ 清空所有收藏</button>
+                    </div>
+                    <div id="sentenceCollectionList" style="background: white; border-radius: 12px; padding: 20px; min-height: 500px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <p style="text-align: center; color: #999;">还没有收藏任何句子，快去聊天/情景对话中收藏吧~</p>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -1139,7 +1156,7 @@
         let currentSortType = 'time';
         let currentSelectedWord = null;
         let currentDialogueScene = null;
-
+        let sentenceCollection = [];
         // 新增：搜索关键词 + 背诵模式开关
         let searchKeyword = '';
         let isReciteMode = false;
@@ -1865,7 +1882,10 @@
                             ${turn.speaker}
                             <span class="dialogue-play-btn" data-text="${turn.en}">🔊</span>
                         </div>
-                        <div class="dialogue-en" data-text="${turn.en}">${turn.en}</div>
+                        <div class="dialogue-en" data-text="${turn.en}" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span>${turn.en}</span>
+                            <span class="collect-sentence-btn" data-text="${turn.en}" style="color:#1976d2; cursor:pointer; font-size:14px;">💾</span>
+                        </div>
                         <div class="dialogue-zh">${turn.zh}</div>
                     </div>
                 `;
@@ -2009,7 +2029,11 @@
             if (!text) return;
             const chatDiv = document.createElement("div");
             chatDiv.className = isUser ? "user-msg" : "ai-msg";
-            chatDiv.textContent = text;
+            // 新增：收藏按钮（只给英文句子添加）
+            chatDiv.innerHTML = `
+                <span style="margin-right:8px;">${text}</span>
+                <span class="collect-sentence-btn" data-text="${text}" style="color:#1976d2; cursor:pointer; font-size:14px;">💾</span>
+            `;
             chatBox.appendChild(chatDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
             chatDiv.addEventListener('click', function() {
@@ -2146,6 +2170,92 @@
             renderWordDetail(wordItem);
             document.querySelector(`input[name="detailSortType"][value="${currentSortType}"]`).checked = true;
             loadWordNotes();
+        }
+
+        // ====================== 句子收藏核心逻辑 ======================
+        // 加载收藏的句子
+        function loadSentenceCollection() {
+            const localSentences = JSON.parse(localStorage.getItem("my-sentence-collection") || "[]");
+            sentenceCollection = localSentences;
+            renderSentenceCollection();
+        }
+
+        // 渲染句子收藏列表
+        function renderSentenceCollection() {
+            const container = document.getElementById("sentenceCollectionList");
+            if (sentenceCollection.length === 0) {
+                container.innerHTML = "<p style='text-align: center; color: #999;'>还没有收藏任何句子，快去聊天/情景对话中收藏吧~</p>";
+                return;
+            }
+
+            let html = "";
+            sentenceCollection.forEach((item, index) => {
+                html += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 15px; border-bottom:1px solid #eee;">
+                        <span style="flex:1; color:#2c3e50; line-height:1.5;">${item.text}</span>
+                        <div style="display:flex; gap:8px; margin-left:10px;">
+                            <button class="speak-sentence-btn" data-text="${item.text}" style="padding:5px 10px; background:#1976d2; color:white; border-radius:4px; border:none;">🔊</button>
+                            <button class="delete-sentence-btn" data-index="${index}" style="padding:5px 10px; background:#f44336; color:white; border-radius:4px; border:none;">删除</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // 绑定朗读事件
+            document.querySelectorAll(".speak-sentence-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    speakText(this.dataset.text);
+                });
+            });
+
+            // 绑定删除事件
+            document.querySelectorAll(".delete-sentence-btn").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    deleteSentenceFromCollection(parseInt(this.dataset.index));
+                });
+            });
+        }
+
+        // 添加句子到收藏
+        function addSentenceToCollection(text) {
+            if (!text.trim()) return;
+            // 去重
+            const exists = sentenceCollection.some(item => item.text === text);
+            if (exists) {
+                alert("✅ 该句子已收藏！");
+                return;
+            }
+            sentenceCollection.push({ text, createTime: Date.now() });
+            localStorage.setItem("my-sentence-collection", JSON.stringify(sentenceCollection));
+            alert("✅ 句子收藏成功！");
+        }
+
+        // 删除单个句子
+        function deleteSentenceFromCollection(index) {
+            sentenceCollection.splice(index, 1);
+            localStorage.setItem("my-sentence-collection", JSON.stringify(sentenceCollection));
+            renderSentenceCollection();
+            alert("✅ 删除成功！");
+        }
+
+        // 清空所有收藏
+        function clearAllSentences() {
+            if (!confirm("确定要清空所有句子收藏吗？")) return;
+            sentenceCollection = [];
+            localStorage.removeItem("my-sentence-collection");
+            renderSentenceCollection();
+            alert("✅ 已清空所有收藏！");
+        }
+
+        // 绑定全局收藏按钮点击事件
+        function initSentenceCollectBtn() {
+            document.addEventListener("click", function(e) {
+                if (e.target.classList.contains("collect-sentence-btn")) {
+                    const text = e.target.dataset.text;
+                    addSentenceToCollection(text);
+                }
+            });
         }
 
         function exitDetailMode() {
@@ -2555,6 +2665,8 @@
                     loadWordNotes();
                 } else if (targetPage === "dialogues") {
                     initDialogues();
+                } else if (targetPage === "sentences") {
+                    loadSentenceCollection();
                 }
             });
         });
@@ -2579,11 +2691,16 @@
         exitDetailBtn.addEventListener("click", exitDetailMode);
         clearAllNotesBtn.addEventListener("click", clearAllNotes);
         detailClearBtn.addEventListener("click", clearAllNotes);
+        // 句子收藏清空按钮
+        document.getElementById("clearAllSentencesBtn").addEventListener("click", clearAllSentences);
+
         
         window.addEventListener('load', () => {
             loadWordNotes();
             initScene();
             initWordSearch(); // 新增：初始化搜索
+            initSentenceCollectBtn(); // 初始化句子收藏按钮
+            loadSentenceCollection(); // 加载句子收藏
 
             // 【新增】预加载语音合成引擎，减少首次点击延迟
             const preloadUtterance = new SpeechSynthesisUtterance('');
