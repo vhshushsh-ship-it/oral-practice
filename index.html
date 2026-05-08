@@ -909,6 +909,24 @@
             50% { height: 20px; }
             100% { height: 5px; }
         }
+
+        /* 搜索框聚焦样式 */
+        #wordSearchInput:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25,118,210,0.2);
+        }
+        /* 背诵模式：释义默认隐藏 */
+        .recite-mode .meaning {
+            display: none !important;
+        }
+        /* 背诵模式激活状态按钮样式 */
+        #toggleReciteBtn.active {
+            background: #f44336 !important;
+        }
+        /* 释义显示动画 */
+        .meaning {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -1049,6 +1067,7 @@
             <div id="notes-page" class="page">
                 <div id="notes-fullscreen-mode" class="notes-mode active">
                     <h2>📚 我的单词笔记</h2>
+
                     <div class="sort-area">
                         <span>排序方式：</span>
                         <label class="sort-label">
@@ -1057,7 +1076,16 @@
                         <label class="sort-label">
                             <input type="radio" name="sortType" value="alphabet"> 按字母顺序排序
                         </label>
+                        <!-- 新增：背诵模式切换 -->
+                        <button id="toggleReciteBtn" style="margin-left:10px; padding:6px 12px; background:#1976d2; color:white; border:none; border-radius:6px; cursor:pointer;">🔤 隐藏释义背诵模式</button>
                     </div>
+
+                    <!-- 新增：单词搜索框 -->
+                    <div style="max-width:900px; width:100%; margin:0 auto 20px; padding:0 20px;">
+                        <input type="text" id="wordSearchInput" placeholder="🔍 输入英文单词快速搜索..." 
+                            style="width:100%; padding:12px 15px; border:1px solid #ddd; border-radius:8px; font-size:16px; outline:none; transition:border 0.2s;">
+                    </div>
+
                     <div class="notes-wrapper">
                         <div id="wordNotesList"></div>
                         <div class="notes-actions">
@@ -1066,6 +1094,7 @@
                     </div>
                 </div>
 
+                
                 <div id="notes-detail-mode" class="notes-mode">
                     <div class="detail-layout">
                         <div class="detail-left-panel">
@@ -1110,6 +1139,10 @@
         let currentSortType = 'time';
         let currentSelectedWord = null;
         let currentDialogueScene = null;
+
+        // 新增：搜索关键词 + 背诵模式开关
+        let searchKeyword = '';
+        let isReciteMode = false;
         // 新增：UI控制变量（完全不动你原来的识别变量）
         let recordingTimer = null;
         let recordingSeconds = 0;
@@ -2177,6 +2210,15 @@
                 return;
             }
             let sortedNotes = [...notes];
+            
+            // 新增：搜索过滤（匹配英文单词）
+            if (searchKeyword.trim() && !isDetailMode) {
+                const key = searchKeyword.toLowerCase().trim();
+                sortedNotes = sortedNotes.filter(item => 
+                    item.word.toLowerCase().includes(key)
+                );
+            }
+
             if (currentSortType === 'alphabet') {
                 sortedNotes.sort((a, b) => a.word.toLowerCase().localeCompare(b.word.toLowerCase()));
             } else {
@@ -2193,7 +2235,8 @@
                                 <span class="phonetic">${item.phonetic || ''}</span>
                                 <span class="play-word" data-text="${item.word}" style="cursor:pointer; color:#1976d2;">🔊</span>
                             </div>
-                            <div class="meaning">${item.meaning}</div>
+                            <!-- 背诵模式：点击显示/隐藏释义 -->
+                            <div class="meaning" onclick="toggleMeaning(event)">${item.meaning}</div>
                         </div>
                         <button class="delete-word-btn" data-word="${item.word}">删除</button>
                     </div>
@@ -2222,6 +2265,41 @@
                     speakText(wordText);
                 });
             });
+
+            // 新增：背诵模式样式
+            if (isReciteMode && !isDetailMode) {
+                container.classList.add('recite-mode');
+            } else {
+                container.classList.remove('recite-mode');
+            }
+
+        }
+
+
+        // 新增：搜索框监听
+        function initWordSearch() {
+            const searchInput = document.getElementById('wordSearchInput');
+            searchInput.addEventListener('input', function() {
+                searchKeyword = this.value;
+                loadWordNotes();
+            });
+        }
+
+        // 新增：背诵模式切换
+        function toggleReciteMode() {
+            isReciteMode = !isReciteMode;
+            const btn = document.getElementById('toggleReciteBtn');
+            btn.classList.toggle('active');
+            btn.textContent = isReciteMode ? '📖 退出背诵模式' : '🔤 隐藏释义背诵模式';
+            loadWordNotes();
+        }
+
+        // 新增：背诵模式点击显示/隐藏单个释义
+        function toggleMeaning(e) {
+            if (!isReciteMode) return;
+            e.stopPropagation();
+            const meaningEl = e.target;
+            meaningEl.style.display = meaningEl.style.display === 'block' ? 'none' : 'block';
         }
 
         async function loadWordNotes() {
@@ -2495,6 +2573,9 @@
             });
         });
 
+        // 新增：绑定背诵模式按钮
+        document.getElementById('toggleReciteBtn').addEventListener('click', toggleReciteMode);
+
         exitDetailBtn.addEventListener("click", exitDetailMode);
         clearAllNotesBtn.addEventListener("click", clearAllNotes);
         detailClearBtn.addEventListener("click", clearAllNotes);
@@ -2502,6 +2583,7 @@
         window.addEventListener('load', () => {
             loadWordNotes();
             initScene();
+            initWordSearch(); // 新增：初始化搜索
 
             // 【新增】预加载语音合成引擎，减少首次点击延迟
             const preloadUtterance = new SpeechSynthesisUtterance('');
