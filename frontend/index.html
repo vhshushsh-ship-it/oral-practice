@@ -1052,6 +1052,7 @@
                 </div>
             </div>
 
+            
             <!-- 情景对话范本页面 -->
             <div id="dialogues-page" class="page">
                 <h1>📖 情景对话范本</h1>
@@ -1150,7 +1151,7 @@
         // 全局变量
         let conversationHistory = [];
         const MAX_HISTORY_LENGTH = 10;
-        const API_BASE = "http://127.0.0.1:8000";
+        const API_BASE = "/api";
         let audioContext;
         let currentScene = "free_talk";
         let currentSortType = 'time';
@@ -1924,6 +1925,7 @@
         });
 
         // 中文→英文翻译
+        // 中文→英文翻译
         async function translateSentence() {
             const text = translateInput.value.trim();
             if (!text) {
@@ -1933,7 +1935,7 @@
             translateResult.textContent = "翻译中...";
             copyTranslateBtn.style.display = "none";
             try {
-                const res = await fetch(`${API_BASE}/translate_to_en`, {
+                const res = await fetch(`${API_BASE}/translate`, {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: `text=${encodeURIComponent(text)}`
@@ -2064,20 +2066,32 @@
             }
         }
 
+        // 新增：过滤文本中的表情符号（核心工具函数）
+        function removeEmojis(text) {
+            // 匹配所有常见emoji的正则表达式（覆盖绝大部分表情符号）
+            const emojiRegex = /[\u{1F600}-\u{1F6FF}\u{1F300}-\u{1F5FF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE00}-\u{FE0F}]/gu;
+            // 移除表情符号并去除首尾空格
+            return text.replace(emojiRegex, '').trim();
+        }
+
+        // 修改后的speakText函数（先过滤表情再朗读）
         function speakText(text) {
             if (!text) return;
+            // 第一步：过滤掉所有表情符号
+            const cleanText = removeEmojis(text);
+            if (!cleanText) return; // 过滤后为空则不朗读
+            
             // 取消当前朗读
             window.speechSynthesis.cancel();
 
-            // 创建话语对象
-            const utterance = new SpeechSynthesisUtterance(text);
+            // 创建话语对象（使用过滤后的纯文本）
+            const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.lang = "en-US";
             const rateSelect = document.getElementById("speechRateSelect");
             utterance.rate = rateSelect ? parseFloat(rateSelect.value) : 1.0;
 
             // 轮询直到队列空闲再播放，避免异步冲突
             function trySpeak() {
-                // 如果引擎还在 speaking 或 pending 状态，稍等再试
                 if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
                     setTimeout(trySpeak, 20);
                 } else {
@@ -2174,12 +2188,44 @@
 
         // ====================== 句子收藏核心逻辑 ======================
         // 加载收藏的句子
-        function loadSentenceCollection() {
+        // 加载收藏的句子
+        async function loadSentenceCollection() {
             const localSentences = JSON.parse(localStorage.getItem("my-sentence-collection") || "[]");
             sentenceCollection = localSentences;
+
+            // 新增：补全旧数据的翻译（无translation字段的句子）
+            let hasUpdate = false;
+            for (let i = 0; i < sentenceCollection.length; i++) {
+                const item = sentenceCollection[i];
+                // 跳过已有翻译的句子
+                if (item.translation) continue;
+                
+                // 调用接口获取翻译
+                try {
+                    const res = await fetch(`${API_BASE}/translate`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `text=${encodeURIComponent(item.text)}`
+                    });
+                    const data = await res.json();
+                    sentenceCollection[i].translation = data.translation;
+                    hasUpdate = true;
+                } catch (err) {
+                    console.error(`句子「${item.text}」翻译失败:`, err);
+                    sentenceCollection[i].translation = "翻译获取失败";
+                }
+            }
+
+            // 有更新则保存到本地
+            if (hasUpdate) {
+                localStorage.setItem("my-sentence-collection", JSON.stringify(sentenceCollection));
+            }
+
+            // 渲染列表
             renderSentenceCollection();
         }
 
+        // 渲染句子收藏列表
         // 渲染句子收藏列表
         function renderSentenceCollection() {
             const container = document.getElementById("sentenceCollectionList");
@@ -2191,11 +2237,17 @@
             let html = "";
             sentenceCollection.forEach((item, index) => {
                 html += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 15px; border-bottom:1px solid #eee;">
-                        <span style="flex:1; color:#2c3e50; line-height:1.5;">${item.text}</span>
-                        <div style="display:flex; gap:8px; margin-left:10px;">
-                            <button class="speak-sentence-btn" data-text="${item.text}" style="padding:5px 10px; background:#1976d2; color:white; border-radius:4px; border:none;">🔊</button>
-                            <button class="delete-sentence-btn" data-index="${index}" style="padding:5px 10px; background:#f44336; color:white; border-radius:4px; border:none;">删除</button>
+                    <div style="padding:12px 15px; border-bottom:1px solid #eee;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span style="flex:1; color:#2c3e50; line-height:1.5;">${item.text}</span>
+                            <div style="display:flex; gap:8px; margin-left:10px; flex-shrink:0;">
+                                <button class="speak-sentence-btn" data-text="${item.text}" style="padding:5px 10px; background:#1976d2; color:white; border-radius:4px; border:none;">🔊</button>
+                                <button class="delete-sentence-btn" data-index="${index}" style="padding:5px 10px; background:#f44336; color:white; border-radius:4px; border:none;">删除</button>
+                            </div>
+                        </div>
+                        <!-- 新增：中文翻译行 -->
+                        <div style="color:#666; font-size:14px; line-height:1.4; padding-left:4px;">
+                            ${item.translation || "翻译加载中..."}
                         </div>
                     </div>
                 `;
@@ -2218,7 +2270,8 @@
         }
 
         // 添加句子到收藏
-        function addSentenceToCollection(text) {
+        // 添加句子到收藏
+        async function addSentenceToCollection(text) {
             if (!text.trim()) return;
             // 去重
             const exists = sentenceCollection.some(item => item.text === text);
@@ -2226,9 +2279,32 @@
                 alert("✅ 该句子已收藏！");
                 return;
             }
-            sentenceCollection.push({ text, createTime: Date.now() });
+
+            // 新增：调用后端翻译接口获取中文翻译
+            let translation = "";
+            try {
+                const res = await fetch(`${API_BASE}/translate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `text=${encodeURIComponent(text)}`
+                });
+                const data = await res.json();
+                translation = data.translation;
+            } catch (err) {
+                console.error("句子翻译失败:", err);
+                translation = "翻译获取失败";
+            }
+            
+            // 新增：把翻译结果一起存入数据
+            sentenceCollection.push({ 
+                text, 
+                translation, // 新增翻译字段
+                createTime: Date.now() 
+            });
             localStorage.setItem("my-sentence-collection", JSON.stringify(sentenceCollection));
             alert("✅ 句子收藏成功！");
+            // 收藏后刷新列表渲染
+            renderSentenceCollection();
         }
 
         // 删除单个句子
@@ -2249,11 +2325,12 @@
         }
 
         // 绑定全局收藏按钮点击事件
+        // 绑定全局收藏按钮点击事件
         function initSentenceCollectBtn() {
-            document.addEventListener("click", function(e) {
+            document.addEventListener("click", async function(e) {
                 if (e.target.classList.contains("collect-sentence-btn")) {
                     const text = e.target.dataset.text;
-                    addSentenceToCollection(text);
+                    await addSentenceToCollection(text);
                 }
             });
         }

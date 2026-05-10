@@ -17,11 +17,19 @@ from typing import Optional
 
 # ====================== 全局初始化配置 ======================
 app = FastAPI(title="SceneTalk Backend")
-load_dotenv()
+
+# ---------------- 路径修改点1：指定.env文件的路径 ----------------
+# 现在.env文件在backend目录下，所以用当前文件路径来定位
+BASE_DIR = Path(__file__).resolve().parent  # 等价于backend文件夹的绝对路径
+env_path = BASE_DIR / ".env"
+load_dotenv(dotenv_path=env_path)
+
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 
-# 向量数据库（对话记忆）
-chroma_client = chromadb.PersistentClient(path="./chroma_db")
+# ---------------- 路径修改点2：指定chroma_db的路径 ----------------
+# chroma_db现在在backend目录下，用BASE_DIR拼接路径
+chroma_db_path = BASE_DIR / "chroma_db"
+chroma_client = chromadb.PersistentClient(path=str(chroma_db_path))
 memory_collection = chroma_client.get_or_create_collection(name="scene_talk_memory")
 
 # CORS跨域配置
@@ -58,32 +66,37 @@ SCENE_MAP = {
     "16": "housing"         # 租房看房沟通
 }
 
-# 聊天记录总文件夹
-CHAT_DIR = Path(__file__).parent / "chat_records"
+# ---------------- 路径修改点3：统一使用BASE_DIR构建路径 ----------------
+# 聊天记录总文件夹（现在chat_records在backend目录下）
+CHAT_DIR = BASE_DIR / "chat_records"
 CHAT_DIR.mkdir(exist_ok=True)
 
-# 单词笔记文件配置
-NOTES_FILE = Path(__file__).parent / "word_notes.json"
+# 单词笔记文件配置（现在word_notes.json在backend目录下）
+NOTES_FILE = BASE_DIR / "word_notes.json"
 if not NOTES_FILE.exists():
     with open(NOTES_FILE, "w", encoding="utf-8") as f:
         json.dump([], f, ensure_ascii=False, indent=2)
 
-# 单词缓存文件配置
-CACHE_FILE = "word_cache.json"
-if not os.path.exists(CACHE_FILE):
+# 单词缓存文件配置（现在word_cache.json在backend目录下）
+CACHE_FILE = BASE_DIR / "word_cache.json"
+if not CACHE_FILE.exists():
     with open(CACHE_FILE, "w", encoding="utf-8") as f:
         json.dump({}, f, ensure_ascii=False, indent=2)
 
 # ====================== 核心工具函数 ======================
+# ---------------- 正则表达式修改点：所有正则加上r前缀，消除警告 ----------------
 def clean_ai_reply(text: str) -> str:
     if not text:
         return text
     role_pattern = r'(?:\*+|#)?\s*(?:Waiter|服务员|Interviewer|面试官|Receptionist|前台|AI|Assistant|assistant)\s*[:：]\s*'
-    cleaned = re.sub(f'^{role_pattern}', '', text, flags=re.IGNORECASE)
-    cleaned = re.sub(f'\n\s*{role_pattern}', '\n', cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(rf'^{role_pattern}', '', text, flags=re.IGNORECASE)
+    cleaned = re.sub(rf'\n\s*{role_pattern}', '\n', cleaned, flags=re.IGNORECASE)
     return cleaned.strip()
 
-def save_uploaded_audio(upload_file, save_dir="./temp_audio"):
+# ---------------- 路径修改点4：音频保存路径改为backend/temp_audio ----------------
+def save_uploaded_audio(upload_file, save_dir=None):
+    if save_dir is None:
+        save_dir = BASE_DIR / "temp_audio"
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     filename = f"input_{int(datetime.now().timestamp() * 1000)}.wav"
@@ -217,8 +230,6 @@ def get_initial_message(scene):
 def translate_text(text: str) -> str:
     if not text.strip():
         return ""
-    
-
     
     prompt = f"翻译英文为自然中文，仅输出结果：{text}"
     try:
