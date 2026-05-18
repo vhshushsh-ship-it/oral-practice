@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(frontend-design:frontend-design)",
+      "Skill(frontend-design:frontend-design:*)",
+      "Bash(mkdir -p \"d:/oral-practice/oral-practice/backend/data\")",
+      "Bash(sed -i '1s/^    <style>//' \"d:/oral-practice/oral-practice/frontend/src/css/style.css\")",
+      "Bash(sed -i '1{/^$/d}' \"d:/oral-practice/oral-practice/frontend/src/css/style.css\")",
+      "Bash(sed -n '890,2534p' \"d:/oral-practice/oral-practice/frontend/index.html\")",
+      "Read(//tmp/**)",
+      "Bash(cp /tmp/app_part1.txt d:/oral-practice/oral-practice/frontend/src/js/app.js)"
+    ],
+    "additionalDirectories": [
+      "d:\\oral-practice\\oral-practice\\backend",
+      "\\tmp"
+    ]
+  }
+}
