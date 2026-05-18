@@ -219,13 +219,12 @@ __marimo__/
 
 
 test.py
-word_cache.json
-word_notes.json
 input.wav
 
-
-# 运行时生成的临时数据
-chroma_db/
-temp_audio/
-chat_records/
+# 后端运行时数据
+backend/data/word_cache.json
+backend/data/word_notes.json
+backend/data/chroma_db/
+backend/data/temp_audio/
+backend/data/chat_records/
 

@@ -18,17 +18,18 @@ from typing import Optional
 # ====================== 全局初始化配置 ======================
 app = FastAPI(title="SceneTalk Backend")
 
-# ---------------- 路径修改点1：指定.env文件的路径 ----------------
-# 现在.env文件在backend目录下，所以用当前文件路径来定位
-BASE_DIR = Path(__file__).resolve().parent  # 等价于backend文件夹的绝对路径
+# ====================== 路径配置 ======================
+BASE_DIR = Path(__file__).resolve().parent  # backend/
+DATA_DIR = BASE_DIR / "data"                # backend/data/ 存放所有运行时数据
+DATA_DIR.mkdir(exist_ok=True)
+
 env_path = BASE_DIR / ".env"
 load_dotenv(dotenv_path=env_path)
 
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 
-# ---------------- 路径修改点2：指定chroma_db的路径 ----------------
-# chroma_db现在在backend目录下，用BASE_DIR拼接路径
-chroma_db_path = BASE_DIR / "chroma_db"
+# ChromaDB 持久化
+chroma_db_path = DATA_DIR / "chroma_db"
 chroma_client = chromadb.PersistentClient(path=str(chroma_db_path))
 memory_collection = chroma_client.get_or_create_collection(name="scene_talk_memory")
 
@@ -66,19 +67,18 @@ SCENE_MAP = {
     "16": "housing"         # 租房看房沟通
 }
 
-# ---------------- 路径修改点3：统一使用BASE_DIR构建路径 ----------------
-# 聊天记录总文件夹（现在chat_records在backend目录下）
-CHAT_DIR = BASE_DIR / "chat_records"
+# 聊天记录
+CHAT_DIR = DATA_DIR / "chat_records"
 CHAT_DIR.mkdir(exist_ok=True)
 
-# 单词笔记文件配置（现在word_notes.json在backend目录下）
-NOTES_FILE = BASE_DIR / "word_notes.json"
+# 单词笔记
+NOTES_FILE = DATA_DIR / "word_notes.json"
 if not NOTES_FILE.exists():
     with open(NOTES_FILE, "w", encoding="utf-8") as f:
         json.dump([], f, ensure_ascii=False, indent=2)
 
-# 单词缓存文件配置（现在word_cache.json在backend目录下）
-CACHE_FILE = BASE_DIR / "word_cache.json"
+# 单词缓存
+CACHE_FILE = DATA_DIR / "word_cache.json"
 if not CACHE_FILE.exists():
     with open(CACHE_FILE, "w", encoding="utf-8") as f:
         json.dump({}, f, ensure_ascii=False, indent=2)
@@ -93,10 +93,10 @@ def clean_ai_reply(text: str) -> str:
     cleaned = re.sub(rf'\n\s*{role_pattern}', '\n', cleaned, flags=re.IGNORECASE)
     return cleaned.strip()
 
-# ---------------- 路径修改点4：音频保存路径改为backend/temp_audio ----------------
+# 音频暂存
 def save_uploaded_audio(upload_file, save_dir=None):
     if save_dir is None:
-        save_dir = BASE_DIR / "temp_audio"
+        save_dir = DATA_DIR / "temp_audio"
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     filename = f"input_{int(datetime.now().timestamp() * 1000)}.wav"
