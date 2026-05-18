@@ -8,7 +8,11 @@
       "Bash(sed -i '1{/^$/d}' \"d:/oral-practice/oral-practice/frontend/src/css/style.css\")",
       "Bash(sed -n '890,2534p' \"d:/oral-practice/oral-practice/frontend/index.html\")",
       "Read(//tmp/**)",
-      "Bash(cp /tmp/app_part1.txt d:/oral-practice/oral-practice/frontend/src/js/app.js)"
+      "Bash(cp /tmp/app_part1.txt d:/oral-practice/oral-practice/frontend/src/js/app.js)",
+      "Bash(mkdir -p \"d:/oral-practice/oral-practice/backend/models\" \"d:/oral-practice/oral-practice/backend/services\" \"d:/oral-practice/oral-practice/backend/routers\")",
+      "Bash(python -c \"from main import app; print\\('✅ App created successfully'\\); print\\('Routes:', [r.path for r in app.routes if hasattr\\(r, 'path'\\)]\\)\")",
+      "Bash(pip install *)",
+      "Bash(python -c \"from main import app; print\\('App created successfully'\\); print\\('Routes:'\\); [print\\(' ', r.path\\) for r in app.routes if hasattr\\(r, 'path'\\)]\")"
     ],
     "additionalDirectories": [
       "d:\\oral-practice\\oral-practice\\backend",

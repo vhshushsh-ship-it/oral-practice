@@ -795,7 +795,7 @@
             if (welcomeMsg) {
                 addMessage(welcomeMsg.content, false);
             }
-            alert("聊天记录已清空，开场白已保留！");
+            showToast("聊天记录已清空，开场白已保留！", "success");
         });
 
         async function addMessage(text, isUser) {
@@ -887,7 +887,7 @@
             sentenceCollection.splice(index, 1);
             localStorage.setItem("my-sentence-collection", JSON.stringify(sentenceCollection));
             renderSentenceCollection();
-            alert("删除成功！");
+            showToast("删除成功！", "success");
         }
 
         // 清空所有收藏
@@ -896,7 +896,7 @@
             sentenceCollection = [];
             localStorage.removeItem("my-sentence-collection");
             renderSentenceCollection();
-            alert("已清空所有收藏！");
+            showToast("已清空所有收藏！", "success");
         }
 
         // 绑定全局收藏按钮点击事件
@@ -1078,13 +1078,13 @@
             let notes = JSON.parse(localStorage.getItem("my-word-notes") || "[]");
             const exists = notes.some(item => item.word === word);
             if (exists) {
-                alert("该单词已在笔记中！");
+                showToast("该单词已在笔记中！", "info");
                 return;
             }
             notes.push({ word, phonetic, meaning, meanings, createTime });
             localStorage.setItem("my-word-notes", JSON.stringify(notes));
             await loadWordNotes();
-            alert("单词已保存到浏览器本地！");
+            showToast("单词已保存到浏览器本地！", "success");
         }
 
         async function deleteWordFromNotes(targetWord) {
@@ -1095,7 +1095,7 @@
                 exitDetailMode();
             }
             await loadWordNotes();
-            alert("删除成功！");
+            showToast("删除成功！", "success");
         }
 
         async function clearAllNotes() {
@@ -1103,7 +1103,7 @@
                 localStorage.removeItem("my-word-notes");
                 exitDetailMode();
                 await loadWordNotes();
-                alert("已清空所有本地笔记！");
+                showToast("已清空所有本地笔记！", "success");
             }
         }
 
@@ -1285,10 +1285,10 @@
         copyTranslateBtn.addEventListener("click", () => {
             const text = translateResult.textContent;
             navigator.clipboard.writeText(text).then(() => {
-                alert("已复制到剪贴板！");
+                showToast("已复制到剪贴板！", "success");
             }).catch(err => {
                 console.error("复制失败:", err);
-                alert("复制失败，请手动复制");
+                showToast("复制失败，请手动复制", "warning");
             });
         });
 

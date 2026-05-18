@@ -7,7 +7,7 @@ const API_BASE = "http://127.0.0.1:8000";
         async function translateSentence() {
             const text = translateInput.value.trim();
             if (!text) {
-                alert("请输入中文句子");
+                showToast("请输入中文句子", "warning");
                 return;
             }
             translateResult.textContent = "翻译中...";
@@ -230,7 +230,7 @@ const API_BASE = "http://127.0.0.1:8000";
             // 去重
             const exists = sentenceCollection.some(item => item.text === text);
             if (exists) {
-                alert("该句子已收藏！");
+                showToast("该句子已收藏！", "info");
                 return;
             }
 
@@ -256,7 +256,7 @@ const API_BASE = "http://127.0.0.1:8000";
                 createTime: Date.now() 
             });
             localStorage.setItem("my-sentence-collection", JSON.stringify(sentenceCollection));
-            alert("句子收藏成功！");
+            showToast("句子收藏成功！", "success");
             // 收藏后刷新列表渲染
             renderSentenceCollection();
         }
