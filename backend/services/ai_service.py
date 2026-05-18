@@ -13,12 +13,19 @@ def clean_ai_reply(text: str) -> str:
     return cleaned.strip()
 
 
-def agent_reply(user_text: str, scene: str, conversation_history: list = None) -> str:
+def agent_reply(user_text: str, scene: str, conversation_history: list = None, memory_context: list[str] = None) -> str:
     """调用 LLM 生成场景对话回复"""
     if conversation_history is None:
         conversation_history = []
 
     prompt = SCENE_ROLES.get(scene, SCENE_ROLES["restaurant"]) + "\n"
+
+    if memory_context:
+        prompt += "\nHere are relevant past conversations in this scene for context:\n"
+        for mem in memory_context:
+            prompt += f"- {mem}\n"
+        prompt += "\n---\n\n"
+
     for msg in conversation_history:
         if msg["role"] == "user":
             prompt += f"User: {msg['content']}\n"

@@ -6,23 +6,31 @@ from config import memory_collection, NOTES_FILE, CACHE_FILE
 # ====================== ChromaDB 记忆 ======================
 def save_memory(scene: str, user_text: str, ai_text: str) -> None:
     """保存对话记忆到 ChromaDB"""
-    memory_text = f"[scene={scene}] user: {user_text} | ai: {ai_text}"
+    memory_text = f"user: {user_text} | ai: {ai_text}"
     memory_id = f"{scene}_{int(datetime.now().timestamp() * 1000)}"
     try:
-        memory_collection.add(ids=[memory_id], documents=[memory_text])
+        memory_collection.add(
+            ids=[memory_id],
+            documents=[memory_text],
+            metadatas=[{"scene": scene}],
+        )
     except Exception as e:
         print("❌ 记忆保存失败:", e)
 
 
-def get_memory_context(limit: int = 5) -> str:
-    """从 ChromaDB 获取最近的对话记忆"""
+def search_memories(scene: str, query_text: str, n_results: int = 3) -> list[str]:
+    """用语义相似度搜索该场景下最相关的历史对话"""
     try:
-        data = memory_collection.get(limit=limit)
-        docs = data.get("documents", [])
-        return "\n".join(docs[-limit:]) if docs else ""
+        results = memory_collection.query(
+            query_texts=[query_text],
+            n_results=n_results,
+            where={"scene": scene},
+        )
+        docs = results.get("documents", [[]])
+        return [d for d in docs[0] if d] if docs and docs[0] else []
     except Exception as e:
-        print("❌ 读取记忆失败:", e)
-        return ""
+        print("❌ 记忆搜索失败:", e)
+        return []
 
 
 # ====================== 单词缓存 ======================

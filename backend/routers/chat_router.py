@@ -5,7 +5,7 @@ from config import SCENE_MAP, CHAT_DIR, INITIAL_MESSAGES
 from services.ai_service import agent_reply
 from services.asr_service import asr, is_exit
 from services.audio_service import save_uploaded_audio
-from services.storage_service import save_memory
+from services.storage_service import save_memory, search_memories
 
 router = APIRouter(tags=["chat"])
 
@@ -59,7 +59,8 @@ async def chat(
             return {"user_text": user_text, "ai_text": "Goodbye!"}
 
         history = json.loads(conversation_history)
-        ai_reply = agent_reply(user_text, scene, history)
+        memories = search_memories(scene, user_text)
+        ai_reply = agent_reply(user_text, scene, history, memory_context=memories)
 
         save_memory(scene, user_text, ai_reply)
 
@@ -81,7 +82,8 @@ async def chat_text(
 ):
     try:
         history = json.loads(conversation_history)
-        ai_reply_text = agent_reply(user_text, scene, history)
+        memories = search_memories(scene, user_text)
+        ai_reply_text = agent_reply(user_text, scene, history, memory_context=memories)
         save_memory(scene, user_text, ai_reply_text)
         return {"user_text": user_text, "ai_text": ai_reply_text}
     except Exception as e:
