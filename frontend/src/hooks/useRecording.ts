@@ -120,26 +120,30 @@ export function useRecording(onSend: (blob: Blob) => void) {
   }, [cleanup]);
 
   const stop = useCallback(() => {
+    // Save data before cleanup clears refs
+    const chunks = chunksRef.current;
+    const sampleRate = contextRef.current?.sampleRate || 44100;
+    const wasCancelled = cancelRef.current;
+
     cleanup();
 
-    if (cancelRef.current || chunksRef.current.length === 0) {
+    if (wasCancelled || chunks.length === 0) {
       setState({ isRecording: false, seconds: 0 });
       return;
     }
 
     const merged = (() => {
       let totalLen = 0;
-      for (const ch of chunksRef.current) totalLen += ch.length;
+      for (const ch of chunks) totalLen += ch.length;
       const merged = new Float32Array(totalLen);
       let offset = 0;
-      for (const ch of chunksRef.current) {
+      for (const ch of chunks) {
         merged.set(ch, offset);
         offset += ch.length;
       }
       return merged;
     })();
 
-    const sampleRate = contextRef.current?.sampleRate || 44100;
     const wavBlob = createWavBlob(merged, sampleRate);
     setState({ isRecording: false, seconds: 0 });
     onSend(wavBlob);
