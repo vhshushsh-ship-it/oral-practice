@@ -53,9 +53,9 @@ export function SceneBar({
         onChange={(e) => onSpeechRateChange(parseFloat(e.target.value))}
         id="speechRateSelect"
       >
-        <option value="0.7">慢速</option>
-        <option value="1.0">标准</option>
-        <option value="1.5">快速</option>
+        <option value={0.7}>慢速</option>
+        <option value={1.0}>标准</option>
+        <option value={1.5}>快速</option>
       </select>
 
       <button

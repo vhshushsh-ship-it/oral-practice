@@ -15,7 +15,7 @@ def save_memory(scene: str, user_text: str, ai_text: str) -> None:
             metadatas=[{"scene": scene}],
         )
     except Exception as e:
-        print("❌ 记忆保存失败:", e)
+        print("[MEMORY SAVE ERROR]", e)
 
 
 def search_memories(scene: str, query_text: str, n_results: int = 3) -> list[str]:
@@ -29,7 +29,7 @@ def search_memories(scene: str, query_text: str, n_results: int = 3) -> list[str
         docs = results.get("documents", [[]])
         return [d for d in docs[0] if d] if docs and docs[0] else []
     except Exception as e:
-        print("❌ 记忆搜索失败:", e)
+        print("[MEMORY SEARCH ERROR]", e)
         return []
 
 

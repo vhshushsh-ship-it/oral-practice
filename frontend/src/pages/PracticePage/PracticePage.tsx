@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { initScene } from '../../services/api';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { useChat } from '../../hooks/useChat';
@@ -35,7 +35,9 @@ export function PracticePage() {
   const [scene, setScene] = useState('free_talk');
   const [sceneChoice, setSceneChoice] = useState('0');
   const [speechRate, setSpeechRate] = useState(1.0);
-  const [isTranslateVisible, setIsTranslateVisible] = useState(false);
+  const [isTranslateVisible, setIsTranslateVisible] = useState(() => {
+    return localStorage.getItem('translate_visible_free_talk') === 'true';
+  });
   const [rightModule, setRightModule] = useState<'word' | 'translate'>('word');
 
   const speak = useSpeechSynthesis(speechRate);
@@ -63,6 +65,13 @@ export function PracticePage() {
       setSceneChoice(choice);
       try {
         const data = await initScene(choice);
+        const key = `chat_history_${data.scene}`;
+        if (!localStorage.getItem(key)) {
+          localStorage.setItem(
+            key,
+            JSON.stringify([{ role: 'assistant', content: data.initial_message }]),
+          );
+        }
         setScene(data.scene);
       } catch {
         showToast('场景加载失败', 'warning');
@@ -76,13 +85,19 @@ export function PracticePage() {
     showToast('聊天记录已清空，开场白已保留！', 'success');
   }, [clearHistory, showToast]);
 
+  // Sync translation visibility with persisted per-scene preference
+  useEffect(() => {
+    const saved = localStorage.getItem(`translate_visible_${scene}`);
+    setIsTranslateVisible(saved === 'true');
+  }, [scene]);
+
   // Initialize
   useEffect(() => {
     handleSceneChange('0');
   }, []);
 
   // Auto-speak AI responses
-  const prevLenRef = { current: 0 };
+  const prevLenRef = useRef(0);
   useEffect(() => {
     if (messages.length > prevLenRef.current && messages.length > 0) {
       const last = messages[messages.length - 1];
@@ -99,10 +114,10 @@ export function PracticePage() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: isTranslateVisible ? '1.2fr 1fr 1fr' : '1fr 1fr',
-          gap: 24,
-          maxWidth: 1400,
-          height: 'calc(100vh - 130px)',
+          gridTemplateColumns: isTranslateVisible ? '1.4fr 1fr 0.9fr' : '1.2fr 1fr',
+          gap: 16,
+          width: '100%',
+          height: 'calc(100vh - 120px)',
           overflow: 'hidden',
         }}
       >
@@ -114,7 +129,11 @@ export function PracticePage() {
             speechRate={speechRate}
             onSpeechRateChange={setSpeechRate}
             isTranslateVisible={isTranslateVisible}
-            onToggleTranslate={() => setIsTranslateVisible(!isTranslateVisible)}
+            onToggleTranslate={() => {
+              const next = !isTranslateVisible;
+              setIsTranslateVisible(next);
+              localStorage.setItem(`translate_visible_${scene}`, String(next));
+            }}
             onClearHistory={handleClearHistory}
           />
           <ChatBox messages={messages} onSpeak={speak} />

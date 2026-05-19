@@ -1,4 +1,5 @@
 import re
+import json
 from dashscope import Generation
 from config import SCENE_ROLES
 
@@ -13,7 +14,7 @@ def clean_ai_reply(text: str) -> str:
     return cleaned.strip()
 
 
-def agent_reply(user_text: str, scene: str, conversation_history: list = None, memory_context: list[str] = None) -> str:
+def agent_reply(user_text: str, scene: str, conversation_history: list = None, memory_context: list[str] = None, max_tokens: int = 200) -> str:
     """调用 LLM 生成场景对话回复"""
     if conversation_history is None:
         conversation_history = []
@@ -38,13 +39,13 @@ def agent_reply(user_text: str, scene: str, conversation_history: list = None, m
             model="qwen-turbo",
             messages=[{"role": "user", "content": prompt}],
             result_format="message",
-            max_tokens=200,
+            max_tokens=max_tokens,
             temperature=0.7,
         )
         raw_reply = response.output.choices[0].message["content"].strip()
         return clean_ai_reply(raw_reply)
     except Exception as e:
-        print("❌ 模型调用错误:", e)
+        print("[LLM ERROR]", e)
         return "Sorry, I didn't catch that. Could you repeat?"
 
 
@@ -63,7 +64,7 @@ def translate_text(text: str) -> str:
         )
         return response.output.choices[0].message["content"].strip()
     except Exception as e:
-        print(f"❌ 翻译失败: {e}")
+        print(f"[TRANSLATE ERROR] {e}")
         return "翻译出错"
 
 
@@ -82,7 +83,7 @@ def translate_to_english(text: str) -> str:
         )
         return response.output.choices[0].message["content"].strip()
     except Exception as e:
-        print(f"❌ 翻译失败: {e}")
+        print(f"[TRANSLATE ERROR] {e}")
         return "翻译出错"
 
 
@@ -102,7 +103,7 @@ def query_word_ai(word: str) -> dict:
   ]
 }}
 """
-    raw_result = agent_reply(prompt, "dictionary", [])
+    raw_result = agent_reply(prompt, "dictionary", [], max_tokens=500)
 
     json_match = re.search(r"\{[\s\S]*\}", raw_result)
     if not json_match:
@@ -110,9 +111,13 @@ def query_word_ai(word: str) -> dict:
 
     clean_json = json_match.group(0)
     clean_json = re.sub(r",\s*([}\]])", r"\1", clean_json)
-    clean_json = clean_json.replace("'", '"')
 
-    word_data = json.loads(clean_json)
+    try:
+        word_data = json.loads(clean_json)
+    except json.JSONDecodeError:
+        clean_json = clean_json.replace("'", '"')
+        word_data = json.loads(clean_json)
+
     if not all(key in word_data for key in ["word", "phonetic", "meanings"]):
         raise ValueError("JSON缺少必填字段")
 

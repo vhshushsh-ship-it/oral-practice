@@ -10,7 +10,7 @@ def asr(file_path: str) -> str:
     try:
         convert_audio(file_path, converted_path)
     except Exception as e:
-        print("❌ 音频转换失败:", e)
+        print("[ASR ERROR]", e)
         return ""
 
     recognition = Recognition(

@@ -14,10 +14,22 @@ export function useChat(scene: string) {
     [],
   );
 
-  // Load history when scene changes
+  // Load history when scene changes — read directly from localStorage to avoid
+  // useLocalStorage's async-state timing issue (old key value for one render tick).
   useEffect(() => {
-    setMessages(history);
-    setTranslations([]);
+    const storageKey = `chat_history_${scene}`;
+    try {
+      const stored = localStorage.getItem(storageKey);
+      const loaded: ConversationMessage[] = stored ? JSON.parse(stored) : [];
+      setMessages(loaded);
+      setTranslations([]);
+      if (loaded.length === 1) {
+        addTranslation(loaded[0].content, false);
+      }
+    } catch {
+      setMessages([]);
+      setTranslations([]);
+    }
   }, [scene]);
 
   const addTranslation = useCallback(
@@ -29,7 +41,10 @@ export function useChat(scene: string) {
           { source: text, target: translation, isUser },
         ]);
       } catch {
-        // silently fail
+        setTranslations((prev) => [
+          ...prev,
+          { source: text, target: '翻译暂不可用', isUser },
+        ]);
       }
     },
     [],
@@ -41,9 +56,11 @@ export function useChat(scene: string) {
       loadingRef.current = true;
       setIsLoading(true);
 
-      const last10 = [...messages, { role: 'user' as const, content: text }].slice(-10);
+      const last10 = messages.slice(-10);
 
-      setMessages((prev) => [...prev, { role: 'user', content: text }]);
+      const userMsg: ConversationMessage = { role: 'user', content: text };
+      setMessages((prev) => [...prev, userMsg]);
+      setHistory((prev) => [...prev, userMsg]);
       await addTranslation(text, true);
 
       try {
@@ -108,7 +125,10 @@ export function useChat(scene: string) {
     setMessages(newHistory);
     setHistory(newHistory);
     setTranslations([]);
-  }, [history, setHistory]);
+    if (welcomeMsg) {
+      addTranslation(welcomeMsg.content, false);
+    }
+  }, [history, setHistory, addTranslation]);
 
   return { messages, translations, isLoading, sendText, sendVoice, clearHistory, setHistory };
 }

@@ -22,7 +22,7 @@ export function SentencesPage() {
   return (
     <div className="page" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <h1>句子收藏</h1>
-      <div style={{ flex: 1, overflowY: 'auto' }}>
+      <div className="content-centered" style={{ flex: 1, overflowY: 'auto' }}>
         {collection.length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--ink-muted)', padding: 40 }}>
             还没有收藏任何句子，快去聊天或情景对话中收藏吧

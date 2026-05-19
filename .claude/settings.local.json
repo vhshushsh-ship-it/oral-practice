@@ -12,7 +12,16 @@
       "Bash(mkdir -p \"d:/oral-practice/oral-practice/backend/models\" \"d:/oral-practice/oral-practice/backend/services\" \"d:/oral-practice/oral-practice/backend/routers\")",
       "Bash(python -c \"from main import app; print\\('✅ App created successfully'\\); print\\('Routes:', [r.path for r in app.routes if hasattr\\(r, 'path'\\)]\\)\")",
       "Bash(pip install *)",
-      "Bash(python -c \"from main import app; print\\('App created successfully'\\); print\\('Routes:'\\); [print\\(' ', r.path\\) for r in app.routes if hasattr\\(r, 'path'\\)]\")"
+      "Bash(python -c \"from main import app; print\\('App created successfully'\\); print\\('Routes:'\\); [print\\(' ', r.path\\) for r in app.routes if hasattr\\(r, 'path'\\)]\")",
+      "Bash(npx vite *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5500)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000)",
+      "Bash(tasklist)",
+      "Bash(netstat -ano)",
+      "Bash(curl -v http://localhost:5500)",
+      "Bash(curl -s http://localhost:5500/src/main.tsx)",
+      "Bash(curl -s -X POST http://127.0.0.1:8000/init -d \"scene_choice=0\")"
     ],
     "additionalDirectories": [
       "d:\\oral-practice\\oral-practice\\backend",

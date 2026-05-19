@@ -45,6 +45,21 @@ export interface WordNote {
   createTime: number;
 }
 
+// ====================== 连读规则 ======================
+export interface LinkingExample {
+  original: string;
+  linked: string;
+  translation: string;
+}
+
+export interface LinkingRule {
+  id: string;
+  name: string;
+  nameEn: string;
+  description: string;
+  examples: LinkingExample[];
+}
+
 // ====================== 句子收藏 ======================
 export interface SentenceItem {
   text: string;

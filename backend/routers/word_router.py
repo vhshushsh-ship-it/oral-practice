@@ -14,17 +14,17 @@ async def query_word(word: str = Query(...)):
 
     cache = load_cache()
     if word in cache:
-        print(f"✅ 缓存命中：{word}，直接返回")
+        print(f"[CACHE HIT] {word}")
         return cache[word]
 
-    print(f"🔍 调用AI查询单词：{word}")
+    print(f"[AI QUERY] {word}")
 
     max_retries = 2
     for attempt in range(max_retries):
         try:
             word_data = query_word_ai(word)
             save_cache(word, word_data)
-            print(f"✅ 单词{word}已缓存到本地")
+            print(f"[CACHED] {word}")
             return word_data
         except Exception as e:
             print(f"AI第{attempt+1}次查询失败：{str(e)}")

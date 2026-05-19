@@ -4,6 +4,7 @@ const NAV_ITEMS = [
   { page: 'practice', label: '* SceneTalk' },
   { page: 'notes', label: '— 单词笔记' },
   { page: 'dialogues', label: '— 情景对话' },
+  { page: 'linking-rules', label: '— 连读规则' },
   { page: 'sentences', label: '— 句子收藏' },
 ];
 
