@@ -60,6 +60,21 @@ export interface LinkingRule {
   examples: LinkingExample[];
 }
 
+// ====================== 听力练习 ======================
+export interface ListeningSentence {
+  id: string;
+  en: string;
+  zh: string;
+  audioUrl?: string;
+}
+
+export interface ListeningSet {
+  id: string;
+  name: string;
+  type: 'cet4' | 'cet6';
+  sentences: ListeningSentence[];
+}
+
 // ====================== 句子收藏 ======================
 export interface SentenceItem {
   text: string;

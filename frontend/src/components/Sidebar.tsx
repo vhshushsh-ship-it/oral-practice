@@ -5,6 +5,7 @@ const NAV_ITEMS = [
   { page: 'notes', label: '— 单词笔记' },
   { page: 'dialogues', label: '— 情景对话' },
   { page: 'linking-rules', label: '— 连读规则' },
+  { page: 'listening', label: '— 四六级听力练习' },
   { page: 'sentences', label: '— 句子收藏' },
 ];
 
