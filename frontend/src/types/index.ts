@@ -66,13 +66,33 @@ export interface ListeningSentence {
   en: string;
   zh: string;
   audioUrl?: string;
+  questionRef?: string;
+}
+
+export interface ListeningSection {
+  id: string | null;
+  name: string;
+  sectionType: 'news_report' | 'long_conversation' | 'passage' | 'none';
+  sortOrder: number;
+  sentences: ListeningSentence[];
 }
 
 export interface ListeningSet {
   id: string;
   name: string;
   type: 'cet4' | 'cet6';
-  sentences: ListeningSentence[];
+  year?: number;
+  month?: number;
+  sections: ListeningSection[];
+}
+
+export interface ListeningSetMeta {
+  id: string;
+  name: string;
+  type: 'cet4' | 'cet6';
+  year: number;
+  month: number;
+  sentence_count: number;
 }
 
 // ====================== 句子收藏 ======================

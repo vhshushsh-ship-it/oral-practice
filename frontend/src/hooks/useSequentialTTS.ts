@@ -15,52 +15,33 @@ export function useSequentialTTS(rate: number) {
 
   const textsRef = useRef<string[]>([]);
   const indexRef = useRef(-1);
-  const timerRef = useRef<number | null>(null);
-  const pollTimeoutRef = useRef<number | null>(null);
-  const keepAliveRef = useRef<number | null>(null);
   const genRef = useRef(0);
-  const activeGenRef = useRef(0);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  const clearTimer = useCallback(() => {
-    if (timerRef.current != null) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-    if (pollTimeoutRef.current != null) {
-      clearTimeout(pollTimeoutRef.current);
-      pollTimeoutRef.current = null;
+  const cleanupAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
     }
   }, []);
 
-  const clearKeepAlive = useCallback(() => {
-    if (keepAliveRef.current != null) {
-      clearInterval(keepAliveRef.current);
-      keepAliveRef.current = null;
+  const cancelFetch = useCallback(() => {
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
     }
   }, []);
 
-  const clearAllTimers = useCallback(() => {
-    clearTimer();
-    clearKeepAlive();
-  }, [clearTimer, clearKeepAlive]);
-
-  const startKeepAlive = useCallback(() => {
-    clearKeepAlive();
-    // Chrome speechSynthesis gets stuck after ~15s of continuous speech.
-    // Periodically pause+resume to keep the internal state machine alive.
-    keepAliveRef.current = window.setInterval(() => {
-      if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.pause();
-        window.speechSynthesis.resume();
-      }
-    }, 5000);
-  }, [clearKeepAlive]);
-
-  const speakAtIndex = useCallback((index: number) => {
+  const playAtIndex = useCallback(async (index: number) => {
     const texts = textsRef.current;
     if (index < 0 || index >= texts.length) {
-      stopInternal();
+      // playback complete
+      indexRef.current = -1;
+      setCurrentIndex(-1);
+      setPlayState('idle');
+      setTotalCount(0);
+      textsRef.current = [];
       return;
     }
 
@@ -68,88 +49,70 @@ export function useSequentialTTS(rate: number) {
     if (!text) {
       indexRef.current = index + 1;
       setCurrentIndex(index + 1);
-      speakAtIndex(index + 1);
+      playAtIndex(index + 1);
       return;
     }
 
     genRef.current += 1;
     const gen = genRef.current;
-    activeGenRef.current = gen;
     indexRef.current = index;
     setCurrentIndex(index);
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = rateRef.current;
-    utteranceRef.current = utterance;
+    try {
+      const controller = new AbortController();
+      abortRef.current = controller;
 
-    const onDone = () => {
+      const params = new URLSearchParams({ text, rate: String(rateRef.current) });
+      const resp = await fetch(`/api/tts?${params}`, { signal: controller.signal });
       if (genRef.current !== gen) return;
-      genRef.current += 1; // Invalidate stale callbacks (double-fire, old utterance)
-      clearTimer();
-      utteranceRef.current = null;
+
+      if (!resp.ok) throw new Error(`TTS request failed: ${resp.status}`);
+
+      const blob = await resp.blob();
+      if (genRef.current !== gen) return;
+
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        URL.revokeObjectURL(url);
+        if (genRef.current !== gen) return;
+        audioRef.current = null;
+        const next = indexRef.current + 1;
+        playAtIndex(next);
+      };
+
+      audio.onerror = () => {
+        URL.revokeObjectURL(url);
+        if (genRef.current !== gen) return;
+        audioRef.current = null;
+        const next = indexRef.current + 1;
+        playAtIndex(next);
+      };
+
+      await audio.play();
+    } catch (err) {
+      if (err instanceof DOMException && err.name === 'AbortError') return;
+      console.error('Sequential TTS play failed:', err);
+      // skip this sentence and try next
+      audioRef.current = null;
+      if (genRef.current !== gen) return;
       const next = indexRef.current + 1;
-      if (next >= texts.length) {
-        clearKeepAlive();
-        indexRef.current = -1;
-        setCurrentIndex(-1);
-        setPlayState('idle');
-        setTotalCount(0);
-        textsRef.current = [];
-      } else {
-        speakAtIndex(next);
-      }
-    };
-
-    utterance.onend = onDone;
-    utterance.onerror = () => {
-      onDone();
-    };
-
-    window.speechSynthesis.cancel();
-    // Small delay after cancel to let Chrome's internal state settle
-    setTimeout(() => {
-      window.speechSynthesis.speak(utterance);
-      startKeepAlive();
-      // Initial jolt to ensure Chrome starts speaking
-      setTimeout(() => {
-        window.speechSynthesis.pause();
-        window.speechSynthesis.resume();
-      }, 100);
-    }, 50);
-
-    // polling fallback: Android Chrome sometimes doesn't fire onend.
-    // Also detects Chrome's "stuck speech" bug (speaking becomes false without onend).
-    clearTimer();
-    timerRef.current = window.setInterval(() => {
-      if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) {
-        if (genRef.current === gen) {
-          // Chrome stuck-speech workaround: try to jolt it back
-          window.speechSynthesis.pause();
-          window.speechSynthesis.resume();
-          // After pause+resume, if still not speaking within 200ms, it's truly done
-          pollTimeoutRef.current = window.setTimeout(() => {
-            pollTimeoutRef.current = null;
-            if (genRef.current === gen && !window.speechSynthesis.speaking) {
-              onDone();
-            }
-          }, 200);
-        }
-      }
-    }, 150);
-  }, [clearTimer, clearKeepAlive, startKeepAlive]);
+      playAtIndex(next);
+    }
+  }, []);
 
   const stopInternal = useCallback(() => {
     genRef.current += 1;
-    window.speechSynthesis.cancel();
-    clearAllTimers();
-    utteranceRef.current = null;
+    cancelFetch();
+    cleanupAudio();
     textsRef.current = [];
     indexRef.current = -1;
     setCurrentIndex(-1);
     setPlayState('idle');
     setTotalCount(0);
-  }, [clearAllTimers]);
+  }, [cancelFetch, cleanupAudio]);
 
   const play = useCallback((texts: string[], startIndex = 0) => {
     stopInternal();
@@ -158,70 +121,44 @@ export function useSequentialTTS(rate: number) {
     if (texts.length === 0) return;
     const start = Math.max(0, Math.min(startIndex, texts.length - 1));
     setPlayState('playing');
-    speakAtIndex(start);
-  }, [stopInternal, speakAtIndex]);
+    playAtIndex(start);
+  }, [stopInternal, playAtIndex]);
 
   const pause = useCallback(() => {
-    window.speechSynthesis.pause();
-    clearAllTimers();
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
     setPlayState('paused');
-  }, [clearAllTimers]);
+  }, []);
 
   const resume = useCallback(() => {
-    window.speechSynthesis.resume();
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
     setPlayState('playing');
-    startKeepAlive();
-    // restart polling
-    const gen = activeGenRef.current;
-    clearTimer();
-    timerRef.current = window.setInterval(() => {
-      if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) {
-        if (genRef.current === gen) {
-          window.speechSynthesis.pause();
-          window.speechSynthesis.resume();
-          pollTimeoutRef.current = window.setTimeout(() => {
-            pollTimeoutRef.current = null;
-            if (genRef.current === gen && !window.speechSynthesis.speaking) {
-              genRef.current += 1;
-              clearTimer();
-              utteranceRef.current = null;
-              const next = indexRef.current + 1;
-              if (next >= textsRef.current.length) {
-                clearKeepAlive();
-                indexRef.current = -1;
-                setCurrentIndex(-1);
-                setPlayState('idle');
-                setTotalCount(0);
-                textsRef.current = [];
-              } else {
-                speakAtIndex(next);
-              }
-            }
-          }, 200);
-        }
-      }
-    }, 150);
-  }, [clearTimer, clearKeepAlive, startKeepAlive, speakAtIndex]);
+  }, []);
 
   const next = useCallback(() => {
-    clearAllTimers();
-    utteranceRef.current = null;
-    window.speechSynthesis.cancel();
+    genRef.current += 1;
+    cancelFetch();
+    cleanupAudio();
     const i = Math.min(indexRef.current + 1, textsRef.current.length - 1);
     if (i >= 0 && textsRef.current.length > 0) {
-      speakAtIndex(i);
+      setPlayState('playing');
+      playAtIndex(i);
     }
-  }, [clearAllTimers, speakAtIndex]);
+  }, [cancelFetch, cleanupAudio, playAtIndex]);
 
   const prev = useCallback(() => {
-    clearAllTimers();
-    utteranceRef.current = null;
-    window.speechSynthesis.cancel();
+    genRef.current += 1;
+    cancelFetch();
+    cleanupAudio();
     const i = Math.max(indexRef.current - 1, 0);
     if (i >= 0 && textsRef.current.length > 0) {
-      speakAtIndex(i);
+      setPlayState('playing');
+      playAtIndex(i);
     }
-  }, [clearAllTimers, speakAtIndex]);
+  }, [cancelFetch, cleanupAudio, playAtIndex]);
 
   const stop = useCallback(() => {
     stopInternal();

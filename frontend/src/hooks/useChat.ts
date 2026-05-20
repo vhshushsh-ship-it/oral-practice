@@ -9,22 +9,36 @@ export function useChat(scene: string) {
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(false);
 
+  const sceneRef = useRef(scene);
+  sceneRef.current = scene;
+
   const [history, setHistory] = useLocalStorage<ConversationMessage[]>(
     `chat_history_${scene}`,
     [],
   );
 
-  // Load history when scene changes — read directly from localStorage to avoid
-  // useLocalStorage's async-state timing issue (old key value for one render tick).
+  const pendingAutoPlayRef = useRef(false);
+
+  // Load history + translations when scene changes
   useEffect(() => {
     const storageKey = `chat_history_${scene}`;
+    const transKey = `translations_${scene}`;
     try {
       const stored = localStorage.getItem(storageKey);
       const loaded: ConversationMessage[] = stored ? JSON.parse(stored) : [];
       setMessages(loaded);
-      setTranslations([]);
-      if (loaded.length === 1) {
-        addTranslation(loaded[0].content, false);
+
+      // Restore saved translations
+      const storedTrans = localStorage.getItem(transKey);
+      const savedTranslations: Translation[] = storedTrans ? JSON.parse(storedTrans) : [];
+      setTranslations(savedTranslations);
+
+      // Translate any messages that don't have saved translations yet
+      const translatedSources = new Set(savedTranslations.map((t) => t.source));
+      const missing = loaded.filter((m) => !translatedSources.has(m.content));
+
+      if (missing.length > 0) {
+        translateMissingSequentially(missing, transKey);
       }
     } catch {
       setMessages([]);
@@ -32,19 +46,45 @@ export function useChat(scene: string) {
     }
   }, [scene]);
 
+  // Translate missing messages one at a time to avoid race conditions with localStorage writes
+  const translateMissingSequentially = useCallback(
+    async (msgs: ConversationMessage[], transKey: string) => {
+      for (const msg of msgs) {
+        try {
+          const translation = await translateToChinese(msg.content);
+          setTranslations((prev) => {
+            const next = [...prev, { source: msg.content, target: translation, isUser: msg.role === 'user' }];
+            localStorage.setItem(transKey, JSON.stringify(next));
+            return next;
+          });
+        } catch {
+          setTranslations((prev) => {
+            const next = [...prev, { source: msg.content, target: '翻译暂不可用', isUser: msg.role === 'user' }];
+            localStorage.setItem(transKey, JSON.stringify(next));
+            return next;
+          });
+        }
+      }
+    },
+    [],
+  );
+
   const addTranslation = useCallback(
     async (text: string, isUser: boolean) => {
+      const transKey = `translations_${sceneRef.current}`;
       try {
         const translation = await translateToChinese(text);
-        setTranslations((prev) => [
-          ...prev,
-          { source: text, target: translation, isUser },
-        ]);
+        setTranslations((prev) => {
+          const next = [...prev, { source: text, target: translation, isUser }];
+          localStorage.setItem(transKey, JSON.stringify(next));
+          return next;
+        });
       } catch {
-        setTranslations((prev) => [
-          ...prev,
-          { source: text, target: '翻译暂不可用', isUser },
-        ]);
+        setTranslations((prev) => {
+          const next = [...prev, { source: text, target: '翻译暂不可用', isUser }];
+          localStorage.setItem(transKey, JSON.stringify(next));
+          return next;
+        });
       }
     },
     [],
@@ -68,6 +108,7 @@ export function useChat(scene: string) {
         const aiMsg: ConversationMessage = { role: 'assistant', content: res.ai_text };
         setMessages((prev) => [...prev, aiMsg]);
         setHistory((prev) => [...prev, aiMsg]);
+        pendingAutoPlayRef.current = true;
         await addTranslation(res.ai_text, false);
       } catch {
         setMessages((prev) => [
@@ -104,6 +145,7 @@ export function useChat(scene: string) {
           const aiMsg: ConversationMessage = { role: 'assistant', content: res.ai_text };
           setMessages((prev) => [...prev, aiMsg]);
           setHistory((prev) => [...prev, aiMsg]);
+          pendingAutoPlayRef.current = true;
           await addTranslation(res.ai_text, false);
         }
       } catch {
@@ -122,13 +164,18 @@ export function useChat(scene: string) {
   const clearHistory = useCallback(() => {
     const welcomeMsg = history.find((m) => m.role === 'assistant');
     const newHistory = welcomeMsg ? [welcomeMsg] : [];
+    const transKey = `translations_${sceneRef.current}`;
     setMessages(newHistory);
     setHistory(newHistory);
-    setTranslations([]);
     if (welcomeMsg) {
+      setTranslations([]);
+      localStorage.removeItem(transKey);
       addTranslation(welcomeMsg.content, false);
+    } else {
+      setTranslations([]);
+      localStorage.removeItem(transKey);
     }
   }, [history, setHistory, addTranslation]);
 
-  return { messages, translations, isLoading, sendText, sendVoice, clearHistory, setHistory };
+  return { messages, translations, isLoading, sendText, sendVoice, clearHistory, setHistory, pendingAutoPlayRef };
 }

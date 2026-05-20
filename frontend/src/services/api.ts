@@ -1,4 +1,4 @@
-import type { ConversationMessage, WordData, SentenceItem } from '../types';
+import type { ConversationMessage, WordData, SentenceItem, ListeningSetMeta, ListeningSet } from '../types';
 
 const API_BASE = 'http://127.0.0.1:8000';
 
@@ -73,4 +73,19 @@ export async function queryWord(word: string): Promise<WordData | { error: strin
 // ====================== 句子收藏翻译 ======================
 export async function translateSentence(text: string): Promise<string> {
   return translateToChinese(text);
+}
+
+// ====================== 听力练习 ======================
+export async function fetchListeningSets(): Promise<ListeningSetMeta[]> {
+  const res = await fetch(`${API_BASE}/api/listening/sets`);
+  if (!res.ok) throw new Error(`获取听力套题列表失败: ${res.status}`);
+  const data = await res.json();
+  return data.sets;
+}
+
+export async function fetchListeningSetDetail(setId: string): Promise<ListeningSet> {
+  const res = await fetch(`${API_BASE}/api/listening/sets/${encodeURIComponent(setId)}`);
+  if (!res.ok) throw new Error(`获取听力套题详情失败: ${res.status}`);
+  const data = await res.json();
+  return data.set;
 }
