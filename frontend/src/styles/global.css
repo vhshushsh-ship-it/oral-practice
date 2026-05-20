@@ -1313,6 +1313,20 @@ select {
   overflow-y: auto;
 }
 
+.listening-section-title {
+  margin: 0;
+  padding: 10px 15px 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-light);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--line-light);
+}
+
+.listening-section-title:first-child {
+  padding-top: 4px;
+}
+
 .listening-sentence-item {
   padding: 12px 15px;
   border-bottom: 1px dashed var(--line-light);

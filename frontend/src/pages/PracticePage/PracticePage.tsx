@@ -41,7 +41,7 @@ export function PracticePage() {
   const [rightModule, setRightModule] = useState<'word' | 'translate'>('word');
 
   const speak = useSpeechSynthesis(speechRate);
-  const { messages, translations, isLoading, sendText, sendVoice, clearHistory } = useChat(scene);
+  const { messages, translations, isLoading, sendText, sendVoice, clearHistory, pendingAutoPlayRef } = useChat(scene);
   const { showToast } = useToast();
 
   const handleVoiceSend = useCallback(
@@ -96,17 +96,18 @@ export function PracticePage() {
     handleSceneChange('0');
   }, []);
 
-  // Auto-speak AI responses
+  // Auto-speak AI responses — only when triggered by a new user-initiated reply
   const prevLenRef = useRef(0);
   useEffect(() => {
     if (messages.length > prevLenRef.current && messages.length > 0) {
       const last = messages[messages.length - 1];
-      if (last.role === 'assistant') {
+      if (last.role === 'assistant' && pendingAutoPlayRef.current) {
+        pendingAutoPlayRef.current = false;
         speak(last.content);
       }
     }
     prevLenRef.current = messages.length;
-  }, [messages, speak]);
+  }, [messages, speak, pendingAutoPlayRef]);
 
   return (
     <div className="page">
