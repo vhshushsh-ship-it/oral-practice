@@ -6,6 +6,7 @@ interface Props {
   totalCount: number;
   showTranslations: boolean;
   hasSelectedSet: boolean;
+  variant?: 'practice' | 'exam';
   onPlay: () => void;
   onPause: () => void;
   onResume: () => void;
@@ -21,6 +22,7 @@ export function ListeningPlayer({
   totalCount,
   showTranslations,
   hasSelectedSet,
+  variant = 'practice',
   onPlay,
   onPause,
   onResume,
@@ -67,11 +69,14 @@ export function ListeningPlayer({
 
       <span className="listening-player-progress">{progressText}</span>
 
-      <span className="player-control-separator" />
-
-      <button className="player-control-btn" onClick={onToggleTranslations} title={showTranslations ? '隐藏翻译' : '显示翻译'}>
-        {showTranslations ? <EyeIcon size={14} /> : <EyeOffIcon size={14} />}
-      </button>
+      {variant === 'practice' && (
+        <>
+          <span className="player-control-separator" />
+          <button className="player-control-btn" onClick={onToggleTranslations} title={showTranslations ? '隐藏翻译' : '显示翻译'}>
+            {showTranslations ? <EyeIcon size={14} /> : <EyeOffIcon size={14} />}
+          </button>
+        </>
+      )}
     </div>
   );
 }

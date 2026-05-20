@@ -38,3 +38,13 @@ class WordNoteAddBody(BaseModel):
     meaning: Optional[str] = ""
     meanings: Optional[list[dict]] = []
     createTime: Optional[int] = None
+
+
+class ExamAnswerItem(BaseModel):
+    question_id: str
+    selected_option: str
+
+
+class ExamSubmitBody(BaseModel):
+    set_id: str
+    answers: list[ExamAnswerItem]

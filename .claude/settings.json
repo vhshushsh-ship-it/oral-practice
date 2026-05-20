@@ -5,7 +5,19 @@
       "Bash(curl -s \"http://127.0.0.1:8000/api/listening/sets\")",
       "Bash(npx tsc *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5500\")",
-      "Bash(winget --version)"
+      "Bash(winget --version)",
+      "Bash(npm ls *)",
+      "Bash(/d/oral-practice/oral-practice/frontend/node_modules/.bin/tsc --noEmit --project /d/oral-practice/oral-practice/frontend/tsconfig.app.json)",
+      "Bash(/d/oral-practice/oral-practice/frontend/node_modules/.bin/tsc --noEmit --project /d/oral-practice/oral-practice/frontend/tsconfig.json)",
+      "Bash(mysql -h 127.0.0.1 -P 3306 -u root -poral123 -e \"DROP DATABASE IF EXISTS listening; CREATE DATABASE listening CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\")",
+      "Bash(taskkill //F //PID 35628)",
+      "Bash(curl -s http://127.0.0.1:8000/api/listening/sets/cet4-2025-12/questions)",
+      "Bash(cat \"C:\\\\\\\\Users\\\\\\\\86135\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\claude\\\\\\\\d--oral-practice-oral-practice\\\\\\\\e9094382-953c-46c0-88a4-aa3ad963378d\\\\\\\\tasks\\\\\\\\b1lj0jxl9.output\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); q=d['questions'][0]; print\\('EN:', q['question_text']\\); print\\('ZH:', q.get\\('question_text_zh',''\\)\\)\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); qs=d['questions']; print\\(f'共 {len\\(qs\\)} 道题'\\); [print\\(f'  Q{q[\\\\\"question_number\\\\\"]}: {q.get\\(\\\\\"question_text_zh\\\\\",\\\\\"\\\\\"\\)[:40]}...'\\) for q in qs[:5]]\")",
+      "Bash(taskkill /F /IM uvicorn.exe)",
+      "Bash(nohup python -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5500)"
     ]
   }
 }

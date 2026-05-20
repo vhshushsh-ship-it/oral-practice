@@ -69,12 +69,20 @@ export interface ListeningSentence {
   questionRef?: string;
 }
 
+export interface ListeningItem {
+  id: string;
+  name: string;
+  sortOrder: number;
+  sentences: ListeningSentence[];
+}
+
 export interface ListeningSection {
   id: string | null;
   name: string;
   sectionType: 'news_report' | 'long_conversation' | 'passage' | 'none';
   sortOrder: number;
   sentences: ListeningSentence[];
+  items?: ListeningItem[];
 }
 
 export interface ListeningSet {
@@ -84,6 +92,7 @@ export interface ListeningSet {
   year?: number;
   month?: number;
   sections: ListeningSection[];
+  question_count?: number;
 }
 
 export interface ListeningSetMeta {
@@ -93,6 +102,62 @@ export interface ListeningSetMeta {
   year: number;
   month: number;
   sentence_count: number;
+  question_count?: number;
+}
+
+export type ListeningLevel = 'cet4' | 'cet6';
+export type ListeningView = 'browse' | 'practice' | 'exam' | 'exam_result';
+
+export interface ListeningQuestion {
+  id: string;
+  set_id: string;
+  section_id?: string;
+  section_name?: string;
+  item_id?: string;
+  item_name?: string;
+  question_number: number;
+  question_text: string;
+  question_text_zh?: string;
+  option_a: string;
+  option_b: string;
+  option_c: string;
+  option_d: string;
+  sort_order: number;
+}
+
+export interface ExamAnswerDetail {
+  questionId: string;
+  questionNumber: number;
+  questionText: string;
+  questionTextZh?: string;
+  optionA: string;
+  optionB: string;
+  optionC: string;
+  optionD: string;
+  correctAnswer: string;
+  userAnswer: string;
+  isCorrect: boolean;
+}
+
+export interface ExamResult {
+  id: string;
+  set_id: string;
+  set_name?: string;
+  totalQuestions: number;
+  correctCount: number;
+  accuracy: number;
+  createdAt: string;
+  details?: ExamAnswerDetail[];
+}
+
+export interface ExamHistoryItem {
+  id: string;
+  set_id: string;
+  set_name: string;
+  totalQuestions: number;
+  correctCount: number;
+  accuracy: number;
+  createdAt: string;
 }
 
 // ====================== 句子收藏 ======================
