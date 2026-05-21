@@ -1,9 +1,9 @@
 import time
+import json
 import aiomysql
 from fastapi import APIRouter, HTTPException, Query
 from db import get_db, release_db
 from models.schemas import ExamSubmitBody, SentenceAnalysisBody
-from services.ai_service import analyze_sentence
 
 router = APIRouter(prefix="/api/listening", tags=["listening"])
 
@@ -314,5 +314,24 @@ async def get_exam_detail(exam_id: str):
 
 @router.post("/analyze")
 async def analyze(body: SentenceAnalysisBody):
-    result = analyze_sentence(body.text)
-    return result
+    db = await get_db()
+    try:
+        async with db.cursor(aiomysql.DictCursor) as cur:
+            await cur.execute(
+                "SELECT connected_speech, sense_groups_segmented, sense_groups_explanation FROM listening_sentence_analysis WHERE sentence_text = %s OR %s LIKE CONCAT('%%', sentence_text, '%%') ORDER BY CHAR_LENGTH(sentence_text) DESC LIMIT 1",
+                (body.text, body.text),
+            )
+            row = await cur.fetchone()
+            if row:
+                return {
+                    "connected_speech": json.loads(row["connected_speech"]) if isinstance(row["connected_speech"], str) else row["connected_speech"],
+                    "sense_groups": {
+                        "segmented": row["sense_groups_segmented"],
+                        "explanation": row["sense_groups_explanation"],
+                    },
+                }
+    finally:
+        await release_db(db)
+
+    # Not found in DB
+    raise HTTPException(status_code=404, detail="该句子暂无分析数据")

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { ListeningSentence, SentenceAnalysisResult } from '../../types';
 import { analyzeSentence } from '../../services/api';
+import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { SpeakerIcon, MicIcon, BookmarkIcon } from '../../icons';
 
 interface Props {
@@ -37,6 +38,7 @@ export function SentenceAnalysis({
   const [result, setResult] = useState<SentenceAnalysisResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const speak = useSpeechSynthesis(1.0);
 
   useEffect(() => {
     let cancelled = false;
@@ -139,7 +141,7 @@ export function SentenceAnalysis({
           {loading && (
             <div className="sa-loading">
               <span className="sa-loading-spinner" />
-              <span>AI 正在分析句子发音...</span>
+              <span>正在加载句子分析数据...</span>
             </div>
           )}
 
@@ -158,6 +160,13 @@ export function SentenceAnalysis({
                       <li key={i} className="sa-cs-item">
                         <span className="sa-cs-words">{item.words}</span>
                         <span className="sa-cs-phonetic">{item.phonetic}</span>
+                        <button
+                          className="sa-cs-play-btn"
+                          onClick={() => speak(item.words)}
+                          title="播放发音"
+                        >
+                          <SpeakerIcon size={12} />
+                        </button>
                         <span className="sa-cs-desc">{item.description}</span>
                       </li>
                     ))}
