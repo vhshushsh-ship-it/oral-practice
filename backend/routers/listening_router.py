@@ -2,7 +2,8 @@ import time
 import aiomysql
 from fastapi import APIRouter, HTTPException, Query
 from db import get_db, release_db
-from models.schemas import ExamSubmitBody
+from models.schemas import ExamSubmitBody, SentenceAnalysisBody
+from services.ai_service import analyze_sentence
 
 router = APIRouter(prefix="/api/listening", tags=["listening"])
 
@@ -203,10 +204,10 @@ async def submit_exam(body: ExamSubmitBody):
                 (exam_id, body.set_id, total, correct_count, accuracy),
             )
             for d in details:
-                ans_id = f"{exam_id}-{d['question_id']}"
+                ans_id = f"{exam_id}-{d['questionId']}"
                 await cur.execute(
                     "INSERT INTO listening_exam_answer(id, exam_record_id, question_id, user_answer, is_correct) VALUES(%s,%s,%s,%s,%s)",
-                    (ans_id, exam_id, d["question_id"], d["user_answer"], d["is_correct"]),
+                    (ans_id, exam_id, d["questionId"], d["userAnswer"], d["isCorrect"]),
                 )
             await db.commit()
 
@@ -309,3 +310,9 @@ async def get_exam_detail(exam_id: str):
         "createdAt": str(record["created_at"]) if record.get("created_at") else "",
         "details": details,
     }
+
+
+@router.post("/analyze")
+async def analyze(body: SentenceAnalysisBody):
+    result = analyze_sentence(body.text)
+    return result

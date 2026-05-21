@@ -48,3 +48,7 @@ class ExamAnswerItem(BaseModel):
 class ExamSubmitBody(BaseModel):
     set_id: str
     answers: list[ExamAnswerItem]
+
+
+class SentenceAnalysisBody(BaseModel):
+    text: str

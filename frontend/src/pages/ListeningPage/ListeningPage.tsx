@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import type { ListeningSetMeta, ListeningSet, ListeningSection, ListeningLevel, ListeningQuestion, ExamResult, ExamHistoryItem } from '../../types';
+import type { ListeningSetMeta, ListeningSet, ListeningSection, ListeningSentence, ListeningLevel, ListeningQuestion, ExamResult, ExamHistoryItem } from '../../types';
 import { fetchListeningSets, fetchListeningSetDetail, fetchQuestions, fetchExamHistory, fetchExamDetail } from '../../services/api';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { useSequentialTTS } from '../../hooks/useSequentialTTS';
@@ -16,6 +16,7 @@ import { MockExamPlayer } from './MockExamPlayer';
 import { QuestionCard } from './QuestionCard';
 import { ExamResultView } from './ExamResultView';
 import { ExamHistoryPanel } from './ExamHistoryPanel';
+import { SentenceAnalysis } from './SentenceAnalysis';
 
 type PageStep = 'level_select' | 'set_select' | 'section_select' | 'practice' | 'exam' | 'exam_result';
 
@@ -47,6 +48,7 @@ export function ListeningPage() {
   const [currentExamResult, setCurrentExamResult] = useState<ExamResult | null>(null);
   const [examHistory, setExamHistory] = useState<ExamHistoryItem[]>([]);
   const [examHistoryLoading, setExamHistoryLoading] = useState(false);
+  const [analysisSentence, setAnalysisSentence] = useState<ListeningSentence | null>(null);
 
   const seq = useSequentialTTS(1.0);
   const speak = useSpeechSynthesis(1.0);
@@ -183,7 +185,6 @@ export function ListeningPage() {
 
   const handleExamFinish = useCallback((result: ExamResult) => {
     setCurrentExamResult(result);
-    setStep('exam_result');
     setExamHistory((prev) => [
       {
         id: result.id,
@@ -207,6 +208,14 @@ export function ListeningPage() {
       showToast('加载考试详情失败', 'warning');
     }
   }, [showToast]);
+
+  const handleAnalyzeSentence = useCallback((s: ListeningSentence) => {
+    setAnalysisSentence(s);
+  }, []);
+
+  const handleCloseAnalysis = useCallback(() => {
+    setAnalysisSentence(null);
+  }, []);
 
   // ─── Playback handlers ───
 
@@ -396,6 +405,33 @@ export function ListeningPage() {
 
   // ─── PRACTICE ───
   if (step === 'practice') {
+    // Sentence analysis sub-view
+    if (analysisSentence) {
+      const s = analysisSentence;
+      const sIdx = practiceSentences.findIndex((ps) => ps.id === s.id);
+      return (
+        <div className="page">
+          <div className="listening-linear">
+            <SentenceAnalysis
+              sentence={s}
+              showTranslation={showTranslations}
+              isPlayingFull={isPlayingFull}
+              isRecording={recordingTarget === s.id && recording.state.isRecording}
+              recordingSeconds={recording.state.seconds}
+              hasRecording={recordingTarget === s.id && recordingPlayback.hasRecording}
+              isPlayingRecording={recordingTarget === s.id && recordingPlayback.isPlayingRecording}
+              onPlay={() => handleSinglePlay(s.en, s.id)}
+              onCollect={() => handleCollect(s.en)}
+              onStartRecord={() => handleStartRecord(s.id)}
+              onStopRecord={handleStopRecord}
+              onPlayRecording={handlePlayRecording}
+              onBack={handleCloseAnalysis}
+            />
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="page">
         <div className="listening-linear">
@@ -447,6 +483,7 @@ export function ListeningPage() {
                           onStartRecord={() => handleStartRecord(s.id)}
                           onStopRecord={handleStopRecord}
                           onPlayRecording={handlePlayRecording}
+                          onAnalyze={() => handleAnalyzeSentence(s)}
                         />
                       ))}
                       {itemQuestions.length > 0 && (
@@ -494,9 +531,9 @@ export function ListeningPage() {
                     onStartRecord={() => handleStartRecord(s.id)}
                     onStopRecord={handleStopRecord}
                     onPlayRecording={handlePlayRecording}
+                    onAnalyze={() => handleAnalyzeSentence(s)}
                   />
-                ))
-              )}
+                )))}
             </div>
           </div>
         </div>

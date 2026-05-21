@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
-import type { ListeningSet, ListeningQuestion, ExamResult } from '../../types';
+import type { ListeningSet, ListeningQuestion, ExamResult, ExamAnswerDetail } from '../../types';
 import { submitExamAnswers } from '../../services/api';
 import { QuestionCard } from './QuestionCard';
 
@@ -55,7 +55,6 @@ function buildPlaylist(set: ListeningSet, questions: ListeningQuestion[]): Playl
     }
 
     if (section.items && section.items.length > 0) {
-      // New data: iterate over items within section
       for (const item of section.items) {
         for (const sentence of item.sentences) {
           if (sentence.en) {
@@ -81,7 +80,6 @@ function buildPlaylist(set: ListeningSet, questions: ListeningQuestion[]): Playl
         }
       }
     } else {
-      // Old data: section-level sentences (no items)
       for (const sentence of section.sentences) {
         if (sentence.en) {
           steps.push({ kind: 'material', text: sentence.en, sectionLabel: section.name });
@@ -128,7 +126,11 @@ export function MockExamPlayer({ set, questions, onFinish, onExit }: Props) {
   const [answerTimeLeft, setAnswerTimeLeft] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [lastResult, setLastResult] = useState<ExamResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   // --- Refs ---
   const genRef = useRef(0);
@@ -276,25 +278,44 @@ export function MockExamPlayer({ set, questions, onFinish, onExit }: Props) {
     setAnswers((prev) => ({ ...prev, [questionId]: option }));
   }, []);
 
-  // --- Submit ---
+  // --- Submit flow ---
   const answeredCount = Object.keys(answers).length;
-  const allAnswered = questions.every((q) => answers[q.id]);
-  const canSubmit = phase !== 'idle' && allAnswered && !submitting;
+  const unansweredCount = questions.length - answeredCount;
+  const isAudioActive = phase === 'playing';
 
-  const handleSubmit = useCallback(async () => {
-    if (!canSubmit) return;
+  const handleSubmitClick = useCallback(() => {
+    setSubmitError('');
+    setShowSubmitConfirm(true);
+  }, []);
+
+  const handleConfirmSubmit = useCallback(async () => {
+    setShowSubmitConfirm(false);
     setSubmitting(true);
+    setSubmitError('');
+
+    fullStop();
+    setPhase('completed');
+
     try {
       const answerList = Object.entries(answers).map(([questionId, selectedOption]) => ({
         questionId,
         selectedOption,
       }));
       const result = await submitExamAnswers(set.id, answerList);
+      setLastResult(result);
+      setShowResultModal(true);
       onFinish(result);
     } catch {
+      setSubmitError('提交失败，请检查网络后重试');
+    } finally {
       setSubmitting(false);
     }
-  }, [canSubmit, answers, set.id, onFinish]);
+  }, [answers, set.id, onFinish, fullStop]);
+
+  const handleCloseResult = useCallback(() => {
+    setShowResultModal(false);
+    onExit();
+  }, [onExit]);
 
   // --- Derived ---
   const activeQuestionId = useMemo(() => {
@@ -345,10 +366,35 @@ export function MockExamPlayer({ set, questions, onFinish, onExit }: Props) {
     return playlist.filter((s) => s.kind !== 'answer').length;
   }, [playlist]);
 
+  // --- Result data ---
+  const correctDetails = useMemo(() =>
+    (lastResult?.details ?? []).filter((d) => d.isCorrect).sort((a, b) => a.questionNumber - b.questionNumber),
+  [lastResult]);
+
+  const wrongDetails = useMemo(() =>
+    (lastResult?.details ?? []).filter((d) => !d.isCorrect).sort((a, b) => a.questionNumber - b.questionNumber),
+  [lastResult]);
+
+  const accuracyClass = lastResult
+    ? lastResult.accuracy >= 80 ? 'good' : lastResult.accuracy >= 60 ? 'fair' : 'poor'
+    : '';
+
+  // --- Build confirm message ---
+  const confirmMessages: string[] = [];
+  if (unansweredCount > 0) {
+    confirmMessages.push(`还有 ${unansweredCount} 道题目未作答，提交后将无法修改答案，是否确认提交？`);
+  }
+  if (isAudioActive) {
+    confirmMessages.push('音频尚未播放完毕，提交后将无法继续听题，是否确认提交？');
+  }
+  if (confirmMessages.length === 0) {
+    confirmMessages.push('确认提交答案？提交后将无法修改。');
+  }
+
   // --- Render ---
   return (
     <div className="exam-unified">
-      {/* Exit confirmation modal */}
+      {/* ========== Exit confirmation modal ========== */}
       {showExitConfirm && (
         <div className="exam-exit-overlay" onClick={() => setShowExitConfirm(false)}>
           <div className="exam-exit-dialog" onClick={(e) => e.stopPropagation()}>
@@ -368,6 +414,110 @@ export function MockExamPlayer({ set, questions, onFinish, onExit }: Props) {
         </div>
       )}
 
+      {/* ========== Submit confirmation modal ========== */}
+      {showSubmitConfirm && (
+        <div className="exam-exit-overlay" onClick={() => setShowSubmitConfirm(false)}>
+          <div className="exam-exit-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="exam-exit-dialog-title">确认提交答案</div>
+            <div className="exam-exit-dialog-body">
+              {confirmMessages.map((msg, i) => (
+                <p key={i} style={i > 0 ? { marginTop: 8 } : undefined}>{msg}</p>
+              ))}
+              <p style={{ marginTop: 8, fontSize: 12, color: 'var(--ink-muted)' }}>
+                已作答 {answeredCount}/{questions.length} 题
+              </p>
+            </div>
+            <div className="exam-exit-dialog-actions">
+              <button className="exam-exit-btn cancel" onClick={() => setShowSubmitConfirm(false)}>
+                取消
+              </button>
+              <button className="exam-exit-btn confirm" onClick={handleConfirmSubmit}>
+                确认提交
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========== Result modal ========== */}
+      {showResultModal && lastResult && (
+        <div className="exam-result-overlay">
+          <div className="exam-result-modal">
+            {/* Header */}
+            <div className="exam-result-header">
+              <div className="exam-result-header-title">成绩报告</div>
+              <div className="exam-result-header-set">{set.name}</div>
+            </div>
+
+            {/* Score summary */}
+            <div className="exam-result-score-area">
+              <div className={`exam-result-accuracy ${accuracyClass}`}>
+                {lastResult.accuracy}%
+              </div>
+              <div className="exam-result-score-label">正确率</div>
+              <div className="exam-result-score-detail">
+                <div className="exam-result-stat">
+                  <span className="exam-result-stat-num correct">{lastResult.correctCount}</span>
+                  <span className="exam-result-stat-label">答对</span>
+                </div>
+                <div className="exam-result-stat-divider" />
+                <div className="exam-result-stat">
+                  <span className="exam-result-stat-num wrong">{lastResult.totalQuestions - lastResult.correctCount}</span>
+                  <span className="exam-result-stat-label">答错</span>
+                </div>
+                <div className="exam-result-stat-divider" />
+                <div className="exam-result-stat">
+                  <span className="exam-result-stat-num">{lastResult.totalQuestions}</span>
+                  <span className="exam-result-stat-label">总题数</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Detail list */}
+            <div className="exam-result-detail-area">
+              {wrongDetails.length > 0 && (
+                <div className="exam-result-detail-section">
+                  <div className="exam-result-detail-section-title wrong">
+                    答错题目 ({wrongDetails.length})
+                  </div>
+                  {wrongDetails.map((d) => (
+                    <ResultDetailRow key={d.questionId} detail={d} />
+                  ))}
+                </div>
+              )}
+              {correctDetails.length > 0 && (
+                <div className="exam-result-detail-section">
+                  <div className="exam-result-detail-section-title correct">
+                    答对题目 ({correctDetails.length})
+                  </div>
+                  {correctDetails.map((d) => (
+                    <ResultDetailRow key={d.questionId} detail={d} />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Actions */}
+            <div className="exam-result-actions">
+              <button className="exam-result-btn secondary" onClick={handleCloseResult}>
+                返回练习
+              </button>
+              <button className="exam-result-btn primary" onClick={handleCloseResult}>
+                查看错题解析
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========== Submit error toast ========== */}
+      {submitError && (
+        <div className="exam-submit-error">
+          <span>{submitError}</span>
+          <button onClick={() => setSubmitError('')} className="exam-submit-error-close">&times;</button>
+        </div>
+      )}
+
       {/* Top bar */}
       <div className="exam-topbar">
         <button className="exam-topbar-exit" onClick={() => setShowExitConfirm(true)}>
@@ -384,17 +534,17 @@ export function MockExamPlayer({ set, questions, onFinish, onExit }: Props) {
         <div className="exam-player-left">
           {phase === 'idle' && (
             <button className="exam-player-btn primary" onClick={handleStart}>
-              ▶ 开始考试
+              &#9654; 开始考试
             </button>
           )}
           {phase === 'playing' && (
             <button className="exam-player-btn" onClick={handlePause}>
-              ⏸ 暂停
+              &#9208; 暂停
             </button>
           )}
           {phase === 'paused' && (
             <button className="exam-player-btn primary" onClick={handleResume}>
-              ▶ 继续
+              &#9654; 继续
             </button>
           )}
           {phase === 'completed' && (
@@ -412,6 +562,15 @@ export function MockExamPlayer({ set, questions, onFinish, onExit }: Props) {
         <div className="exam-player-right">
           {phase === 'playing' && answerTimeLeft > 0 && (
             <span className="exam-player-timer">{answerTimeLeft}s</span>
+          )}
+          {phase !== 'idle' && (
+            <button
+              className="exam-player-btn submit-btn"
+              disabled={submitting}
+              onClick={handleSubmitClick}
+            >
+              {submitting ? '提交中...' : `提交答案 (${answeredCount}/${questions.length})`}
+            </button>
           )}
         </div>
       </div>
@@ -434,29 +593,63 @@ export function MockExamPlayer({ set, questions, onFinish, onExit }: Props) {
             ))}
           </div>
         ))}
-
-        {phase !== 'idle' && (
-          <div className="exam-submit-area">
-            {phase !== 'completed' && (
-              <div className="exam-submit-warning">
-                音频尚未播放完毕，提前提交将无法修改答案
-              </div>
-            )}
-            {!allAnswered && (
-              <div className="exam-submit-warning">
-                还有 {questions.length - answeredCount} 题未作答，请检查后提交
-              </div>
-            )}
-            <button
-              className="exam-submit-btn"
-              disabled={!allAnswered || submitting}
-              onClick={handleSubmit}
-            >
-              {submitting ? '提交中...' : `提交答案 (${answeredCount}/${questions.length})`}
-            </button>
-          </div>
-        )}
       </div>
+    </div>
+  );
+}
+
+// ====================== Result detail row ======================
+
+function ResultDetailRow({ detail }: { detail: ExamAnswerDetail }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const optionLabels: Record<string, string> = {
+    A: detail.optionA,
+    B: detail.optionB,
+    C: detail.optionC,
+    D: detail.optionD,
+  };
+
+  return (
+    <div
+      className={`exam-result-detail-row${expanded ? ' expanded' : ''}`}
+      onClick={() => setExpanded(!expanded)}
+    >
+      <div className="exam-result-detail-row-top">
+        <span className="exam-result-detail-num">#{detail.questionNumber}</span>
+        <span className="exam-result-detail-text">{detail.questionText}</span>
+        <span className="exam-result-detail-answers">
+          {detail.isCorrect ? (
+            <span className="exam-result-badge correct">{detail.userAnswer}</span>
+          ) : (
+            <>
+              <span className="exam-result-badge wrong">{detail.userAnswer || '未答'}</span>
+              <span className="exam-result-badge-arrow">&rarr;</span>
+              <span className="exam-result-badge correct">{detail.correctAnswer}</span>
+            </>
+          )}
+        </span>
+      </div>
+      {expanded && (
+        <div className="exam-result-detail-row-options">
+          {(['A', 'B', 'C', 'D'] as const).map((opt) => {
+            const isCorrect = opt === detail.correctAnswer;
+            const isUser = opt === detail.userAnswer;
+            let cls = 'exam-result-option';
+            if (isCorrect) cls += ' is-correct';
+            if (isUser && !detail.isCorrect) cls += ' is-wrong';
+            return (
+              <div key={opt} className={cls}>
+                <span className="exam-result-option-label">{opt}.</span>
+                <span>{optionLabels[opt]}</span>
+                {isCorrect && <span className="exam-result-option-tag correct">正确答案</span>}
+                {isUser && !isCorrect && <span className="exam-result-option-tag wrong">你的答案</span>}
+                {isUser && isCorrect && <span className="exam-result-option-tag correct">你的答案</span>}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

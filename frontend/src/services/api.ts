@@ -1,4 +1,4 @@
-import type { ConversationMessage, WordData, SentenceItem, ListeningSetMeta, ListeningSet, ListeningQuestion, ExamResult, ExamHistoryItem, ListeningLevel } from '../types';
+import type { ConversationMessage, WordData, SentenceItem, ListeningSetMeta, ListeningSet, ListeningQuestion, ExamResult, ExamHistoryItem, ListeningLevel, SentenceAnalysisResult } from '../types';
 
 const API_BASE = 'http://127.0.0.1:8000';
 
@@ -102,12 +102,22 @@ export async function submitExamAnswers(
   setId: string,
   answers: { questionId: string; selectedOption: string }[],
 ): Promise<ExamResult> {
+  const body = {
+    set_id: setId,
+    answers: answers.map((a) => ({
+      question_id: a.questionId,
+      selected_option: a.selectedOption,
+    })),
+  };
   const res = await fetch(`${API_BASE}/api/listening/exam/submit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ set_id: setId, answers }),
+    body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`提交答案失败: ${res.status}`);
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`提交答案失败: ${res.status} ${text}`);
+  }
   return res.json();
 }
 
@@ -121,5 +131,15 @@ export async function fetchExamHistory(): Promise<ExamHistoryItem[]> {
 export async function fetchExamDetail(examId: string): Promise<ExamResult> {
   const res = await fetch(`${API_BASE}/api/listening/exam/history/${encodeURIComponent(examId)}`);
   if (!res.ok) throw new Error(`获取考试详情失败: ${res.status}`);
+  return res.json();
+}
+
+export async function analyzeSentence(text: string): Promise<SentenceAnalysisResult> {
+  const res = await fetch(`${API_BASE}/api/listening/analyze`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
+  });
+  if (!res.ok) throw new Error(`句子分析失败: ${res.status}`);
   return res.json();
 }

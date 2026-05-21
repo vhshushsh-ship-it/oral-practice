@@ -167,6 +167,23 @@ export interface SentenceItem {
   createTime: number;
 }
 
+// ====================== 句子发音分析 ======================
+export interface ConnectedSpeechItem {
+  words: string;
+  phonetic: string;
+  description: string;
+}
+
+export interface SenseGroups {
+  segmented: string;
+  explanation: string;
+}
+
+export interface SentenceAnalysisResult {
+  connected_speech: ConnectedSpeechItem[];
+  sense_groups: SenseGroups;
+}
+
 // ====================== Toast ======================
 export type ToastType = 'success' | 'info' | 'warning';
 
