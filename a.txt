@@ -1,0 +1,1565 @@
+# 四六级听力逐句连读+意群分析（无单词重复版）
+---
+
+## Section A: News Reports
+### News Report One
+#### 句子1
+**原句**：A terrified cat has survived a five-mile round trip under the engine cover of a car on a school run.
+**翻译**：一只受惊的猫在汽车引擎盖下经历了一次五英里的往返行程后幸存了下来。
+
+**连读现象分析**
+1.  **A terrified cat** /ə ˈterɪfaɪd kæt/
+    - A弱读为/ə/，与terrified开头的/t/发生辅元连读；terrified结尾的/d/与cat开头的/k/相邻，发生不完全爆破（失爆），/d/仅保留口型不送气。
+2.  **has survived** /həz səˈvaɪvd/
+    - has弱读为/həz/，结尾的/z/与survived开头的/s/相邻，发生辅音连读，可轻微延长避免吞音。
+3.  **a five-mile round trip** /ə ˈfaɪvmaɪl raʊnd trɪp/
+    - a弱读为/ə/，与five开头的/f/发生辅元连读；five结尾的/v/与mile开头的/m/发生辅音连读；round结尾的/d/与trip开头的/t/相邻，发生不完全爆破（失爆）。
+4.  **under the engine** /ˈʌndər ðə ˈendʒɪn/
+    - under结尾的/r/与the开头的/ð/发生辅音连读；the弱读为/ðə/，与engine开头的/e/发生元元连读（口语中the可弱读为/ði/更顺畅）。
+5.  **cover of a car** /ˈkʌvər əv ə kɑːr/
+    - cover结尾的/r/与of开头的/ə/发生r连读（辅元连读）；of弱读为/əv/，结尾的/v/与a的/ə/发生辅元连读；a的/ə/与car开头的/k/发生辅元连读。
+6.  **on a school run** /ɒn ə skuːl rʌn/
+    - on结尾的/n/与a的/ə/发生辅元连读；a的/ə/与school开头的/s/发生辅元连读；school结尾的/l/与run开头的/r/发生辅音连读。
+
+**意群切分**：A terrified cat / has survived / a five-mile round trip / under the engine cover / of a car / on a school run.
+**划分依据**：主语/谓语/宾语/地点状语/定语/背景状语
+
+---
+
+#### 句子2
+**原句**：The black cat was found curled up under the engine cover of David King's car when he decided to do an oil check after dropping his grandson off at school in Kent.
+**翻译**：这只黑猫是在大卫·金送孙子去肯特郡的学校后，决定检查机油时，被发现蜷缩在他的汽车引擎盖下的。
+
+**连读现象分析**
+1.  **The black cat** /ðə blæk kæt/
+    - the弱读为/ðə/，与black开头的/b/发生辅元连读；black结尾的/k/与cat开头的/k/相邻，发生不完全爆破（失爆）。
+2.  **was found curled up** /wəz faʊnd kɜːld ʌp/
+    - was弱读为/wəz/，与found开头的/f/发生辅元连读；found结尾的/d/与curled开头的/k/相邻，发生不完全爆破（失爆）；curled结尾的/d/与up开头的/ʌ/发生辅元连读。
+3.  **under the engine cover** /ˈʌndər ðə ˈendʒɪn ˈkʌvər/
+    - under结尾的/r/与the开头的/ð/发生辅音连读；the的/ə/与engine开头的/e/发生元元连读；engine结尾的/n/与cover开头的/k/发生辅音连读。
+4.  **of David King's car** /əv ˈdeɪvɪd kɪŋz kɑːr/
+    - of弱读为/əv/，与David开头的/d/发生辅元连读；David结尾的/d/与King's开头的/k/相邻，发生不完全爆破（失爆）；King's结尾的/z/与car开头的/k/发生辅音连读。
+5.  **when he decided** /wen hi dɪˈsaɪdɪd/
+    - when结尾的/n/与he开头的/h/发生辅元连读（h弱读）；he结尾的/i/与decided开头的/d/发生辅元连读。
+6.  **to do an oil check** /tu duː ən ɔɪl tʃek/
+    - to弱读为/tu/，与do开头的/d/发生辅元连读；do结尾的/uː/与an的/ə/发生元元连读；an结尾的/n/与oil开头的/ɔɪ/发生辅元连读；oil结尾的/l/与check开头的/tʃ/发生辅音连读。
+7.  **after dropping his grandson off** /ˈɑːftə ˈdrɒpɪŋ hɪz ˈɡrænsʌn ɒf/
+    - after结尾的/r/与dropping开头的/d/发生r连读；dropping结尾的/ŋ/与his开头的/h/发生辅元连读（h弱读）；his结尾的/z/与grandson开头的/ɡ/发生辅音连读；grandson结尾的/n/与off开头的/ɒ/发生辅元连读。
+8.  **at school in Kent** /æt skuːl ɪn kent/
+    - at结尾的/t/与school开头的/s/相邻，发生不完全爆破（失爆）；school结尾的/l/与in开头的/ɪ/发生辅元连读；in结尾的/n/与Kent开头的/k/发生辅音连读。
+
+**意群切分**：The black cat / was found curled up / under the engine cover of David King's car / when he decided to do an oil check / after dropping his grandson off at school in Kent.
+**划分依据**：主语/谓语+主语补足语/地点状语/时间状语从句（主句）/时间状语从句（从句）
+
+---
+
+#### 句子3
+**原句**：Mr King's wife said her husband had come running in and was shouting for me to come have a look.
+**翻译**：金先生的妻子说，她丈夫跑进来喊我过去看看。
+
+**连读现象分析**
+1.  **Mr King's wife said** /ˈmɪstə kɪŋz waɪf sed/
+    - Mr弱读为/ˈmɪstə/，结尾的/ə/与King's开头的/k/发生辅元连读；King's结尾的/z/与wife开头的/w/发生辅音连读；wife结尾的/f/与said开头的/s/发生辅音连读。
+2.  **her husband had come** /hɜː ˈhʌzbənd həd kʌm/
+    - her弱读为/hɜː/，结尾的/ɜː/与husband开头的/h/发生辅元连读（h弱读）；husband结尾的/d/与had开头的/h/相邻，发生不完全爆破（失爆）；had弱读为/həd/，结尾的/d/与come开头的/k/相邻，发生不完全爆破（失爆）。
+3.  **running in and was shouting** /ˈrʌnɪŋ ɪn ænd wəz ˈʃaʊtɪŋ/
+    - running结尾的/ŋ/与in开头的/ɪ/发生辅元连读；in结尾的/n/与and开头的/æ/发生辅元连读；and弱读为/ænd/，结尾的/d/与was开头的/w/相邻，发生不完全爆破（失爆）；was弱读为/wəz/，与shouting开头的/ʃ/发生辅元连读。
+4.  **for me to come have** /fɔː mi tu kʌm hæv/
+    - for弱读为/fɔː/，与me开头的/m/发生辅元连读；me结尾的/i/与to的/tu/发生元元连读；to弱读为/tu/，与come开头的/k/发生辅元连读；come结尾的/m/与have开头的/h/发生辅元连读（h弱读）。
+5.  **a look** /ə lʊk/
+    - a弱读为/ə/，与look开头的/l/发生辅元连读。
+
+**意群切分**：Mr King's wife / said / her husband had come running in / and was shouting for me to come have a look.
+**划分依据**：主语/谓语/宾语从句1/宾语从句2
+
+---
+
+#### 句子4
+**原句**：We weren't even sure it was alive, so I gently pushed it with a stick to check it was breathing and saw it was a terrified little cat.
+**翻译**：我们甚至不确定它还活着，所以我用一根棍子轻轻推了推它，检查它是否在呼吸，然后发现这是一只吓坏了的小猫。
+
+**连读现象分析**
+1.  **We weren't even sure** /wi wɜːnt ˈiːvn ʃʊə/
+    - We结尾的/i/与weren't开头的/w/发生辅元连读；weren't结尾的/t/与even开头的/iː/发生辅元连读；even结尾的/n/与sure开头的/ʃ/发生辅音连读。
+2.  **it was alive** /ɪt wəz əˈlaɪv/
+    - it结尾的/t/与was开头的/w/相邻，发生不完全爆破（失爆）；was弱读为/wəz/，与alive开头的/ə/发生辅元连读。
+3.  **so I gently pushed it** /səʊ aɪ ˈdʒentli pʊʃt ɪt/
+    - so结尾的/əʊ/与I的/aɪ/发生元元连读；I的/aɪ/与gently开头的/dʒ/发生辅元连读；gently结尾的/i/与pushed开头的/p/发生辅元连读；pushed结尾的/t/与it开头的/ɪ/发生辅元连读。
+4.  **with a stick to check** /wɪð ə stɪk tu tʃek/
+    - with结尾的/ð/与a的/ə/发生辅元连读；a的/ə/与stick开头的/s/发生辅元连读；stick结尾的/k/与to的/tu/相邻，发生不完全爆破（失爆）；to弱读为/tu/，与check开头的/tʃ/发生辅元连读。
+5.  **it was breathing and saw** /ɪt wəz ˈbriːðɪŋ ænd sɔː/
+    - it结尾的/t/与was开头的/w/相邻，发生不完全爆破（失爆）；was弱读为/wəz/，与breathing开头的/b/发生辅元连读；breathing结尾的/ŋ/与and开头的/æ/发生辅元连读；and弱读为/ænd/，结尾的/d/与saw开头的/s/相邻，发生不完全爆破（失爆）。
+6.  **it was a terrified little cat** /ɪt wəz ə ˈterɪfaɪd ˈlɪtl kæt/
+    - it结尾的/t/与was开头的/w/相邻，发生不完全爆破（失爆）；was弱读为/wəz/，与a的/ə/发生辅元连读；a的/ə/与terrified开头的/t/发生辅元连读；terrified结尾的/d/与little开头的/l/发生辅元连读；little结尾的/l/与cat开头的/k/发生辅音连读。
+
+**意群切分**：We weren't even sure it was alive, / so I gently pushed it with a stick / to check it was breathing / and saw it was a terrified little cat.
+**划分依据**：主句/结果状语从句（动作1）/目的状语/结果状语从句（动作2）
+
+---
+
+#### 句子5
+**原句**：It reversed even further into the engine and was stuck.
+**翻译**：它甚至往引擎更深处退，然后卡住了。
+
+**连读现象分析**
+1.  **It reversed even further** /ɪt rɪˈvɜːst ˈiːvn ˈfɜːðə/
+    - It结尾的/t/与reversed开头的/r/发生辅元连读；reversed结尾的/t/与even开头的/iː/发生辅元连读；even结尾的/n/与further开头的/f/发生辅音连读。
+2.  **into the engine** /ˈɪntu ðə ˈendʒɪn/
+    - into弱读为/ˈɪntu/，结尾的/u/与the的/ðə/发生元元连读；the弱读为/ðə/，与engine开头的/e/发生元元连读。
+3.  **and was stuck** /ænd wəz stʌk/
+    - and弱读为/ænd/，结尾的/d/与was开头的/w/相邻，发生不完全爆破（失爆）；was弱读为/wəz/，与stuck开头的/s/发生辅元连读。
+
+**意群切分**：It reversed even further / into the engine / and was stuck.
+**划分依据**：谓语+状语/地点状语/并列谓语
+
+---
+
+#### 句子6
+**原句**：I tried to reach it but it was too far down and there wasn't any way I could get it out.
+**翻译**：我试着去够它，但它陷得太深了，我根本没办法把它弄出来。
+
+**连读现象分析**
+1.  **I tried to reach it** /aɪ traɪd tu riːtʃ ɪt/
+    - I的/aɪ/与tried开头的/tr/发生辅元连读；tried结尾的/d/与to的/tu/相邻，发生不完全爆破（失爆）；to弱读为/tu/，与reach开头的/r/发生辅元连读；reach结尾的/tʃ/与it开头的/ɪ/发生辅元连读。
+2.  **but it was too far down** /bʌt ɪt wəz tuː fɑː daʊn/
+    - but结尾的/t/与it开头的/ɪ/发生辅元连读；it结尾的/t/与was开头的/w/相邻，发生不完全爆破（失爆）；was弱读为/wəz/，与too的/tuː/发生辅元连读；too结尾的/uː/与far开头的/f/发生辅元连读；far结尾的/r/与down开头的/d/发生r连读。
+3.  **and there wasn't any way** /ænd ðeə wɒznt ˈeni weɪ/
+    - and弱读为/ænd/，结尾的/d/与there开头的/ð/相邻，发生不完全爆破（失爆）；there结尾的/ə/与wasn't开头的/w/发生辅元连读；wasn't结尾的/t/与any开头的/e/发生辅元连读；any结尾的/i/与way开头的/w/发生辅元连读。
+4.  **I could get it out** /aɪ kʊd ɡet ɪt aʊt/
+    - I的/aɪ/与could开头的/k/发生辅元连读；could结尾的/d/与get开头的/ɡ/相邻，发生不完全爆破（失爆）；get结尾的/t/与it开头的/ɪ/发生辅元连读；it结尾的/t/与out开头的/aʊ/发生辅元连读。
+
+**意群切分**：I tried to reach it / but it was too far down / and there wasn't any way / I could get it out.
+**划分依据**：主句/转折状语从句/并列句/定语从句
+
+---
+
+#### 句子7
+**原句**：Following a rescue by UK charity Cats Protection, the four year old cat was later reunited with its owner, Mr King's neighbour.
+**翻译**：在英国慈善机构“猫咪保护协会”的救援下，这只四岁的猫后来与它的主人——金先生的邻居团聚了。
+
+**连读现象分析**
+1.  **Following a rescue by** /ˈfɒləʊɪŋ ə ˈreskjuː baɪ/
+    - Following结尾的/ŋ/与a的/ə/发生辅元连读；a的/ə/与rescue开头的/r/发生辅元连读；rescue结尾的/uː/与by开头的/b/发生辅元连读。
+2.  **UK charity Cats Protection** /ˌjuːˈkeɪ ˈtʃærəti kæts prəˈtekʃn/
+    - UK结尾的/eɪ/与charity开头的/tʃ/发生辅元连读；charity结尾的/i/与Cats开头的/k/发生辅元连读；Cats结尾的/s/与Protection开头的/pr/发生辅音连读。
+3.  **the four year old cat** /ðə fɔː jɪə əʊld kæt/
+    - the弱读为/ðə/，与four开头的/f/发生辅元连读；four结尾的/r/与year开头的/j/发生r连读；year结尾的/ə/与old开头的/əʊ/发生元元连读；old结尾的/d/与cat开头的/k/相邻，发生不完全爆破（失爆）。
+4.  **was later reunited with** /wəz ˈleɪtə ˌriːjuːˈnaɪtɪd wɪð/
+    - was弱读为/wəz/，与later开头的/l/发生辅元连读；later结尾的/ə/与reunited开头的/r/发生辅元连读；reunited结尾的/d/与with开头的/w/相邻，发生不完全爆破（失爆）。
+5.  **its owner, Mr King's neighbour** /ɪts ˈəʊnə ˈmɪstə kɪŋz ˈneɪbə/
+    - its结尾的/s/与owner开头的/əʊ/发生辅元连读；owner结尾的/ə/与Mr的/ˈmɪstə/发生辅元连读；Mr弱读为/ˈmɪstə/，结尾的/ə/与King's开头的/k/发生辅元连读；King's结尾的/z/与neighbour开头的/n/发生辅音连读。
+
+**意群切分**：Following a rescue by UK charity Cats Protection, / the four year old cat / was later reunited with its owner, / Mr King's neighbour.
+**划分依据**：方式状语/主语/谓语+宾语/同位语
+
+---
+
+### News Report Two
+#### 句子1
+**原句**：In less than a month, the Special Olympics Spring Games will make a return to Fayetteville.
+**翻译**：不到一个月后，特奥会春季运动会将重返费耶特维尔。
+
+**连读现象分析**
+1.  **In less than a month** /ɪn les ðæn ə mʌnθ/
+    - In结尾的/n/与less开头的/l/发生辅元连读；less结尾的/s/与than开头的/ð/发生辅音连读；than弱读为/ðæn/，结尾的/n/与a的/ə/发生辅元连读；a的/ə/与month开头的/m/发生辅元连读。
+2.  **the Special Olympics Spring Games** /ðə ˈspeʃl əˈlɪmpɪks sprɪŋ ɡeɪmz/
+    - the弱读为/ðə/，与Special开头的/s/发生辅元连读；Special结尾的/l/与Olympics开头的/ə/发生辅元连读；Olympics结尾的/s/与Spring开头的/sp/发生辅音连读；Spring结尾的/ŋ/与Games开头的/ɡ/发生辅元连读。
+3.  **will make a return to** /wɪl meɪk ə rɪˈtɜːn tu/
+    - will弱读为/wɪl/，结尾的/l/与make开头的/m/发生辅元连读；make结尾的/k/与a的/ə/相邻，发生不完全爆破（失爆）；a的/ə/与return开头的/r/发生辅元连读；return结尾的/n/与to的/tu/发生辅元连读。
+4.  **Fayetteville** /ˈfeɪətvɪl/
+    - 无连读
+
+**意群切分**：In less than a month, / the Special Olympics Spring Games / will make a return to Fayetteville.
+**划分依据**：时间状语/主语/谓语+宾语
+
+---
+
+#### 句子2
+**原句**：The games are coming back for the first time in five years.
+**翻译**：这是该运动会五年来首次回归。
+
+**连读现象分析**
+1.  **The games are coming back** /ðə ɡeɪmz ɑː ˈkʌmɪŋ bæk/
+    - the弱读为/ðə/，与games开头的/ɡ/发生辅元连读；games结尾的/z/与are的/ɑː/发生辅元连读；are的/ɑː/与coming开头的/k/发生辅元连读；coming结尾的/ŋ/与back开头的/b/发生辅元连读。
+2.  **for the first time** /fɔː ðə fɜːst taɪm/
+    - for弱读为/fɔː/，与the的/ðə/发生辅元连读；the弱读为/ðə/，与first开头的/f/发生辅元连读；first结尾的/t/与time开头的/t/相邻，发生不完全爆破（失爆）。
+3.  **in five years** /ɪn faɪv jɪəz/
+    - In结尾的/n/与five开头的/f/发生辅元连读；five结尾的/v/与years开头的/j/发生辅音连读。
+
+**意群切分**：The games / are coming back / for the first time / in five years.
+**划分依据**：主语/谓语/目的状语/时间状语
+
+---
+
+#### 句子3
+**原句**：The event will take place at Methodist University.
+**翻译**：该活动将在卫理公会大学举行。
+
+**连读现象分析**
+1.  **The event will take place** /ðə ɪˈvent wɪl teɪk pleɪs/
+    - the弱读为/ðə/，与event开头的/ɪ/发生元元连读（the弱读为/ði/）；event结尾的/t/与will开头的/w/相邻，发生不完全爆破（失爆）；will弱读为/wɪl/，结尾的/l/与take开头的/t/发生辅元连读；take结尾的/k/与place开头的/p/相邻，发生不完全爆破（失爆）。
+2.  **at Methodist University** /æt məˈθɒdɪst ˌjuːnɪˈvɜːsəti/
+    - at结尾的/t/与Methodist开头的/m/相邻，发生不完全爆破（失爆）；Methodist结尾的/t/与University开头的/j/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：The event / will take place / at Methodist University.
+**划分依据**：主语/谓语/地点状语
+
+---
+
+#### 句子4
+**原句**：Event organizer Benjamin Koalzick says he's excited that athletes will get a chance to come back and demonstrate their abilities.
+**翻译**：活动组织者本杰明·科尔齐克表示，他很高兴运动员们有机会回来展示自己的能力。
+
+**连读现象分析**
+1.  **Event organizer Benjamin Koalzick says** /ɪˈvent ˈɔːɡənaɪzə ˈbendʒəmɪn ˈkəʊlzɪk sez/
+    - Event结尾的/t/与organizer开头的/ɔː/发生辅元连读；organizer结尾的/ə/与Benjamin开头的/b/发生辅元连读；Benjamin结尾的/n/与Koalzick开头的/k/发生辅音连读；Koalzick结尾的/k/与says开头的/s/相邻，发生不完全爆破（失爆）。
+2.  **he's excited that athletes** /hiːz ɪkˈsaɪtɪd ðæt ˈæθliːts/
+    - he's结尾的/z/与excited开头的/ɪ/发生辅元连读；excited结尾的/d/与that开头的/ð/相邻，发生不完全爆破（失爆）；that弱读为/ðæt/，结尾的/t/与athletes开头的/æ/发生辅元连读。
+3.  **will get a chance to come back** /wɪl ɡet ə tʃɑːns tu kʌm bæk/
+    - will弱读为/wɪl/，结尾的/l/与get开头的/ɡ/发生辅元连读；get结尾的/t/与a的/ə/发生辅元连读；a的/ə/与chance开头的/tʃ/发生辅元连读；chance结尾的/s/与to的/tu/发生辅音连读；to弱读为/tu/，与come开头的/k/发生辅元连读；come结尾的/m/与back开头的/b/发生辅元连读。
+4.  **and demonstrate their abilities** /ænd ˈdemənstreɪt ðeə əˈbɪlətiz/
+    - and弱读为/ænd/，结尾的/d/与demonstrate开头的/d/相邻，发生不完全爆破（失爆）；demonstrate结尾的/t/与their开头的/ð/相邻，发生不完全爆破（失爆）；their结尾的/ə/与abilities开头的/ə/发生元元连读。
+
+**意群切分**：Event organizer Benjamin Koalzick / says / he's excited / that athletes will get a chance to come back and demonstrate their abilities.
+**划分依据**：主语/谓语/宾语从句（主句）/宾语从句（从句）
+
+---
+
+#### 句子5
+**原句**：Organizers expect about one hundred athletes will come out to compete in Fayetteville.
+**翻译**：组织者预计将有大约一百名运动员来到费耶特维尔参赛。
+
+**连读现象分析**
+1.  **Organizers expect about one hundred** /ˈɔːɡənaɪzəz ɪkˈspekt əˈbaʊt wʌn ˈhʌndrəd/
+    - Organizers结尾的/z/与expect开头的/ɪ/发生辅元连读；expect结尾的/t/与about开头的/ə/发生辅元连读；about结尾的/t/与one开头的/w/相邻，发生不完全爆破（失爆）；one结尾的/n/与hundred开头的/h/发生辅元连读（h弱读）。
+2.  **athletes will come out to compete** /ˈæθliːts wɪl kʌm aʊt tu kəmˈpiːt/
+    - athletes结尾的/s/与will开头的/w/发生辅音连读；will弱读为/wɪl/，结尾的/l/与come开头的/k/发生辅元连读；come结尾的/m/与out开头的/aʊ/发生辅元连读；out结尾的/t/与to的/tu/相邻，发生不完全爆破（失爆）；to弱读为/tu/，与compete开头的/k/发生辅元连读。
+3.  **in Fayetteville** /ɪn ˈfeɪətvɪl/
+    - In结尾的/n/与Fayetteville开头的/f/发生辅元连读。
+
+**意群切分**：Organizers / expect / about one hundred athletes / will come out to compete in Fayetteville.
+**划分依据**：主语/谓语/宾语从句（主语）/宾语从句（谓语）
+
+---
+
+#### 句子6
+**原句**：They will have a variety of events to choose from, including running, throwing, and jumping.
+**翻译**：他们将有多种项目可供选择，包括跑步、投掷和跳跃。
+
+**连读现象分析**
+1.  **They will have a variety** /ðeɪ wɪl hæv ə vəˈraɪəti/
+    - They结尾的/eɪ/与will开头的/w/发生辅元连读；will弱读为/wɪl/，结尾的/l/与have开头的/h/发生辅元连读（h弱读）；have结尾的/v/与a的/ə/发生辅元连读；a的/ə/与variety开头的/v/发生辅元连读。
+2.  **of events to choose from** /əv ɪˈvents tu tʃuːz frɒm/
+    - of弱读为/əv/，与events开头的/ɪ/发生辅元连读；events结尾的/s/与to的/tu/发生辅音连读；to弱读为/tu/，与choose开头的/tʃ/发生辅元连读；choose结尾的/z/与from开头的/f/发生辅音连读。
+3.  **including running, throwing, and jumping** /ɪnˈkluːdɪŋ ˈrʌnɪŋ ˈθrəʊɪŋ ænd ˈdʒʌmpɪŋ/
+    - including结尾的/ŋ/与running开头的/r/发生辅元连读；running结尾的/ŋ/与throwing开头的/θ/发生辅元连读；throwing结尾的/ŋ/与and开头的/æ/发生辅元连读；and弱读为/ænd/，结尾的/d/与jumping开头的/dʒ/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：They / will have a variety of events / to choose from, / including running, throwing, and jumping.
+**划分依据**：主语/谓语+宾语/定语/插入语
+
+---
+
+#### 句子7
+**原句**：There will also be a fun tent for children.
+**翻译**：还将有一个供孩子们玩耍的趣味帐篷。
+
+**连读现象分析**
+1.  **There will also be** /ðeə wɪl ˈɔːlsəʊ biː/
+    - There结尾的/ə/与will开头的/w/发生辅元连读；will弱读为/wɪl/，结尾的/l/与also开头的/ɔː/发生辅元连读；also结尾的/əʊ/与be的/biː/发生元元连读。
+2.  **a fun tent for children** /ə fʌn tent fɔː ˈtʃɪldrən/
+    - a弱读为/ə/，与fun开头的/f/发生辅元连读；fun结尾的/n/与tent开头的/t/发生辅元连读；tent结尾的/t/与for开头的/f/相邻，发生不完全爆破（失爆）；for弱读为/fɔː/，与children开头的/tʃ/发生辅元连读。
+
+**意群切分**：There will also be / a fun tent / for children.
+**划分依据**：there be句型主干/主语/定语
+
+---
+
+#### 句子8
+**原句**：Kawalski said it's rewarding to see athletes with special needs triumph in the games.
+**翻译**：科瓦尔斯基说，看到有特殊需求的运动员在比赛中获胜是很有意义的。
+
+**连读现象分析**
+1.  **Kawalski said it's rewarding** /kəˈwɑːlski sed ɪts rɪˈwɔːdɪŋ/
+    - Kawalski结尾的/i/与said开头的/s/发生辅元连读；said结尾的/d/与it's开头的/ɪ/发生辅元连读；it's结尾的/s/与rewarding开头的/r/发生辅音连读。
+2.  **to see athletes with special needs** /tu siː ˈæθliːts wɪð ˈspeʃl niːdz/
+    - to弱读为/tu/，与see的/siː/发生辅元连读；see结尾的/iː/与athletes开头的/æ/发生元元连读；athletes结尾的/s/与with开头的/w/发生辅音连读；with结尾的/ð/与special开头的/s/发生辅音连读；special结尾的/l/与needs开头的/n/发生辅元连读。
+3.  **triumph in the games** /ˈtraɪʌmf ɪn ðə ɡeɪmz/
+    - triumph结尾的/f/与in开头的/ɪ/发生辅元连读；in结尾的/n/与the的/ðə/发生辅元连读；the弱读为/ðə/，与games开头的/ɡ/发生辅元连读。
+
+**意群切分**：Kawalski / said / it's rewarding / to see athletes with special needs triumph in the games.
+**划分依据**：主语/谓语/宾语从句（形式主语）/宾语从句（真正主语）
+
+---
+
+#### 句子9
+**原句**：For anyone who wants to help make this year's games a massive success, there are still opportunities to volunteer for Fayetteville's Special Olympics.
+**翻译**：对于任何想帮助今年的运动会取得巨大成功的人来说，仍然有机会为费耶特维尔的特奥会做志愿者。
+
+**连读现象分析**
+1.  **For anyone who wants to help** /fɔː ˈeniwɪn huː wɒnts tu help/
+    - For弱读为/fɔː/，与anyone开头的/e/发生辅元连读；anyone结尾的/n/与who的/huː/发生辅元连读；who结尾的/uː/与wants开头的/w/发生元元连读；wants结尾的/s/与to的/tu/发生辅音连读；to弱读为/tu/，与help开头的/h/发生辅元连读（h弱读）。
+2.  **make this year's games a massive success** /meɪk ðɪs jɪəz ɡeɪmz ə ˈmæsɪv səkˈses/
+    - make结尾的/k/与this开头的/ð/相邻，发生不完全爆破（失爆）；this结尾的/s/与year's开头的/j/发生辅音连读；year's结尾的/z/与games开头的/ɡ/发生辅音连读；games结尾的/z/与a的/ə/发生辅元连读；a的/ə/与massive开头的/m/发生辅元连读；massive结尾的/v/与success开头的/s/发生辅音连读。
+3.  **there are still opportunities to volunteer** /ðeə ɑː stɪl ˌɒpəˈtjuːnətiz tu ˌvɒlənˈtɪə/
+    - there结尾的/ə/与are的/ɑː/发生元元连读；are的/ɑː/与still开头的/st/发生辅元连读；still结尾的/l/与opportunities开头的/ɒ/发生辅元连读；opportunities结尾的/z/与to的/tu/发生辅音连读；to弱读为/tu/，与volunteer开头的/v/发生辅元连读。
+4.  **for Fayetteville's Special Olympics** /fɔː ˈfeɪətvɪlz ˈspeʃl əˈlɪmpɪks/
+    - for弱读为/fɔː/，与Fayetteville's开头的/f/发生辅元连读；Fayetteville's结尾的/z/与Special开头的/s/发生辅音连读；Special结尾的/l/与Olympics开头的/ə/发生辅元连读。
+
+**意群切分**：For anyone who wants to help make this year's games a massive success, / there are still opportunities / to volunteer for Fayetteville's Special Olympics.
+**划分依据**：条件状语/主句主干/定语
+
+---
+
+#### 句子10
+**原句**：Organizers encourage them to visit the Games website to sign up.
+**翻译**：组织者鼓励他们访问运动会网站进行报名。
+
+**连读现象分析**
+1.  **Organizers encourage them to visit** /ˈɔːɡənaɪzəz ɪnˈkʌrɪdʒ ðəm tu ˈvɪzɪt/
+    - Organizers结尾的/z/与encourage开头的/ɪ/发生辅元连读；encourage结尾的/dʒ/与them开头的/ð/发生辅音连读；them弱读为/ðəm/，结尾的/m/与to的/tu/发生辅元连读；to弱读为/tu/，与visit开头的/v/发生辅元连读。
+2.  **the Games website to sign up** /ðə ɡeɪmz ˈwebsaɪt tu saɪn ʌp/
+    - the弱读为/ðə/，与Games开头的/ɡ/发生辅元连读；Games结尾的/z/与website开头的/w/发生辅音连读；website结尾的/t/与to的/tu/相邻，发生不完全爆破（失爆）；to弱读为/tu/，与sign开头的/s/发生辅元连读；sign结尾的/n/与up开头的/ʌ/发生辅元连读。
+
+**意群切分**：Organizers / encourage them / to visit the Games website / to sign up.
+**划分依据**：主语/谓语+宾语/目的状语1/目的状语2
+
+---
+
+### News Report Three
+#### 句子1
+**原句**：A German supermarket has been ordered to destroy its chocolate rabbits after it lost a court battle with a Swiss chocolate manufacturer.
+**翻译**：一家德国超市在与一家瑞士巧克力制造商的官司中败诉后，被勒令销毁其巧克力兔子。
+
+**连读现象分析**
+1.  **A German supermarket has been ordered** /ə ˈdʒɜːmən ˈsuːpəmɑːkɪt həz biːn ˈɔːdəd/
+    - a弱读为/ə/，与German开头的/dʒ/发生辅元连读；German结尾的/n/与supermarket开头的/s/发生辅元连读；supermarket结尾的/t/与has开头的/h/相邻，发生不完全爆破（失爆）；has弱读为/həz/，与been的/biːn/发生辅元连读；been结尾的/n/与ordered开头的/ɔː/发生辅元连读。
+2.  **to destroy its chocolate rabbits** /tu dɪˈstrɔɪ ɪts ˈtʃɒklət ˈræbɪts/
+    - to弱读为/tu/，与destroy开头的/d/发生辅元连读；destroy结尾的/ɔɪ/与its开头的/ɪ/发生元元连读；its结尾的/s/与chocolate开头的/tʃ/发生辅音连读；chocolate结尾的/t/与rabbits开头的/r/发生辅元连读。
+3.  **after it lost a court battle** /ˈɑːftə ɪt lɒst ə kɔːt ˈbætl/
+    - after结尾的/r/与it开头的/ɪ/发生r连读；it结尾的/t/与lost开头的/l/相邻，发生不完全爆破（失爆）；lost结尾的/t/与a的/ə/发生辅元连读；a的/ə/与court开头的/k/发生辅元连读；court结尾的/t/与battle开头的/b/相邻，发生不完全爆破（失爆）。
+4.  **with a Swiss chocolate manufacturer** /wɪð ə swɪs ˈtʃɒklət ˌmænjuˈfæktʃərə/
+    - with结尾的/ð/与a的/ə/发生辅元连读；a的/ə/与Swiss开头的/sw/发生辅元连读；Swiss结尾的/s/与chocolate开头的/tʃ/发生辅音连读；chocolate结尾的/t/与manufacturer开头的/m/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：A German supermarket / has been ordered to destroy its chocolate rabbits / after it lost a court battle with a Swiss chocolate manufacturer.
+**划分依据**：主语/谓语+宾语/时间状语从句
+
+---
+
+#### 句子2
+**原句**：The Swiss firm had argued its gold wrapped chocolate rabbit deserved copyright protection from a similar product sold by the budget supermarket.
+**翻译**：这家瑞士公司辩称，其金色包装的巧克力兔子应受到版权保护，免受这家廉价超市销售的类似产品的侵权。
+
+**连读现象分析**
+1.  **The Swiss firm had argued** /ðə swɪs fɜːm həd ˈɑːɡjuːd/
+    - the弱读为/ðə/，与Swiss开头的/sw/发生辅元连读；Swiss结尾的/s/与firm开头的/f/发生辅音连读；firm结尾的/m/与had开头的/h/发生辅元连读（h弱读）；had弱读为/həd/，结尾的/d/与argued开头的/ɑː/发生辅元连读。
+2.  **its gold wrapped chocolate rabbit** /ɪts ɡəʊld ræpt ˈtʃɒklət ˈræbɪt/
+    - its结尾的/s/与gold开头的/ɡ/发生辅音连读；gold结尾的/d/与wrapped开头的/r/发生辅元连读；wrapped结尾的/t/与chocolate开头的/tʃ/相邻，发生不完全爆破（失爆）；chocolate结尾的/t/与rabbit开头的/r/发生辅元连读。
+3.  **deserved copyright protection from** /dɪˈzɜːvd ˈkɒpiraɪt prəˈtekʃn frɒm/
+    - deserved结尾的/d/与copyright开头的/k/相邻，发生不完全爆破（失爆）；copyright结尾的/t/与protection开头的/pr/相邻，发生不完全爆破（失爆）；protection结尾的/n/与from开头的/f/发生辅元连读。
+4.  **a similar product sold by the budget supermarket** /ə ˈsɪmələ ˈprɒdʌkt səʊld baɪ ðə ˈbʌdʒɪt ˈsuːpəmɑːkɪt/
+    - a弱读为/ə/，与similar开头的/s/发生辅元连读；similar结尾的/r/与product开头的/pr/发生r连读；product结尾的/t/与sold开头的/s/相邻，发生不完全爆破（失爆）；sold结尾的/d/与by开头的/b/相邻，发生不完全爆破（失爆）；by结尾的/aɪ/与the的/ðə/发生元元连读；the弱读为/ðə/，与budget开头的/b/发生辅元连读；budget结尾的/t/与supermarket开头的/s/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：The Swiss firm / had argued / its gold wrapped chocolate rabbit deserved copyright protection / from a similar product sold by the budget supermarket.
+**划分依据**：主语/谓语/宾语从句（主句）/宾语从句（状语）
+
+---
+
+#### 句子3
+**原句**：Switzerland's highest court agreed and overturned a ruling last year by the country's commercial court that had sided with the supermarket.
+**翻译**：瑞士最高法院同意了这一观点，并推翻了去年该国商事法院作出的支持该超市的裁决。
+
+**连读现象分析**
+1.  **Switzerland's highest court agreed** /ˈswɪtsələndz ˈhaɪɪst kɔːt əˈɡriːd/
+    - Switzerland's结尾的/z/与highest开头的/h/发生辅音连读；highest结尾的/t/与court开头的/k/相邻，发生不完全爆破（失爆）；court结尾的/t/与agreed开头的/ə/发生辅元连读。
+2.  **and overturned a ruling last year** /ænd ˌəʊvəˈtɜːnd ə ˈruːlɪŋ lɑːst jɪə/
+    - and弱读为/ænd/，结尾的/d/与overturned开头的/əʊ/发生辅元连读；overturned结尾的/d/与a的/ə/发生辅元连读；a的/ə/与ruling开头的/r/发生辅元连读；ruling结尾的/ŋ/与last开头的/l/发生辅元连读；last结尾的/t/与year开头的/j/相邻，发生不完全爆破（失爆）。
+3.  **by the country's commercial court** /baɪ ðə ˈkʌntriz kəˈmɜːʃl kɔːt/
+    - by结尾的/aɪ/与the的/ðə/发生元元连读；the弱读为/ðə/，与country's开头的/k/发生辅元连读；country's结尾的/z/与commercial开头的/k/发生辅音连读；commercial结尾的/l/与court开头的/k/发生辅元连读。
+4.  **that had sided with the supermarket** /ðæt həd ˈsaɪdɪd wɪð ðə ˈsuːpəmɑːkɪt/
+    - that弱读为/ðæt/，结尾的/t/与had开头的/h/相邻，发生不完全爆破（失爆）；had弱读为/həd/，结尾的/d/与sided开头的/s/发生辅元连读；sided结尾的/d/与with开头的/w/相邻，发生不完全爆破（失爆）；with结尾的/ð/与the的/ðə/发生辅音连读；the弱读为/ðə/，与supermarket开头的/s/发生辅元连读。
+
+**意群切分**：Switzerland's highest court / agreed and overturned a ruling last year / by the country's commercial court / that had sided with the supermarket.
+**划分依据**：主语/谓语+宾语/定语1/定语2
+
+---
+
+#### 句子4
+**原句**：It ordered that all the imitation rabbits be destroyed but suggested the chocolate needn't be wasted; it could be melted for use in other products.
+**翻译**：它下令销毁所有仿冒兔子，但建议巧克力不必浪费，可以融化后用于其他产品。
+
+**连读现象分析**
+1.  **It ordered that all the imitation rabbits** /ɪt ˈɔːdəd ðæt ɔːl ðə ˌɪmɪˈteɪʃn ˈræbɪts/
+    - It结尾的/t/与ordered开头的/ɔː/发生辅元连读；ordered结尾的/d/与that开头的/ð/相邻，发生不完全爆破（失爆）；that弱读为/ðæt/，结尾的/t/与all的/ɔːl/发生辅元连读；all结尾的/l/与the的/ðə/发生辅元连读；the弱读为/ðə/，与imitation开头的/ɪ/发生元元连读（the弱读为/ði/）；imitation结尾的/n/与rabbits开头的/r/发生辅元连读。
+2.  **be destroyed but suggested** /bi dɪˈstrɔɪd bʌt səˈdʒestɪd/
+    - be的/biː/与destroyed开头的/d/发生辅元连读；destroyed结尾的/d/与but开头的/b/相邻，发生不完全爆破（失爆）；but结尾的/t/与suggested开头的/s/发生辅元连读。
+3.  **the chocolate needn't be wasted** /ðə ˈtʃɒklət ˈniːdnt bi ˈweɪstɪd/
+    - the弱读为/ðə/，与chocolate开头的/tʃ/发生辅元连读；chocolate结尾的/t/与needn't开头的/n/发生辅元连读；needn't结尾的/t/与be的/biː/相邻，发生不完全爆破（失爆）；be的/biː/与wasted开头的/w/发生辅元连读。
+4.  **it could be melted for use** /ɪt kʊd bi ˈmeltɪd fɔː juːz/
+    - it结尾的/t/与could开头的/k/相邻，发生不完全爆破（失爆）；could结尾的/d/与be的/biː/相邻，发生不完全爆破（失爆）；be的/biː/与melted开头的/m/发生辅元连读；melted结尾的/d/与for开头的/f/相邻，发生不完全爆破（失爆）；for弱读为/fɔː/，与use的/juːz/发生辅元连读。
+5.  **in other products** /ɪn ˈʌðə ˈprɒdʌkts/
+    - In结尾的/n/与other开头的/ʌ/发生辅元连读；other结尾的/ə/与products开头的/pr/发生辅元连读。
+
+**意群切分**：It ordered / that all the imitation rabbits be destroyed / but suggested / the chocolate needn't be wasted; / it could be melted for use in other products.
+**划分依据**：主语/宾语从句1/并列谓语/宾语从句2/宾语从句3
+
+---
+
+#### 句子5
+**原句**：It said even though there are some differences between the two products, there was still the possibility of confusion for consumers.
+**翻译**：它表示，尽管这两种产品存在一些差异，但仍有可能让消费者产生混淆。
+
+**连读现象分析**
+1.  **It said even though there are** /ɪt sed ˈiːvn ðəʊ ðeə ɑː/
+    - It结尾的/t/与said开头的/s/相邻，发生不完全爆破（失爆）；said结尾的/d/与even开头的/iː/发生辅元连读；even结尾的/n/与though开头的/ð/发生辅音连读；though结尾的/əʊ/与there开头的/ð/发生元元连读；there结尾的/ə/与are的/ɑː/发生元元连读。
+2.  **some differences between the two products** /sʌm ˈdɪfrənsɪz bɪˈtwiːn ðə tuː ˈprɒdʌkts/
+    - some结尾的/m/与differences开头的/d/发生辅元连读；differences结尾的/z/与between开头的/b/发生辅音连读；between结尾的/n/与the的/ðə/发生辅元连读；the弱读为/ðə/，与two的/tuː/发生辅元连读；two结尾的/uː/与products开头的/pr/发生元元连读。
+3.  **there was still the possibility** /ðeə wəz stɪl ðə ˌpɒsəˈbɪləti/
+    - there结尾的/ə/与was开头的/w/发生辅元连读；was弱读为/wəz/，与still开头的/st/发生辅元连读；still结尾的/l/与the的/ðə/发生辅元连读；the弱读为/ðə/，与possibility开头的/p/发生辅元连读。
+4.  **of confusion for consumers** /əv kənˈfjuːʒn fɔː kənˈsjuːməz/
+    - of弱读为/əv/，与confusion开头的/k/发生辅元连读；confusion结尾的/n/与for开头的/f/发生辅元连读；for弱读为/fɔː/，与consumers开头的/k/发生辅元连读。
+
+**意群切分**：It said / even though there are some differences between the two products, / there was still the possibility / of confusion for consumers.
+**划分依据**：主语/谓语/让步状语从句/主句/定语
+
+---
+
+#### 句子6
+**原句**：The Swiss manufacturer's rabbit has a red bow and bell, while the German supermarket's has a green bow and bell.
+**翻译**：这家瑞士制造商的兔子有一个红色的蝴蝶结和铃铛，而德国超市的兔子有一个绿色的蝴蝶结和铃铛。
+
+**连读现象分析**
+1.  **The Swiss manufacturer's rabbit has** /ðə swɪs ˌmænjuˈfæktʃərəz ˈræbɪt həz/
+    - the弱读为/ðə/，与Swiss开头的/sw/发生辅元连读；Swiss结尾的/s/与manufacturer's开头的/m/发生辅音连读；manufacturer's结尾的/z/与rabbit开头的/r/发生辅音连读；rabbit结尾的/t/与has开头的/h/相邻，发生不完全爆破（失爆）。
+2.  **a red bow and bell** /ə red bəʊ ænd bel/
+    - a弱读为/ə/，与red开头的/r/发生辅元连读；red结尾的/d/与bow开头的/b/相邻，发生不完全爆破（失爆）；bow结尾的/əʊ/与and开头的/æ/发生元元连读；and弱读为/ænd/，结尾的/d/与bell开头的/b/相邻，发生不完全爆破（失爆）。
+3.  **while the German supermarket's has** /waɪl ðə ˈdʒɜːmən ˈsuːpəmɑːkɪts həz/
+    - while结尾的/l/与the的/ðə/发生辅元连读；the弱读为/ðə/，与German开头的/dʒ/发生辅元连读；German结尾的/n/与supermarket's开头的/s/发生辅元连读；supermarket's结尾的/s/与has开头的/h/发生辅音连读。
+4.  **a green bow and bell** /ə ɡriːn bəʊ ænd bel/
+    - a弱读为/ə/，与green开头的/ɡ/发生辅元连读；green结尾的/n/与bow开头的/b/发生辅元连读；bow结尾的/əʊ/与and开头的/æ/发生元元连读；and弱读为/ænd/，结尾的/d/与bell开头的/b/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：The Swiss manufacturer's rabbit / has a red bow and bell, / while the German supermarket's / has a green bow and bell.
+**划分依据**：主语1/谓语+宾语1/转折连词+主语2/谓语+宾语2
+
+---
+
+#### 句子7
+**原句**：The color of the wrapper is similar, as are the illustrations of the features.
+**翻译**：包装纸的颜色相似，图案的特征也相似。
+
+**连读现象分析**
+1.  **The color of the wrapper is** /ðə ˈkʌlə əv ðə ˈræpə ɪz/
+    - the弱读为/ðə/，与color开头的/k/发生辅元连读；color结尾的/r/与of的/əv/发生r连读；of弱读为/əv/，与the的/ðə/发生辅元连读；the弱读为/ðə/，与wrapper开头的/r/发生辅元连读；wrapper结尾的/r/与is的/ɪz/发生r连读。
+2.  **similar, as are the illustrations** /ˈsɪmələ æz ɑː ðə ˌɪləˈstreɪʃnz/
+    - similar结尾的/r/与as的/æz/发生r连读；as的/æz/与are的/ɑː/发生辅元连读；are的/ɑː/与the的/ðə/发生辅元连读；the弱读为/ðə/，与illustrations开头的/ɪ/发生元元连读（the弱读为/ði/）。
+3.  **of the features** /əv ðə ˈfiːtʃəz/
+    - of弱读为/əv/，与the的/ðə/发生辅元连读；the弱读为/ðə/，与features开头的/f/发生辅元连读。
+
+**意群切分**：The color of the wrapper / is similar, / as are the illustrations / of the features.
+**划分依据**：主语1/谓语1/倒装句主语2/定语
+
+---
+
+#### 句子8
+**原句**：The chocolate company has been to court before to protect its popular chocolate treat.
+**翻译**：这家巧克力公司此前曾多次诉诸法庭，以保护其广受欢迎的巧克力产品。
+
+**连读现象分析**
+1.  **The chocolate company has been** /ðə ˈtʃɒklət ˈkʌmpəni həz biːn/
+    - the弱读为/ðə/，与chocolate开头的/tʃ/发生辅元连读；chocolate结尾的/t/与company开头的/k/相邻，发生不完全爆破（失爆）；company结尾的/i/与has开头的/h/发生辅元连读（h弱读）；has弱读为/həz/，与been的/biːn/发生辅元连读。
+2.  **to court before to protect** /tu kɔːt bɪˈfɔː tu prəˈtekt/
+    - to弱读为/tu/，与court开头的/k/发生辅元连读；court结尾的/t/与before开头的/b/相邻，发生不完全爆破（失爆）；before结尾的/r/与to的/tu/发生r连读；to弱读为/tu/，与protect开头的/pr/发生辅元连读。
+3.  **its popular chocolate treat** /ɪts ˈpɒpjələ ˈtʃɒklət triːt/
+    - its结尾的/s/与popular开头的/p/发生辅音连读；popular结尾的/r/与chocolate开头的/tʃ/发生r连读；chocolate结尾的/t/与treat开头的/tr/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：The chocolate company / has been to court before / to protect its popular chocolate treat.
+**划分依据**：主语/谓语+状语/目的状语
+
+---
+
+#### 句子9
+**原句**：Last year, a German federal court said the shade of the gold wrapping was also protected.
+**翻译**：去年，德国一家联邦法院表示，金色包装的色调也受到保护。
+
+**连读现象分析**
+1.  **Last year, a German federal court** /lɑːst jɪə ə ˈdʒɜːmən ˈfedərəl kɔːt/
+    - Last结尾的/t/与year开头的/j/相邻，发生不完全爆破（失爆）；a弱读为/ə/，与German开头的/dʒ/发生辅元连读；German结尾的/n/与federal开头的/f/发生辅元连读；federal结尾的/l/与court开头的/k/发生辅元连读。
+2.  **said the shade of the gold wrapping** /sed ðə ʃeɪd əv ðə ɡəʊld ˈræpɪŋ/
+    - said结尾的/d/与the的/ðə/相邻，发生不完全爆破（失爆）；the弱读为/ðə/，与shade开头的/ʃ/发生辅元连读；shade结尾的/d/与of的/əv/相邻，发生不完全爆破（失爆）；of弱读为/əv/，与the的/ðə/发生辅元连读；the弱读为/ðə/，与gold开头的/ɡ/发生辅元连读；gold结尾的/d/与wrapping开头的/r/发生辅元连读。
+3.  **was also protected** /wəz ˈɔːlsəʊ prəˈtektɪd/
+    - was弱读为/wəz/，与also开头的/ɔː/发生辅元连读；also结尾的/əʊ/与protected开头的/pr/发生元元连读。
+
+**意群切分**：Last year, / a German federal court / said / the shade of the gold wrapping was also protected.
+**划分依据**：时间状语/主语/谓语/宾语从句
+
+---
+
+## Section B: Long Conversations
+### Conversation One
+#### 句子1
+**原句**：Can you please hand me that book over there?
+**翻译**：你能把那边那本书递给我吗？
+
+**连读现象分析**
+1.  **Can you please hand me** /kæn juː pliːz hænd miː/
+    - Can结尾的/n/与you的/juː/发生辅元连读；you结尾的/uː/与please开头的/p/发生元元连读；please结尾的/z/与hand开头的/h/发生辅音连读；hand结尾的/d/与me的/miː/发生辅元连读。
+2.  **that book over there** /ðæt bʊk ˈəʊvə ðeə/
+    - that弱读为/ðæt/，结尾的/t/与book开头的/b/相邻，发生不完全爆破（失爆）；book结尾的/k/与over开头的/əʊ/发生辅元连读；over结尾的/r/与there的/ðeə/发生r连读。
+
+**意群切分**：Can you please / hand me / that book over there?
+**划分依据**：礼貌用语/谓语+间接宾语/直接宾语
+
+---
+
+#### 句子2
+**原句**：It has instructions for making a winter bean salad.
+**翻译**：里面有制作冬季豆子沙拉的说明。
+
+**连读现象分析**
+1.  **It has instructions for making** /ɪt həz ɪnˈstrʌkʃnz fɔː ˈmeɪkɪŋ/
+    - It结尾的/t/与has开头的/h/相邻，发生不完全爆破（失爆）；has弱读为/həz/，与instructions开头的/ɪ/发生辅元连读；instructions结尾的/z/与for开头的/f/发生辅音连读；for弱读为/fɔː/，与making开头的/m/发生辅元连读。
+2.  **a winter bean salad** /ə ˈwɪntə biːn ˈsæləd/
+    - a弱读为/ə/，与winter开头的/w/发生辅元连读；winter结尾的/r/与bean开头的/b/发生r连读；bean结尾的/n/与salad开头的/s/发生辅元连读。
+
+**意群切分**：It / has instructions / for making a winter bean salad.
+**划分依据**：主语/谓语+宾语/定语
+
+---
+
+#### 句子3
+**原句**：My sister's boyfriend is coming over for dinner.
+**翻译**：我姐姐的男朋友要来吃晚饭。
+
+**连读现象分析**
+1.  **My sister's boyfriend is coming** /maɪ ˈsɪstəz ˈbɔɪfrend ɪz ˈkʌmɪŋ/
+    - My结尾的/aɪ/与sister's开头的/s/发生辅元连读；sister's结尾的/z/与boyfriend开头的/b/发生辅音连读；boyfriend结尾的/d/与is的/ɪz/相邻，发生不完全爆破（失爆）；is的/ɪz/与coming开头的/k/发生辅元连读。
+2.  **over for dinner** /ˈəʊvə fɔː ˈdɪnə/
+    - over结尾的/r/与for的/fɔː/发生r连读；for弱读为/fɔː/，与dinner开头的/d/发生辅元连读。
+
+**意群切分**：My sister's boyfriend / is coming over / for dinner.
+**划分依据**：主语/谓语/目的状语
+
+---
+
+#### 句子4
+**原句**：He's vegetarian, so I need to make a lot of vegetable dishes.
+**翻译**：他是素食主义者，所以我需要做很多蔬菜菜肴。
+
+**连读现象分析**
+1.  **He's vegetarian, so I need** /hiːz ˌvedʒəˈteəriən səʊ aɪ niːd/
+    - He's结尾的/z/与vegetarian开头的/v/发生辅音连读；vegetarian结尾的/n/与so的/səʊ/发生辅元连读；so结尾的/əʊ/与I的/aɪ/发生元元连读；I的/aɪ/与need开头的/n/发生辅元连读。
+2.  **to make a lot of vegetable dishes** /tu meɪk ə lɒt əv ˈvedʒtəbl ˈdɪʃɪz/
+    - to弱读为/tu/，与make开头的/m/发生辅元连读；make结尾的/k/与a的/ə/相邻，发生不完全爆破（失爆）；a的/ə/与lot开头的/l/发生辅元连读；lot结尾的/t/与of的/əv/相邻，发生不完全爆破（失爆）；of弱读为/əv/，与vegetable开头的/v/发生辅元连读；vegetable结尾的/l/与dishes开头的/d/发生辅元连读。
+
+**意群切分**：He's vegetarian, / so I need / to make a lot of vegetable dishes.
+**划分依据**：主句/结果状语从句（主句）/结果状语从句（从句）
+
+---
+
+#### 句子5
+**原句**：He only eats vegetables, no meat.
+**翻译**：他只吃蔬菜，不吃肉。
+
+**连读现象分析**
+1.  **He only eats vegetables** /hiː ˈəʊnli iːts ˈvedʒtəblz/
+    - He结尾的/iː/与only开头的/əʊ/发生元元连读；only结尾的/i/与eats开头的/iː/发生元元连读；eats结尾的/s/与vegetables开头的/v/发生辅音连读。
+2.  **no meat** /nəʊ miːt/
+    - no结尾的/əʊ/与meat开头的/m/发生元元连读。
+
+**意群切分**：He only eats / vegetables, / no meat.
+**划分依据**：主语+谓语/宾语1/宾语2
+
+---
+
+#### 句子6
+**原句**：That doesn't sound like a very balanced diet.
+**翻译**：这听起来不像是一种非常均衡的饮食。
+
+**连读现象分析**
+1.  **That doesn't sound like** /ðæt ˈdʌznt saʊnd laɪk/
+    - That弱读为/ðæt/，结尾的/t/与doesn't开头的/d/相邻，发生不完全爆破（失爆）；doesn't结尾的/t/与sound开头的/s/发生辅元连读；sound结尾的/d/与like开头的/l/相邻，发生不完全爆破（失爆）。
+2.  **a very balanced diet** /ə ˈveri ˈbælənst ˈdaɪət/
+    - a弱读为/ə/，与very开头的/v/发生辅元连读；very结尾的/i/与balanced开头的/b/发生辅元连读；balanced结尾的/d/与diet开头的/d/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：That / doesn't sound like / a very balanced diet.
+**划分依据**：主语/谓语/宾语
+
+---
+
+#### 句子7
+**原句**：How can he get enough protein?
+**翻译**：他怎么能获得足够的蛋白质呢？
+
+**连读现象分析**
+1.  **How can he get** /haʊ kæn hi ɡet/
+    - How结尾的/aʊ/与can的/kæn/发生元元连读；can结尾的/n/与he的/hi/发生辅元连读；he结尾的/i/与get开头的/ɡ/发生辅元连读。
+2.  **enough protein** /ɪˈnʌf ˈprəʊtiːn/
+    - enough结尾的/f/与protein开头的/pr/发生辅元连读。
+
+**意群切分**：How can he / get / enough protein?
+**划分依据**：疑问词+主语/谓语/宾语
+
+---
+
+#### 句子8
+**原句**：What does he do to strengthen his muscles and all that.
+**翻译**：他做什么来增强肌肉之类的呢？
+
+**连读现象分析**
+1.  **What does he do** /wɒt dʌz hi duː/
+    - What结尾的/t/与does开头的/d/相邻，发生不完全爆破（失爆）；does结尾的/z/与he的/hi/发生辅音连读；he结尾的/i/与do的/duː/发生元元连读。
+2.  **to strengthen his muscles** /tu ˈstreŋθn hɪz ˈmʌslz/
+    - to弱读为/tu/，与strengthen开头的/str/发生辅元连读；strengthen结尾的/n/与his开头的/h/发生辅元连读（h弱读）；his结尾的/z/与muscles开头的/m/发生辅音连读。
+3.  **and all that** /ænd ɔːl ðæt/
+    - and弱读为/ænd/，结尾的/d/与all的/ɔːl/发生辅元连读；all结尾的/l/与that的/ðæt/发生辅元连读。
+
+**意群切分**：What does he do / to strengthen his muscles / and all that.
+**划分依据**：疑问词+主语+谓语/目的状语/插入语
+
+---
+
+#### 句子9
+**原句**：Apparently that's no problem.
+**翻译**：显然这没问题。
+
+**连读现象分析**
+1.  **Apparently that's no** /əˈpærəntli ðæts nəʊ/
+    - Apparently结尾的/i/与that's开头的/ð/发生辅元连读；that's结尾的/s/与no的/nəʊ/发生辅音连读。
+2.  **problem** /ˈprɒbləm/
+    - 无连读
+
+**意群切分**：Apparently / that's no problem.
+**划分依据**：插入语/主句
+
+---
+
+#### 句子10
+**原句**：He's explained this to me when we first met.
+**翻译**：我们第一次见面时他就跟我解释过了。
+
+**连读现象分析**
+1.  **He's explained this to me** /hiːz ɪkˈspleɪnd ðɪs tu miː/
+    - He's结尾的/z/与explained开头的/ɪ/发生辅元连读；explained结尾的/d/与this开头的/ð/相邻，发生不完全爆破（失爆）；this结尾的/s/与to的/tu/发生辅音连读；to弱读为/tu/，与me的/miː/发生辅元连读。
+2.  **when we first met** /wen wi fɜːst met/
+    - when结尾的/n/与we的/wi/发生辅元连读；we结尾的/i/与first开头的/f/发生辅元连读；first结尾的/t/与met开头的/m/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：He's explained this to me / when we first met.
+**划分依据**：主句/时间状语从句
+
+---
+
+#### 句子11
+**原句**：He eats a variety of different vegetables and nuts, especially those with high amounts of protein.
+**翻译**：他吃各种不同的蔬菜和坚果，尤其是那些蛋白质含量高的。
+
+**连读现象分析**
+1.  **He eats a variety of different** /hiː iːts ə vəˈraɪəti əv ˈdɪfrənt/
+    - He结尾的/iː/与eats开头的/iː/发生元元连读；eats结尾的/s/与a的/ə/发生辅音连读；a的/ə/与variety开头的/v/发生辅元连读；variety结尾的/i/与of的/əv/发生元元连读；of弱读为/əv/，与different开头的/d/发生辅元连读。
+2.  **vegetables and nuts, especially those** /ˈvedʒtəblz ænd nʌts ɪˈspeʃli ðəʊz/
+    - vegetables结尾的/z/与and开头的/æ/发生辅元连读；and弱读为/ænd/，结尾的/d/与nuts开头的/n/相邻，发生不完全爆破（失爆）；nuts结尾的/s/与especially开头的/ɪ/发生辅音连读；especially结尾的/i/与those的/ðəʊz/发生元元连读。
+3.  **with high amounts of protein** /wɪð haɪ əˈmaʊnts əv ˈprəʊtiːn/
+    - with结尾的/ð/与high开头的/h/发生辅元连读（h弱读）；high结尾的/aɪ/与amounts开头的/ə/发生元元连读；amounts结尾的/s/与of的/əv/发生辅音连读；of弱读为/əv/，与protein开头的/pr/发生辅元连读。
+
+**意群切分**：He eats / a variety of different vegetables and nuts, / especially those / with high amounts of protein.
+**划分依据**：主语+谓语/宾语1/插入语/定语
+
+---
+
+#### 句子12
+**原句**：It sounds a bit difficult, but he's done his research I suppose.
+**翻译**：听起来有点难，但我想他已经做过研究了。
+
+**连读现象分析**
+1.  **It sounds a bit difficult** /ɪt saʊndz ə bɪt ˈdɪfɪkəlt/
+    - It结尾的/t/与sounds开头的/s/相邻，发生不完全爆破（失爆）；sounds结尾的/z/与a的/ə/发生辅元连读；a的/ə/与bit开头的/b/发生辅元连读；bit结尾的/t/与difficult开头的/d/相邻，发生不完全爆破（失爆）。
+2.  **but he's done his research** /bʌt hiːz dʌn hɪz rɪˈsɜːtʃ/
+    - but结尾的/t/与he's开头的/h/发生辅元连读；he's结尾的/z/与done开头的/d/发生辅音连读；done结尾的/n/与his开头的/h/发生辅元连读（h弱读）；his结尾的/z/与research开头的/r/发生辅音连读。
+3.  **I suppose** /aɪ səˈpəʊz/
+    - I的/aɪ/与suppose开头的/s/发生辅元连读。
+
+**意群切分**：It sounds a bit difficult, / but he's done his research / I suppose.
+**划分依据**：主句/转折状语从句/插入语
+
+---
+
+#### 句子13
+**原句**：What's his reasoning for being vegetarian?
+**翻译**：他成为素食主义者的原因是什么？
+
+**连读现象分析**
+1.  **What's his reasoning for** /wɒts hɪz ˈriːzənɪŋ fɔː/
+    - What's结尾的/s/与his开头的/h/发生辅音连读；his结尾的/z/与reasoning开头的/r/发生辅音连读；reasoning结尾的/ŋ/与for的/fɔː/发生辅元连读。
+2.  **being vegetarian** /ˈbiːɪŋ ˌvedʒəˈteəriən/
+    - being结尾的/ŋ/与vegetarian开头的/v/发生辅元连读。
+
+**意群切分**：What's / his reasoning / for being vegetarian?
+**划分依据**：疑问词+谓语/主语/定语
+
+---
+
+#### 句子14
+**原句**：Is it his religion, health, condition or lifestyle?
+**翻译**：是因为他的宗教、健康、身体状况还是生活方式？
+
+**连读现象分析**
+1.  **Is it his religion** /ɪz ɪt hɪz rɪˈlɪdʒən/
+    - Is的/ɪz/与it的/ɪt/发生辅元连读；it结尾的/t/与his开头的/h/相邻，发生不完全爆破（失爆）；his结尾的/z/与religion开头的/r/发生辅音连读。
+2.  **health, condition or lifestyle** /helθ kənˈdɪʃn ɔː ˈlaɪfstaɪl/
+    - health结尾的/θ/与condition开头的/k/发生辅音连读；condition结尾的/n/与or的/ɔː/发生辅元连读；or的/ɔː/与lifestyle开头的/l/发生辅元连读。
+
+**意群切分**：Is it / his religion, / health, / condition / or lifestyle?
+**划分依据**：疑问词+谓语/表语1/表语2/表语3/表语4
+
+---
+
+#### 句子15
+**原句**：He's an animal activist.
+**翻译**：他是一名动物保护主义者。
+
+**连读现象分析**
+1.  **He's an animal activist** /hiːz ən ˈænɪml ˈæktɪvɪst/
+    - He's结尾的/z/与an的/ən/发生辅元连读；an结尾的/n/与animal开头的/æ/发生辅元连读；animal结尾的/l/与activist开头的/æ/发生辅元连读。
+
+**意群切分**：He's / an animal activist.
+**划分依据**：主语+谓语/表语
+
+---
+
+#### 句子16
+**原句**：He's always been very sensitive and sympathizes with animals.
+**翻译**：他一直非常敏感，同情动物。
+
+**连读现象分析**
+1.  **He's always been very sensitive** /hiːz ˈɔːlweɪz biːn ˈveri ˈsensətɪv/
+    - He's结尾的/z/与always开头的/ɔː/发生辅音连读；always结尾的/z/与been的/biːn/发生辅音连读；been结尾的/n/与very开头的/v/发生辅元连读；very结尾的/i/与sensitive开头的/s/发生辅元连读。
+2.  **and sympathizes with animals** /ænd ˈsɪmpəθaɪzɪz wɪð ˈænɪmlz/
+    - and弱读为/ænd/，结尾的/d/与sympathizes开头的/s/相邻，发生不完全爆破（失爆）；sympathizes结尾的/z/与with开头的/w/发生辅音连读；with结尾的/ð/与animals开头的/æ/发生辅元连读。
+
+**意群切分**：He's always been / very sensitive / and sympathizes with animals.
+**划分依据**：主语+谓语/表语/并列谓语+宾语
+
+---
+
+#### 句子17
+**原句**：He's even written to his state senator about the torture of dolphins in sea parks.
+**翻译**：他甚至写信给他的州参议员，反映海洋公园里海豚遭受虐待的问题。
+
+**连读现象分析**
+1.  **He's even written to his** /hiːz ˈiːvn ˈrɪtn tu hɪz/
+    - He's结尾的/z/与even开头的/iː/发生辅元连读；even结尾的/n/与written开头的/r/发生辅音连读；written结尾的/n/与to的/tu/发生辅元连读；to弱读为/tu/，与his开头的/h/发生辅元连读（h弱读）。
+2.  **state senator about the torture** /steɪt ˈsenətə əˈbaʊt ðə ˈtɔːtʃə/
+    - state结尾的/t/与senator开头的/s/相邻，发生不完全爆破（失爆）；senator结尾的/r/与about开头的/ə/发生r连读；about结尾的/t/与the的/ðə/相邻，发生不完全爆破（失爆）；the弱读为/ðə/，与torture开头的/t/发生辅元连读。
+3.  **of dolphins in sea parks** /əv ˈdɒlfɪnz ɪn siː pɑːks/
+    - of弱读为/əv/，与dolphins开头的/d/发生辅元连读；dolphins结尾的/z/与in开头的/ɪ/发生辅音连读；in结尾的/n/与sea的/siː/发生辅元连读；sea结尾的/iː/与parks开头的/p/发生元元连读。
+
+**意群切分**：He's even written to his state senator / about the torture of dolphins / in sea parks.
+**划分依据**：主句/宾语/地点状语
+
+---
+
+#### 句子18
+**原句**：He says that keeping animals in zoos and parks causes them great distress.
+**翻译**：他说把动物关在动物园和公园里会给它们带来巨大的痛苦。
+
+**连读现象分析**
+1.  **He says that keeping animals** /hiː sez ðæt ˈkiːpɪŋ ˈænɪmlz/
+    - He结尾的/iː/与says开头的/s/发生元元连读；says结尾的/z/与that开头的/ð/发生辅音连读；that弱读为/ðæt/，结尾的/t/与keeping开头的/k/相邻，发生不完全爆破（失爆）；keeping结尾的/ŋ/与animals开头的/æ/发生辅元连读。
+2.  **in zoos and parks causes** /ɪn zuːz ænd pɑːks ˈkɔːzɪz/
+    - In结尾的/n/与zoos开头的/z/发生辅元连读；zoos结尾的/z/与and开头的/æ/发生辅元连读；and弱读为/ænd/，结尾的/d/与parks开头的/p/相邻，发生不完全爆破（失爆）；parks结尾的/s/与causes开头的/k/发生辅音连读。
+3.  **them great distress** /ðəm ɡreɪt dɪˈstres/
+    - them弱读为/ðəm/，结尾的/m/与great开头的/ɡ/发生辅元连读；great结尾的/t/与distress开头的/d/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：He says / that keeping animals in zoos and parks / causes them great distress.
+**划分依据**：主语+谓语/宾语从句（主语）/宾语从句（谓语+宾语）
+
+---
+
+#### 句子19
+**原句**：That's a little gloomy, but I can understand that to a point.
+**翻译**：这有点令人沮丧，但我在某种程度上能理解。
+
+**连读现象分析**
+1.  **That's a little gloomy** /ðæts ə ˈlɪtl ˈɡluːmi/
+    - That's结尾的/s/与a的/ə/发生辅音连读；a的/ə/与little开头的/l/发生辅元连读；little结尾的/l/与gloomy开头的/ɡ/发生辅元连读。
+2.  **but I can understand that** /bʌt aɪ kæn ˌʌndəˈstænd ðæt/
+    - but结尾的/t/与I的/aɪ/发生辅元连读；I的/aɪ/与can的/kæn/发生辅元连读；can结尾的/n/与understand开头的/ʌ/发生辅元连读；understand结尾的/d/与that的/ðæt/相邻，发生不完全爆破（失爆）。
+3.  **to a point** /tu ə pɔɪnt/
+    - to弱读为/tu/，与a的/ə/发生辅元连读；a的/ə/与point开头的/p/发生辅元连读。
+
+**意群切分**：That's a little gloomy, / but I can understand that / to a point.
+**划分依据**：主句/转折状语从句/状语
+
+---
+
+#### 句子20
+**原句**：Not all zoos and animal parks have the most favorable conditions, but without them it just wouldn't be feasible to learn about animals and their environments.
+**翻译**：并非所有的动物园和动物公园都有最有利的条件，但没有它们，我们就不可能了解动物及其生存环境。
+
+**连读现象分析**
+1.  **Not all zoos and animal parks** /nɒt ɔːl zuːz ænd ˈænɪml pɑːks/
+    - Not结尾的/t/与all的/ɔːl/相邻，发生不完全爆破（失爆）；all结尾的/l/与zoos开头的/z/发生辅元连读；zoos结尾的/z/与and开头的/æ/发生辅元连读；and弱读为/ænd/，结尾的/d/与animal开头的/æ/相邻，发生不完全爆破（失爆）；animal结尾的/l/与parks开头的/p/发生辅元连读。
+2.  **have the most favorable conditions** /hæv ðə məʊst ˈfeɪvərəbl kənˈdɪʃnz/
+    - have结尾的/v/与the的/ðə/发生辅元连读；the弱读为/ðə/，与most开头的/m/发生辅元连读；most结尾的/t/与favorable开头的/f/相邻，发生不完全爆破（失爆）；favorable结尾的/l/与conditions开头的/k/发生辅元连读。
+3.  **but without them it just wouldn't be** /bʌt wɪˈðaʊt ðəm ɪt dʒʌst ˈwʊdnt biː/
+    - but结尾的/t/与without开头的/w/发生辅元连读；without结尾的/t/与them开头的/ð/相邻，发生不完全爆破（失爆）；them弱读为/ðəm/，结尾的/m/与it的/ɪt/发生辅元连读；it结尾的/t/与just开头的/dʒ/相邻，发生不完全爆破（失爆）；just结尾的/t/与wouldn't开头的/w/相邻，发生不完全爆破（失爆）；wouldn't结尾的/t/与be的/biː/相邻，发生不完全爆破（失爆）。
+4.  **feasible to learn about animals** /ˈfiːzəbl tu lɜːn əˈbaʊt ˈænɪmlz/
+    - feasible结尾的/l/与to的/tu/发生辅元连读；to弱读为/tu/，与learn开头的/l/发生辅元连读；learn结尾的/n/与about开头的/ə/发生辅元连读；about结尾的/t/与animals开头的/æ/相邻，发生不完全爆破（失爆）。
+5.  **and their environments** /ænd ðeər ɪnˈvaɪrənmənts/
+    - and弱读为/ænd/，结尾的/d/与their开头的/ð/相邻，发生不完全爆破（失爆）；their结尾的/r/与environments开头的/ɪ/发生r连读。
+
+**意群切分**：Not all zoos and animal parks / have the most favorable conditions, / but without them / it just wouldn't be feasible / to learn about animals and their environments.
+**划分依据**：主语/谓语+宾语/条件状语/主句/真正主语
+
+---
+
+#### 句子21
+**原句**：Besides, I don't think I could ever give up a good hot dog at a baseball game.
+**翻译**：而且，我觉得我永远无法放弃棒球比赛时吃一根美味热狗的乐趣。
+
+**连读现象分析**
+1.  **Besides, I don't think I could** /bɪˈsaɪdz aɪ dəʊnt θɪŋk aɪ kʊd/
+    - Besides结尾的/z/与I的/aɪ/发生辅音连读；I的/aɪ/与don't开头的/d/发生辅元连读；don't结尾的/t/与think开头的/θ/相邻，发生不完全爆破（失爆）；think结尾的/k/与I的/aɪ/相邻，发生不完全爆破（失爆）；I的/aɪ/与could的/kʊd/发生辅元连读。
+2.  **ever give up a good hot dog** /ˈevə ɡɪv ʌp ə ɡʊd hɒt dɒɡ/
+    - ever结尾的/r/与give开头的/ɡ/发生r连读；give结尾的/v/与up的/ʌp/发生辅元连读；up结尾的/p/与a的/ə/相邻，发生不完全爆破（失爆）；a的/ə/与good开头的/ɡ/发生辅元连读；good结尾的/d/与hot开头的/h/相邻，发生不完全爆破（失爆）；hot结尾的/t/与dog开头的/d/相邻，发生不完全爆破（失爆）。
+3.  **at a baseball game** /æt ə ˈbeɪsbɔːl ɡeɪm/
+    - at结尾的/t/与a的/ə/发生辅元连读；a的/ə/与baseball开头的/b/发生辅元连读；baseball结尾的/l/与game开头的/ɡ/发生辅元连读。
+
+**意群切分**：Besides, / I don't think / I could ever give up a good hot dog / at a baseball game.
+**划分依据**：插入语/主句/宾语从句/地点状语
+
+---
+
+#### 句子22
+**原句**：Honestly, I agree, but just don't let him hear you say that.
+**翻译**：说实话，我同意，但千万别让他听到你这么说。
+
+**连读现象分析**
+1.  **Honestly, I agree** /ˈɒnɪstli aɪ əˈɡriː/
+    - Honestly结尾的/i/与I的/aɪ/发生元元连读；I的/aɪ/与agree开头的/ə/发生元元连读。
+2.  **but just don't let him hear** /bʌt dʒʌst ˈdəʊnt let hɪm hɪə/
+    - but结尾的/t/与just开头的/dʒ/相邻，发生不完全爆破（失爆）；just结尾的/t/与don't开头的/d/相邻，发生不完全爆破（失爆）；don't结尾的/t/与let开头的/l/相邻，发生不完全爆破（失爆）；let结尾的/t/与him开头的/h/相邻，发生不完全爆破（失爆）；him弱读为/hɪm/，结尾的/m/与hear开头的/h/发生辅元连读（h弱读）。
+3.  **you say that** /juː seɪ ðæt/
+    - you结尾的/uː/与say的/seɪ/发生元元连读；say结尾的/eɪ/与that的/ðæt/发生元元连读。
+
+**意群切分**：Honestly, / I agree, / but just don't let him hear / you say that.
+**划分依据**：插入语/主句/转折状语从句（主句）/转折状语从句（从句）
+
+---
+
+#### 句子23
+**原句**：He's the spokesperson for his local animal rights group.
+**翻译**：他是当地动物权利组织的发言人。
+
+**连读现象分析**
+1.  **He's the spokesperson for** /hiːz ðə ˈspəʊkspɜːsn fɔː/
+    - He's结尾的/z/与the的/ðə/发生辅音连读；the弱读为/ðə/，与spokesperson开头的/sp/发生辅元连读；spokesperson结尾的/n/与for的/fɔː/发生辅元连读。
+2.  **his local animal rights group** /hɪz ˈləʊkl ˈænɪml raɪts ɡruːp/
+    - his结尾的/z/与local开头的/l/发生辅音连读；local结尾的/l/与animal开头的/æ/发生辅元连读；animal结尾的/l/与rights开头的/r/发生辅元连读；rights结尾的/s/与group开头的/ɡ/发生辅音连读。
+
+**意群切分**：He's / the spokesperson / for his local animal rights group.
+**划分依据**：主语+谓语/表语/定语
+
+---
+
+### Conversation Two
+#### 句子1
+**原句**：Did you see that television program on air travel last night?
+**翻译**：你昨晚看那个关于航空旅行的电视节目了吗？
+
+**连读现象分析**
+1.  **Did you see that television** /dɪd juː siː ðæt ˈtelɪvɪʒn/
+    - Did结尾的/d/与you的/juː/发生辅元连读；you结尾的/uː/与see的/siː/发生元元连读；see结尾的/iː/与that的/ðæt/发生元元连读；that弱读为/ðæt/，结尾的/t/与television开头的/t/相邻，发生不完全爆破（失爆）。
+2.  **program on air travel last night** /ˈprəʊɡræm ɒn eə ˈtrævl lɑːst naɪt/
+    - program结尾的/m/与on的/ɒn/发生辅元连读；on结尾的/n/与air的/eə/发生辅元连读；air结尾的/r/与travel开头的/tr/发生r连读；travel结尾的/l/与last开头的/l/发生辅元连读；last结尾的/t/与night开头的/n/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：Did you see / that television program / on air travel / last night?
+**划分依据**：疑问词+主语+谓语/宾语/定语/时间状语
+
+---
+
+#### 句子2
+**原句**：Yes, the part about overcoming jet lag was interesting.
+**翻译**：看了，关于克服时差的部分很有趣。
+
+**连读现象分析**
+1.  **Yes, the part about overcoming** /jes ðə pɑːt əˈbaʊt ˌəʊvəˈkʌmɪŋ/
+    - Yes结尾的/s/与the的/ðə/发生辅音连读；the弱读为/ðə/，与part开头的/p/发生辅元连读；part结尾的/t/与about开头的/ə/发生辅元连读；about结尾的/t/与overcoming开头的/əʊ/相邻，发生不完全爆破（失爆）。
+2.  **jet lag was interesting** /dʒet læɡ wəz ˈɪntrəstɪŋ/
+    - jet结尾的/t/与lag开头的/l/相邻，发生不完全爆破（失爆）；lag结尾的/ɡ/与was开头的/w/发生辅元连读；was弱读为/wəz/，与interesting开头的/ɪ/发生辅元连读。
+
+**意群切分**：Yes, / the part about overcoming jet lag / was interesting.
+**划分依据**：肯定回答/主语/谓语+表语
+
+---
+
+#### 句子3
+**原句**：I was surprised that the expert recommended not eating for the entire journey and avoiding sleeping on the plane.
+**翻译**：我很惊讶专家建议整个旅程都不要吃东西，也不要在飞机上睡觉。
+
+**连读现象分析**
+1.  **I was surprised that the expert** /aɪ wəz səˈpraɪzd ðæt ði ˈekspɜːt/
+    - I的/aɪ/与was开头的/w/发生辅元连读；was弱读为/wəz/，与surprised开头的/s/发生辅元连读；surprised结尾的/d/与that开头的/ð/相邻，发生不完全爆破（失爆）；that弱读为/ðæt/，结尾的/t/与the的/ði/相邻，发生不完全爆破（失爆）；the弱读为/ði/（元音前），与expert开头的/e/发生元元连读。
+2.  **recommended not eating for** /ˌrekəˈmendɪd nɒt ˈiːtɪŋ fɔː/
+    - recommended结尾的/d/与not开头的/n/相邻，发生不完全爆破（失爆）；not结尾的/t/与eating开头的/iː/发生辅元连读；eating结尾的/ŋ/与for的/fɔː/发生辅元连读。
+3.  **the entire journey and avoiding** /ðə ɪnˈtaɪə ˈdʒɜːni ænd əˈvɔɪdɪŋ/
+    - the弱读为/ðə/，与entire开头的/ɪ/发生元元连读（the弱读为/ði/）；entire结尾的/r/与journey开头的/dʒ/发生r连读；journey结尾的/i/与and开头的/æ/发生元元连读；and弱读为/ænd/，结尾的/d/与avoiding开头的/ə/发生辅元连读。
+4.  **sleeping on the plane** /ˈsliːpɪŋ ɒn ðə pleɪn/
+    - sleeping结尾的/ŋ/与on的/ɒn/发生辅元连读；on结尾的/n/与the的/ðə/发生辅元连读；the弱读为/ðə/，与plane开头的/p/发生辅元连读。
+
+**意群切分**：I was surprised / that the expert recommended not eating for the entire journey / and avoiding sleeping on the plane.
+**划分依据**：主句/宾语从句（谓语1）/宾语从句（谓语2）
+
+---
+
+#### 句子4
+**原句**：I was too, as I read an article on the subject in the past that suggested the opposite.
+**翻译**：我也是，因为我以前读过一篇关于这个主题的文章，提出了相反的建议。
+
+**连读现象分析**
+1.  **I was too, as I read** /aɪ wəz tuː æz aɪ riːd/
+    - I的/aɪ/与was开头的/w/发生辅元连读；was弱读为/wəz/，与too的/tuː/发生辅元连读；too结尾的/uː/与as的/æz/发生元元连读；as的/æz/与I的/aɪ/发生辅元连读；I的/aɪ/与read的/riːd/发生辅元连读。
+2.  **an article on the subject** /ən ˈɑːtɪkl ɒn ðə ˈsʌbdʒekt/
+    - an结尾的/n/与article开头的/ɑː/发生辅元连读；article结尾的/l/与on的/ɒn/发生辅元连读；on结尾的/n/与the的/ðə/发生辅元连读；the弱读为/ðə/，与subject开头的/s/发生辅元连读。
+3.  **in the past that suggested** /ɪn ðə pɑːst ðæt səˈdʒestɪd/
+    - In结尾的/n/与the的/ðə/发生辅元连读；the弱读为/ðə/，与past开头的/p/发生辅元连读；past结尾的/t/与that开头的/ð/相邻，发生不完全爆破（失爆）；that弱读为/ðæt/，结尾的/t/与suggested开头的/s/发生辅元连读。
+4.  **the opposite** /ðə ˈɒpəzɪt/
+    - the弱读为/ðə/，与opposite开头的/ɒ/发生元元连读（the弱读为/ði/）。
+
+**意群切分**：I was too, / as I read an article on the subject in the past / that suggested the opposite.
+**划分依据**：主句/原因状语从句/定语从句
+
+---
+
+#### 句子5
+**原句**：It claimed that it was important not to miss meals and that taking a nap on the plane was the best way to adjust to a new time zone.
+**翻译**：文章称，不要错过吃饭很重要，在飞机上小睡一会儿是适应新时区的最佳方式。
+
+**连读现象分析**
+1.  **It claimed that it was important** /ɪt kleɪmd ðæt ɪt wəz ɪmˈpɔːtnt/
+    - It结尾的/t/与claimed开头的/k/相邻，发生不完全爆破（失爆）；claimed结尾的/d/与that开头的/ð/相邻，发生不完全爆破（失爆）；that弱读为/ðæt/，结尾的/t/与it的/ɪt/发生辅元连读；it结尾的/t/与was开头的/w/相邻，发生不完全爆破（失爆）；was弱读为/wəz/，与important开头的/ɪ/发生辅元连读。
+2.  **not to miss meals and that** /nɒt tu mɪs miːlz ænd ðæt/
+    - not结尾的/t/与to的/tu/相邻，发生不完全爆破（失爆）；to弱读为/tu/，与miss开头的/m/发生辅元连读；miss结尾的/s/与meals开头的/m/发生辅音连读；meals结尾的/z/与and开头的/æ/发生辅元连读；and弱读为/ænd/，结尾的/d/与that的/ðæt/相邻，发生不完全爆破（失爆）。
+3.  **taking a nap on the plane** /ˈteɪkɪŋ ə næp ɒn ðə pleɪn/
+    - taking结尾的/ŋ/与a的/ə/发生辅元连读；a的/ə/与nap开头的/n/发生辅元连读；nap结尾的/p/与on的/ɒn/相邻，发生不完全爆破（失爆）；on结尾的/n/与the的/ðə/发生辅元连读；the弱读为/ðə/，与plane开头的/p/发生辅元连读。
+4.  **was the best way to adjust** /wəz ðə best weɪ tu əˈdʒʌst/
+    - was弱读为/wəz/，与the的/ðə/发生辅元连读；the弱读为/ðə/，与best开头的/b/发生辅元连读；best结尾的/t/与way开头的/w/相邻，发生不完全爆破（失爆）；way结尾的/eɪ/与to的/tu/发生元元连读；to弱读为/tu/，与adjust开头的/ə/发生辅元连读。
+5.  **to a new time zone** /tu ə njuː taɪm zəʊn/
+    - to弱读为/tu/，与a的/ə/发生辅元连读；a的/ə/与new开头的/n/发生辅元连读；new结尾的/juː/与time开头的/t/发生元元连读；time结尾的/m/与zone开头的/z/发生辅元连读。
+
+**意群切分**：It claimed / that it was important not to miss meals / and that taking a nap on the plane / was the best way to adjust to a new time zone.
+**划分依据**：主语+谓语/宾语从句1/宾语从句2（主语）/宾语从句2（谓语+表语）
+
+---
+
+#### 句子6
+**原句**：Well, the expert on the show did cite research supporting her recommendations, so I guess I'll give it a try next time I fly a long distance.
+**翻译**：嗯，节目里的专家确实引用了研究来支持她的建议，所以我想下次长途飞行时我会试试。
+
+**连读现象分析**
+1.  **Well, the expert on the show** /wel ði ˈekspɜːt ɒn ðə ʃəʊ/
+    - Well结尾的/l/与the的/ði/发生辅元连读；the弱读为/ði/（元音前），与expert开头的/e/发生元元连读；expert结尾的/t/与on的/ɒn/发生辅元连读；on结尾的/n/与the的/ðə/发生辅元连读；the弱读为/ðə/，与show开头的/ʃ/发生辅元连读。
+2.  **did cite research supporting her** /dɪd saɪt rɪˈsɜːtʃ səˈpɔːtɪŋ hɜː/
+    - did结尾的/d/与cite开头的/s/相邻，发生不完全爆破（失爆）；cite结尾的/t/与research开头的/r/发生辅元连读；research结尾的/tʃ/与supporting开头的/s/发生辅音连读；supporting结尾的/ŋ/与her的/hɜː/发生辅元连读（h弱读）。
+3.  **recommendations, so I guess** /ˌrekəmenˈdeɪʃnz səʊ aɪ ɡes/
+    - recommendations结尾的/z/与so的/səʊ/发生辅音连读；so结尾的/əʊ/与I的/aɪ/发生元元连读；I的/aɪ/与guess开头的/ɡ/发生辅元连读。
+4.  **I'll give it a try next time** /aɪl ɡɪv ɪt ə traɪ nekst taɪm/
+    - I'll结尾的/l/与give开头的/ɡ/发生辅元连读；give结尾的/v/与it的/ɪt/发生辅元连读；it结尾的/t/与a的/ə/发生辅元连读；a的/ə/与try开头的/tr/发生辅元连读；try结尾的/aɪ/与next开头的/n/发生元元连读；next结尾的/t/与time开头的/t/相邻，发生不完全爆破（失爆）。
+5.  **I fly a long distance** /aɪ flaɪ ə lɒŋ ˈdɪstəns/
+    - I的/aɪ/与fly开头的/fl/发生辅元连读；fly结尾的/aɪ/与a的/ə/发生元元连读；a的/ə/与long开头的/l/发生辅元连读；long结尾的/ŋ/与distance开头的/d/发生辅元连读。
+
+**意群切分**：Well, / the expert on the show / did cite research supporting her recommendations, / so I guess / I'll give it a try / next time I fly a long distance.
+**划分依据**：语气词/主语/谓语+宾语/结果状语从句（主句）/结果状语从句（从句1）/结果状语从句（从句2）
+
+---
+
+#### 句子7
+**原句**：Jet lag is a big problem for me and has been for the last few years even though I never suffered from it before.
+**翻译**：时差对我来说是个大问题，过去几年一直如此，尽管我以前从来没有过这种情况。
+
+**连读现象分析**
+1.  **Jet lag is a big problem** /dʒet læɡ ɪz ə bɪɡ ˈprɒbləm/
+    - Jet结尾的/t/与lag开头的/l/相邻，发生不完全爆破（失爆）；lag结尾的/ɡ/与is的/ɪz/发生辅元连读；is的/ɪz/与a的/ə/发生辅元连读；a的/ə/与big开头的/b/发生辅元连读；big结尾的/ɡ/与problem开头的/p/相邻，发生不完全爆破（失爆）。
+2.  **for me and has been** /fɔː miː ænd həz biːn/
+    - for弱读为/fɔː/，与me的/miː/发生辅元连读；me结尾的/iː/与and开头的/æ/发生元元连读；and弱读为/ænd/，结尾的/d/与has开头的/h/相邻，发生不完全爆破（失爆）；has弱读为/həz/，与been的/biːn/发生辅元连读。
+3.  **for the last few years** /fɔː ðə lɑːst fjuː jɪəz/
+    - for弱读为/fɔː/，与the的/ðə/发生辅元连读；the弱读为/ðə/，与last开头的/l/发生辅元连读；last结尾的/t/与few开头的/f/相邻，发生不完全爆破（失爆）；few结尾的/juː/与years开头的/j/发生元元连读。
+4.  **even though I never suffered** /ˈiːvn ðəʊ aɪ ˈnevə ˈsʌfəd/
+    - even结尾的/n/与though开头的/ð/发生辅音连读；though结尾的/əʊ/与I的/aɪ/发生元元连读；I的/aɪ/与never开头的/n/发生辅元连读；never结尾的/r/与suffered开头的/s/发生r连读。
+5.  **from it before** /frɒm ɪt bɪˈfɔː/
+    - from结尾的/m/与it的/ɪt/发生辅元连读；it结尾的/t/与before开头的/b/相邻，发生不完全爆破（失爆）。
+
+**意群切分**：Jet lag / is a big problem
+
+## Section C: Passages
+
+### Passage One
+### Passage One
+#### 句子1
+**原句**：Nothing can substitute real world experience when it comes to getting started in user experience design.
+**翻译**：在用户体验设计入门方面，没有什么能替代真实世界的经验。
+
+**连读现象分析**
+
+**意群切分**：Nothing can substitute real world experience when it comes to getting started in user experience design.
+**划分依据**：分析失败，请稍后重试
+
+---
+### Passage One
+#### 句子2
+**原句**：Higher education is a great way to equip yourself with some core skills, but it will not prepare you for actual challenges with clients.
+**翻译**：高等教育是装备自己核心技能的好方法，但它不会让你为面对客户的实际挑战做好准备。
+
+**连读现象分析**
+1.  **is a** /ɪz ə/
+    - 元音 /z/ 与 /ə/ 相邻，可连读为 /ɪzə/，发音时自然过渡
+2.  **to equip** /tə ɪˈkwɪp/
+    - 辅音 /t/ 与元音 /ɪ/ 相邻，发生辅元连读
+3.  **with some** /wɪð səm/
+    - 元音 /ɪ/ 与 /s/ 相邻，可连读为 /wɪðs/，发音时自然过渡
+4.  **but it** /bʌt ɪt/
+    - 元音 /t/ 与 /ɪ/ 相邻，发生辅元连读
+5.  **will not** /wɪl nɑːt/
+    - 元音 /l/ 与 /n/ 相邻，发生辅音连读
+6.  **for actual** /fɔːr ˈæktʃuəl/
+    - 辅音 /r/ 与 /ˈ/ 相邻，发生辅元连读
+
+**意群切分**：Higher education is a great way / to equip yourself with some core skills, / but it will not prepare you for actual challenges with clients.
+**划分依据**：意群划分依据是句子的语法结构和逻辑意义。第一部分描述高等教育的作用，第二部分说明其局限性，第三部分强调实际挑战的复杂性。母语者在朗读时会在每个意群之间稍作停顿，以突出句子的层次感和信息重点。
+
+---
+### Passage One
+#### 句子3
+**原句**：Being proficient with a design tool and a few methods doesn't make you a user experience designer.
+**翻译**：熟练使用设计工具和一些方法并不代表你就是一个用户体验设计师。
+
+**连读现象分析**
+1.  **Being proficient** /ˈbiːɪŋ ˈprəfɪʃənt/
+    - 辅音 /ŋ/ 与元音 /ɪ/ 相邻，发生辅元连读
+2.  **proficient with** /ˈprəfɪʃənt wɪð/
+    - /t/ 与 /w/ 相邻，发生不完全爆破
+3.  **a few methods** /ə fjuː ˈmɛθədz/
+    - /ə/ 与 /f/ 相邻，发生弱读和辅元连读
+4.  **methods doesn't** /ˈmɛθədz dʌznt/
+    - /z/ 与 /d/ 相邻，发生轻微延长或短暂停顿（避免吞音）
+
+**意群切分**：Being proficient with a design tool / and a few methods / doesn't make you / a user experience designer.
+**划分依据**：意群切分依据句子的语法结构和语义单位。每个意群在朗读时有自然停顿，如主语部分、谓语部分、宾语部分等。母语者通常会在连接词（如 and）、动词短语（如 doesn't make you）以及名词短语（如 a user experience designer）处做停顿。
+
+---
+### Passage One
+#### 句子4
+**原句**：There simply isn't a one size fits all process. Being effective requires adaptability, something you don't really learn in school.
+**翻译**：根本不存在一刀切的流程。要有效就需要适应性，而这在学校是学不到的。
+
+**连读现象分析**
+1.  **There simply** /ðɛr sɪmpli/
+    - /r/ 与 /s/ 相邻，可连读为 /rəs/ 或 /rɪs/
+2.  **isn't a** /ɪznt ə/
+    - /t/ 与 /ə/ 相邻，发生不完全爆破
+3.  **one size** /wʌn saɪz/
+    - /n/ 与 /s/ 相邻，可连读为 /nz/
+4.  **fits all** /fɪts ɔːl/
+    - /s/ 与 /ɔː/ 相邻，可连读为 /sɔː/
+5.  **Being effective** /ˈbiːŋ ɪˈfektɪv/
+    - /ŋ/ 与 /ɪ/ 相邻，可连读为 /ŋɪ/
+6.  **requires adaptability** /rɪˈkwaɪrz əˈdæptəbɪli/
+    - /z/ 与 /ə/ 相邻，可连读为 /zə/
+7.  **something you** /ˈsʌmθɪŋ juː/
+    - /g/ 与 /j/ 相邻，可连读为 /ɡj/
+8.  **don't really** /dɒnt ˈrɪəli/
+    - /t/ 与 /r/ 相邻，发生不完全爆破
+
+**意群切分**：There simply isn't a one size fits all process. / Being effective requires adaptability, / something you don't really learn in school.
+**划分依据**：意群划分依据句子的语法结构和逻辑意义。第一部分是主句，第二部分是主语从句，第三部分是补充说明。英语母语者在朗读时会在每个意群之间稍作停顿，以清晰表达意思。
+
+---
+### Passage One
+#### 句子5
+**原句**：I found my way to user experience through graphic design and slowly over many different roles and experiences.
+**翻译**：我通过平面设计找到了通往用户体验的道路，并在许多不同的角色和经历中慢慢成长。
+
+**连读现象分析**
+
+**意群切分**：I found my way to user experience through graphic design and slowly over many different roles and experiences.
+**划分依据**：分析失败，请稍后重试
+
+---
+### Passage One
+#### 句子6
+**原句**：It took time and commitment to continue to pursue roles within teams that I knew could teach and challenge me.
+**翻译**：这需要时间和投入，继续在那些我知道能教导和挑战我的团队中追求角色。
+
+**连读现象分析**
+1.  **It took** /ɪt tʊk/
+    - 辅音 /t/ 与元音 /ʊ/ 相邻，发生辅元连读
+2.  **time and** /taɪm ən d/
+    - /m/ 与 /ə/ 相邻，发生辅元连读；/d/ 在非重读音节中弱读为 /ə/
+3.  **commitment to** /kəˈmɪtmənt təʊ/
+    - /t/ 与 /t/ 相邻，发生不完全爆破
+4.  **continue to** /kənˈtɪnjuː təʊ/
+    - /n/ 与 /t/ 相邻，发生辅元连读
+5.  **pursue roles** /pɜːrˈsuː rəʊlz/
+    - 元音 /uː/ 与 /ə/ 相邻，发生轻微连读
+6.  **within teams** /wɪðɪn tiːmz/
+    - /n/ 与 /t/ 相邻，发生不完全爆破
+7.  **that I knew** /ðæt aɪ knuː/
+    - /t/ 与 /aɪ/ 相邻，发生辅元连读
+8.  **could teach** /kʊd tɛtʃ/
+    - /d/ 与 /t/ 相邻，发生不完全爆破
+
+**意群切分**：It took / time and commitment / to continue / to pursue roles / within teams / that I knew / could teach and challenge me.
+**划分依据**：意群划分依据是句子的语法结构和语义单位。每个意群代表一个完整的思想或动作，朗读时在这些位置会有短暂停顿，以帮助理解。例如：'It took' 是主句的谓语部分，'time and commitment' 是宾语，'to continue' 是不定式目的状语，'to pursue roles' 是继续的动作，'within teams' 是地点状语，'that I knew' 是定语从句，'could teach and challenge me' 是从句中的谓语部分。
+
+---
+### Passage One
+#### 句子7
+**原句**：You can start anywhere as long as you know your end goal and you commit to actively pursue opportunities to learn and grow.
+**翻译**：只要你知道自己的最终目标，并致力于积极追求学习和成长的机会，你可以从任何地方开始。
+
+**连读现象分析**
+1.  **can start** /kən stɑːrt/
+    - 元音 /ə/ 与辅音 /s/ 相邻，发生辅元连读，/ə/ 后接 /s/，发音自然过渡
+2.  **as long as** /æz lɔŋ æs/
+    - 辅音 /s/ 与元音 /æ/ 相邻，发生辅元连读，/s/ 后接 /æ/，发音自然过渡
+3.  **you know** /ju nəʊ/
+    - 元音 /u/ 与元音 /əʊ/ 相邻，发生元音连读，/u/ 后接 /əʊ/，发音自然过渡
+4.  **your end** /jɔːr end/
+    - 元音 /ɔː/ 与辅音 /e/ 相邻，发生辅元连读，/ɔː/ 后接 /e/，发音自然过渡
+5.  **and you** /ænd ju/
+    - 辅音 /d/ 与元音 /u/ 相邻，发生辅元连读，/d/ 后接 /u/，发音自然过渡
+6.  **commit to** /kəˈmɪt tuː/
+    - 元音 /ɪ/ 与元音 /uː/ 相邻，发生元音连读，/ɪ/ 后接 /uː/，发音自然过渡
+7.  **actively pursue** /ˈæktɪvli pɜːrsjuː/
+    - 辅音 /v/ 与元音 /p/ 相邻，发生辅元连读，/v/ 后接 /p/，发音自然过渡
+8.  **opportunities to** /ˌɒpəˈtjuːnɪti z təʊ/
+    - 辅音 /n/ 与元音 /t/ 相邻，发生辅元连读，/n/ 后接 /t/，发音自然过渡
+
+**意群切分**：You can start / anywhere as long as / you know your end goal / and you commit to / actively pursue opportunities / to learn and grow.
+**划分依据**：意群划分依据是句子的逻辑结构和语法成分。每个意群代表一个完整的思想单位，朗读时在这些位置有轻微停顿。例如：'You can start' 是主句，'anywhere as long as' 是条件状语，'you know your end goal' 是主语从句，'and you commit to' 是并列谓语，'actively pursue opportunities' 是动词短语，'to learn and grow' 是目的状语。
+
+---
+
+### Passage Two
+### Passage Two
+#### 句子1
+**原句**：When planning for this year, our principal asked what needed to change to engage students more in their learning.
+**翻译**：在今年做规划时，我们的校长问需要改变什么才能让学生更多地参与学习。
+
+**连读现象分析**
+1.  **planning for** /ˈplænɪŋ fər/
+    - 辅音 /ŋ/ 与元音 /ə/ 相邻，形成自然连读
+2.  **for this** /fɔːr ðɪs/
+    - 元音 /ə/ 与 /ð/ 相邻，可连读为轻微的过渡音
+3.  **this year** /ðɪs jɪr/
+    - 元音 /ɪ/ 与 /j/ 相邻，形成辅元连读
+4.  **asked what** /ɑːskt wʌt/
+    - 辅音 /t/ 与 /w/ 相邻，可能产生不完全爆破
+5.  **what needed** /wʌt nɪdɪd/
+    - 元音 /t/ 与 /n/ 相邻，可能产生轻微的过渡音
+6.  **needed to** /nɪdɪd tʊ/
+    - 元音 /d/ 与 /t/ 相邻，可能产生不完全爆破
+7.  **to engage** /tə ˈɛndʒeɪdʒ/
+    - 元音 /ə/ 与 /ˈ/ 相邻，形成辅元连读
+8.  **engage students** /ˈɛndʒeɪdʒ stuːdənts/
+    - 辅音 /dʒ/ 与 /s/ 相邻，可连读为轻微延长或短暂停顿
+9.  **students more** /stuːdənts mɔːr/
+    - 元音 /z/ 与 /m/ 相邻，形成自然连读
+10.  **more in** /mɔːr ɪn/
+    - 元音 /r/ 与 /ɪ/ 相邻，形成辅元连读
+11.  **in their** /ɪn ðeər/
+    - 元音 /n/ 与 /ð/ 相邻，可能产生轻微的过渡音
+12.  **their learning** /ðeər ˈlɜːrnɪŋ/
+    - 辅音 /r/ 与 /ˈ/ 相邻，形成辅元连读
+
+**意群切分**：When planning for this year / our principal asked what needed to change / to engage students more in their learning.
+**划分依据**：意群切分依据句子的语法结构和语义单位。第一部分描述时间背景，第二部分是主句动作，第三部分是目的状语。英语母语者在朗读时会在每个意群之间稍作停顿，以清晰传达信息。
+
+---
+### Passage Two
+#### 句子2
+**原句**：I responded in a whisper: flexible seating, thinking about our classroom with rows of desks and name plates.
+**翻译**：我低声回答：灵活座位，想着我们那有着一排排课桌和姓名牌的教室。
+
+**连读现象分析**
+1.  **I responded** /aɪ rɪˈspɒndɪd/
+    - 元音 /aɪ/ 与辅音 /r/ 相邻，发生辅元连读
+2.  **in a whisper** /ɪn ə ˈwɪsər/
+    - 元音 /ə/ 与 /ˈ/ 相邻，发生弱读现象
+3.  **whisper: flexible** /ˈwɪsər: ˈflɛksəbəl/
+    - 清音 /r/ 与 /f/ 相邻，发生不完全爆破
+4.  **seating, thinking** /ˈsiːtɪŋ, ˈθɪŋkɪŋ/
+    - 元音 /ɪ/ 与 /θ/ 相邻，发生辅元连读
+5.  **thinking about** /ˈθɪŋkɪŋ əˈbaʊt/
+    - 元音 /ɪ/ 与 /ə/ 相邻，发生弱读现象
+6.  **about our** /əˈbaʊt aʊər/
+    - 元音 /aʊ/ 与 /ə/ 相邻，发生弱读现象
+7.  **our classroom** /aʊər ˈklɑːsruːm/
+    - 元音 /ər/ 与 /ˈ/ 相邻，发生辅元连读
+8.  **classroom with** /ˈklɑːsruːm wɪð/
+    - 元音 /uː/ 与 /w/ 相邻，发生辅元连读
+9.  **with rows** /wɪð rəʊz/
+    - 元音 /ɪ/ 与 /r/ 相邻，发生辅元连读
+10.  **rows of desks** /rəʊz əv dɛskz/
+    - 元音 /ə/ 与 /d/ 相邻，发生弱读现象
+11.  **desks and** /dɛskz ænd/
+    - 元音 /z/ 与 /æ/ 相邻，可连成轻微延长或短暂停顿（避免吞音）
+
+**意群切分**：I responded / in a whisper: / flexible seating, / thinking about our classroom / with rows of desks and name plates.
+**划分依据**：意群切分依据句子的语法结构和语义单位。每个意群在朗读时有自然停顿，如主谓结构、介词短语、并列成分等。母语者通常会在意群之间稍作停顿以增强理解。
+
+---
+### Passage Two
+#### 句子3
+**原句**：Flexible seating has been defined as movable furniture to create an engaging learning environment.
+**翻译**：灵活座位被定义为可移动的家具，以创造有吸引力的学习环境。
+
+**连读现象分析**
+1.  **Flexible seating** /ˈfleksəbəl ˈsiːtɪŋ/
+    - 无连读现象
+2.  **has been** /hæz biːn/
+    - 无连读现象
+3.  **been defined** /biːn dɪˈfaɪnd/
+    - 无连读现象
+4.  **defined as** /dɪˈfaɪnd æz/
+    - 无连读现象
+5.  **as movable** /æz ˈməʊvəbəl/
+    - 无连读现象
+6.  **movable furniture** /ˈməʊvəbəl ˈfɜːnɪtʃər/
+    - 无连读现象
+7.  **furniture to** /ˈfɜːnɪtʃər təʊ/
+    - 无连读现象
+8.  **to create** /təʊ kriːeɪt/
+    - 无连读现象
+9.  **create an** /kriːeɪt ən/
+    - 无连读现象
+10.  **an engaging** /ən ɪnˈɡeɪdʒɪŋ/
+    - 无连读现象
+11.  **engaging learning** /ɪnˈɡeɪdʒɪŋ ˈlɜːnɪŋ/
+    - 无连读现象
+12.  **learning environment** /ˈlɜːnɪŋ ɪnˈvaɪrənmənt/
+    - 无连读现象
+
+**意群切分**：Flexible seating / has been defined / as movable furniture / to create an engaging learning environment.
+**划分依据**：意群切分依据句子的语法结构和意义单元。每个意群代表一个完整的概念或动作，如主语、谓语、宾语等。英语母语者在朗读时会在意群之间稍作停顿，以清晰表达句子的逻辑关系。
+
+---
+### Passage Two
+#### 句子4
+**原句**：It is a shift in practice from being teacher focused to student focused learning.
+**翻译**：这是从以教师为中心向以学生为中心学习的实践转变。
+
+**连读现象分析**
+1.  **It is** /ɪt ɪz/
+    - 单词 'It' 的 /t/ 与 'is' 的 /ɪz/ 相邻，/t/ 发音时舌位接近齿龈但不完全爆破，形成不完全爆破现象
+2.  **teacher focused** /ˈtiːtʃər ˈfəʊkəst/
+    - 单词 'teacher' 的 /r/ 与 'focused' 的 /f/ 相邻，/r/ 与 /f/ 之间可连读，形成辅元连读
+3.  **to student** /tuː ˈstjuːdənt/
+    - 单词 'to' 的 /uː/ 与 'student' 的 /ˈstjuːdənt/ 相邻，/uː/ 与 /s/ 之间可连读，形成辅元连读
+
+**意群切分**：It is / a shift in practice / from being teacher focused / to student focused learning
+**划分依据**：意群划分依据是句子的语法结构和逻辑意义。每个意群代表一个完整的思想单位，朗读时在这些位置会有短暂停顿。'It is' 是主句；'a shift in practice' 是主语补足语；'from being teacher focused' 是介词短语表示来源；'to student focused learning' 是介词短语表示目标
+
+---
+### Passage Two
+#### 句子5
+**原句**：For us, flexible seating has meant removing most of the traditional chairs and desks and introducing a variety of seating options.
+**翻译**：对我们来说，灵活座位意味着移除大部分传统桌椅，引入各种座位选择。
+
+**连读现象分析**
+1.  **For us** /fɔːr əs/
+    - 元音 /ə/ 与 /s/ 相邻，/ə/ 弱读为 /ə/，/s/ 前无元音，形成辅元连读
+2.  **has meant** /hæz miːnd/
+    - /z/ 与 /m/ 相邻，/z/ 发音为 /z/，/m/ 前无元音，形成辅元连读
+3.  **most of the** /moʊst əv ðə/
+    - /t/ 与 /ə/ 相邻，/t/ 为不完全爆破，/ə/ 弱读为 /ə/
+4.  **and introducing** /ænd ɪnˈtrədjuːɪŋ/
+    - /d/ 与 /ɪ/ 相邻，/d/ 为不完全爆破，/ɪ/ 为弱读
+
+**意群切分**：For us / flexible seating has meant / removing most of the traditional chairs and desks / and introducing a variety of seating options.
+**划分依据**：意群划分依据是句子的语法结构和逻辑意义。每个意群代表一个完整的思想单位，朗读时在这些位置有轻微停顿。第一部分 'For us' 表示对象；第二部分 'flexible seating has meant' 是主句；第三部分 'removing most of the traditional chairs and desks' 是并列动作；第四部分 'and introducing a variety of seating options' 是另一个并列动作。
+
+---
+### Passage Two
+#### 句子6
+**原句**：Teachers tend to still use the rows format because of either the need to control students or the belief that the teacher is the most important person.
+**翻译**：教师仍然倾向于使用排排坐的形式，要么是因为需要控制学生，要么是认为教师是最重要的人。
+
+**连读现象分析**
+1.  **tend to** /tɛnd tə/
+    - 辅音 /d/ 与元音 /ə/ 相邻，发生辅元连读，发音为 /tɛndtə/
+2.  **still use** /stɪl ʌs/
+    - 辅音 /l/ 与元音 /ʌ/ 相邻，发生辅元连读，发音为 /stɪlʌs/
+3.  **rows format** /roʊz ˈfɔːrmæt/
+    - 元音 /oʊ/ 与元音 /ə/ 相邻，可能产生轻微的过渡音，形成连读
+4.  **because of** /bɪˈkɒz əv/
+    - 元音 /ə/ 与 /ə/ 相邻，可能弱读为 /ə/，形成连读
+5.  **the need** /ðə niːd/
+    - 辅音 /ð/ 与元音 /iː/ 相邻，发生辅元连读，发音为 /ðəniːd/
+6.  **to control** /tə kənˈtrəʊl/
+    - 元音 /ə/ 与 /ə/ 相邻，可能弱读为 /ə/，形成连读
+7.  **or the belief** /ɔːr ðə bɪˈliːf/
+    - 元音 /ə/ 与 /ɪ/ 相邻，可能弱读为 /ə/，形成连读
+8.  **that the teacher** /ðæt ðə ˈtiːtʃər/
+    - 元音 /ə/ 与 /ɪ/ 相邻，可能弱读为 /ə/，形成连读
+
+**意群切分**：Teachers tend to still use the rows format / because of either the need to control students / or the belief that the teacher is the most important person.
+**划分依据**：意群切分依据句子的逻辑结构和语法成分。第一部分描述教师使用特定座位安排的原因；第二部分说明原因的具体内容；第三部分列出另一个可能的原因。母语者在朗读时会在每个意群之间稍作停顿，以清晰表达句子的层次和逻辑关系。
+
+---
+### Passage Two
+#### 句子7
+**原句**：Flexible seating enhances student ownership of space and engagement in learning while reducing rates of disengagement.
+**翻译**：灵活座位增强了学生对空间的主人翁感和学习参与度，同时降低了脱离学习的情况。
+
+**连读现象分析**
+1.  **enhances student** /ɪnˈhænsz ˈstjuːdənt/
+    - 末尾的 /z/ 与开头的 /s/ 相邻，可连读为轻微延长或短暂停顿
+2.  **student ownership** /ˈstjuːdənt ˈɔːnʃɪp/
+    - 无明显连读现象，但 /t/ 与 /ɔː/ 相邻，可能产生辅元连读
+3.  **ownership of space** /ˈɔːnʃɪp əv speɪs/
+    - 末尾的 /p/ 与 /ə/ 相邻，可能产生不完全爆破
+4.  **space and engagement** /speɪs ænd ɪnˈɡeɪdʒmənt/
+    - 末尾的 /s/ 与 /æ/ 相邻，可能产生辅元连读
+5.  **engagement in learning** /ɪnˈɡeɪdʒmənt ɪn ˈlɜːrnɪŋ/
+    - 末尾的 /t/ 与 /ɪ/ 相邻，可能产生不完全爆破
+6.  **learning while reducing** /ˈlɜːrnɪŋ wail rɪˈdusɪŋ/
+    - 末尾的 /ŋ/ 与 /w/ 相邻，可能产生辅元连读
+7.  **reducing rates** /rɪˈdusɪŋ reɪts/
+    - 末尾的 /g/ 与 /r/ 相邻，可能产生辅元连读
+8.  **rates of disengagement** /reɪts əv dɪsˈenɡeɪdmənt/
+    - 末尾的 /s/ 与 /ə/ 相邻，可能产生辅元连读
+
+**意群切分**：Flexible seating / enhances student ownership / of space / and engagement in learning / while reducing rates / of disengagement.
+**划分依据**：意群切分依据句子的语法结构和逻辑意义。每个意群代表一个完整的意思单位，朗读时在这些位置会有短暂停顿，以帮助理解。例如，'Flexible seating' 是主语，'enhances student ownership' 是谓语部分，'of space' 是介词短语，'and engagement in learning' 是并列成分，'while reducing rates' 是时间状语从句，'of disengagement' 是补充说明。
+
+---
+
+### Passage Three
+### Passage Three
+#### 句子1
+**原句**：Dozens of British students arriving for their first day of school on Tuesday were sent home over their shoes.
+**翻译**：数十名英国学生周二第一天上学因鞋子问题被送回家。
+
+**连读现象分析**
+1.  **arriving for** /əˈraɪvɪŋ fɔːr/
+    - 元音 /ɪ/ 与辅音 /f/ 相邻，发生辅元连读，/ɪ/ 后接 /f/，发音自然过渡
+2.  **their first day** /ðɛər fɜːrst deɪ/
+    - 辅音 /r/ 与元音 /f/ 相邻，发生辅元连读，/r/ 后接 /f/，发音自然过渡
+3.  **day of school** /deɪ əv skuːl/
+    - 元音 /eɪ/ 与 /ə/ 相邻，发生弱读现象，/ə/ 被弱化为轻音
+
+**意群切分**：Dozens of British students / arriving for their first day / of school on Tuesday / were sent home / over their shoes.
+**划分依据**：意群划分依据句子的语法结构和逻辑意义。每个意群之间有明显的停顿，如主语部分、谓语部分、时间状语、原因状语等。英语母语者在朗读时会在这些位置稍作停顿，以增强理解。
+
+---
+### Passage Three
+#### 句子2
+**原句**：About 30 students were turned away from Taverham high school in Norfolk due to a change in the school's uniform policy.
+**翻译**：由于学校制服政策的变更，诺福克郡Taverham高中有约30名学生被拒之门外。
+
+**连读现象分析**
+1.  **were turned** /wɜːr tɜːrnd/
+    - 元音 /ə/ 弱读为 /ɜː/，/d/ 与 /t/ 相邻，发生不完全爆破
+2.  **turned away** /tɜːrnd əˈweɪ/
+    - 辅音 /d/ 与 /ə/ 相邻，/d/ 发音弱化，/ə/ 弱读为 /ə/，/n/ 与 /ə/ 相邻，发生辅元连读
+3.  **due to** /duː təʊ/
+    - 元音 /uː/ 与 /əʊ/ 相邻，可连读为 /duːtəʊ/
+4.  **in Norfolk** /ɪn ˈnɔːrfɪk/
+    - 元音 /ɪ/ 与 /ˈ/ 相邻，无明显连读现象
+
+**意群切分**：About 30 students / were turned away / from Taverham high school / in Norfolk / due to a change / in the school's uniform policy.
+**划分依据**：意群划分依据句子的语法结构和信息重点。每个意群包含一个主谓结构或核心名词短语，朗读时在每个意群之间有轻微停顿，以突出信息层次。
+
+---
+### Passage Three
+#### 句子3
+**原句**：The head teacher said he notified parents of the updated rules in an email in June.
+**翻译**：校长说他六月份通过电子邮件通知了家长们更新后的规定。
+
+**连读现象分析**
+
+**意群切分**：The head teacher said he notified parents of the updated rules in an email in June.
+**划分依据**：分析失败，请稍后重试
+
+---
+### Passage Three
+#### 句子4
+**原句**：The price of school uniforms can spark panic among families struggling with the high cost of living.
+**翻译**：校服的价格可能在生活成本高涨中挣扎的家庭中引发恐慌。
+
+**连读现象分析**
+1.  **can spark** /kən spɑːrk/
+    - /n/ 与 /s/ 相邻，可连成轻微延长或短暂停顿（避免吞音）
+2.  **struggling with** /ˈstrʌɡlɪŋ wɪð/
+    - /g/ 与 /w/ 相邻，发生辅元连读现象
+3.  **the high cost** /ðə haɪ kɔːst/
+    - /ə/ 与 /h/ 相邻，发生弱读现象
+
+**意群切分**：The price of school uniforms / can spark panic / among families struggling with / the high cost of living.
+**划分依据**：意群切分依据句子的语法结构和逻辑意义。每个意群在朗读时有自然停顿，通常在介词短语、动词短语或主谓结构之间划分。
+
+---
+### Passage Three
+#### 句子5
+**原句**：Nearly all British schools have uniforms. They cost parents an average of 337 pounds per year for each secondary school child.
+**翻译**：几乎所有的英国学校都有校服。每个中学生的校服平均每年花费家长337英镑。
+
+**连读现象分析**
+1.  **have uniforms** /hæv ˈjuːnɪfɔːmz/
+    - 元音 /ə/ 弱读为 /ə/，/v/ 与 /j/ 相邻，形成辅元连读
+2.  **cost parents** /kɒst ˈpeərənts/
+    - 元音 /ɒ/ 弱读为 /ɑː/，/t/ 与 /p/ 相邻，形成不完全爆破
+3.  **an average** /ən ˈævərɪdʒ/
+    - 元音 /ə/ 弱读为 /ə/，/n/ 与 /ˈ/ 相邻，形成辅元连读
+4.  **of 337 pounds** /əv 337 paʊndz/
+    - 元音 /ə/ 弱读为 /ə/，/v/ 与 /p/ 相邻，形成不完全爆破
+5.  **per year** /pɜː r jɪər/
+    - 元音 /ə/ 弱读为 /ə/，/r/ 与 /j/ 相邻，形成辅元连读
+6.  **for each secondary** /fɔːr iːtʃ ˈsɛkəndəri/
+    - 元音 /ə/ 弱读为 /ə/，/r/ 与 /iː/ 相邻，形成辅元连读
+7.  **school child** /skuːl tʃaɪld/
+    - 元音 /uː/ 弱读为 /uː/，/l/ 与 /tʃ/ 相邻，形成辅元连读
+
+**意群切分**：Nearly all British schools / have uniforms. / They cost parents / an average / of 337 pounds / per year / for each secondary school child.
+**划分依据**：意群切分依据句子的语法结构和语义单位。每个意群包含一个主谓结构或核心名词短语，朗读时在这些位置有自然停顿，以帮助理解句子的整体意思。
+
+---
+### Passage Three
+#### 句子6
+**原句**：According to the new rules, students are required to wear smart black shoes appropriate for the workplace.
+**翻译**：根据新规定，学生需穿着适合工作场所的黑色正装皮鞋。
+
+**连读现象分析**
+1.  **According to** /əˈkɔːrɪŋ təˈtuː/
+    - /g/ 与 /t/ 相邻，发生不完全爆破
+2.  **to wear** /tə wɛər/
+    - /t/ 与 /w/ 相邻，发生辅元连读
+3.  **wear smart** /wɛər smɑːrt/
+    - /r/ 与 /s/ 相邻，发生辅元连读
+4.  **smart black** /smɑːrt blæk/
+    - /t/ 与 /b/ 相邻，发生不完全爆破
+5.  **black shoes** /blækʃuːz/
+    - /k/ 与 /ʃ/ 相邻，发生辅音连读
+
+**意群切分**：According to the new rules, / students are required to wear smart black shoes appropriate for the workplace.
+**划分依据**：意群划分依据是句子的语法结构和语义单位。逗号后为独立的主句部分，'students are required to wear smart black shoes' 是主句的核心内容，'appropriate for the workplace' 是修饰 'shoes' 的定语从句，因此作为单独意群。朗读时在每个意群之间有明显停顿。
+
+---
+### Passage Three
+#### 句子7
+**原句**：Harris held that strengthened rules around school uniforms improved student outcomes and behavior.
+**翻译**：Harris认为加强校服规定改善了学生的成绩和行为。
+
+**连读现象分析**
+1.  **Harris held** /ˈhærɪs həld/
+    - 无明显连读或弱读现象
+2.  **held that** /həld ðæt/
+    - 无明显连读或弱读现象
+3.  **that strengthened** /ðæt ˈstɛŋɡθənd/
+    - 无明显连读或弱读现象
+4.  **strengthened rules** /ˈstɛŋɡθənd rulz/
+    - 无明显连读或弱读现象
+5.  **rules around** /ruːlz əˈraʊnd/
+    - 无明显连读或弱读现象
+6.  **around school** /əˈraʊnd skuːl/
+    - 无明显连读或弱读现象
+7.  **school uniforms** /skuːl ˈjuːnɪfɔːrmz/
+    - 无明显连读或弱读现象
+8.  **uniforms improved** /ˈjuːnɪfɔːrmz ɪmˈpruːvd/
+    - 无明显连读或弱读现象
+9.  **improved student** /ɪmˈpruːvd ˈstjuːdənt/
+    - 无明显连读或弱读现象
+10.  **student outcomes** /ˈstjuːdənt ˈaʊtˌkʌmz/
+    - 无明显连读或弱读现象
+11.  **outcomes and** /ˈaʊtˌkʌmz ænd/
+    - 无明显连读或弱读现象
+12.  **and behavior** /ænd ˈbɪheɪvɪr/
+    - 无明显连读或弱读现象
+
+**意群切分**：Harris held / that strengthened rules / around school uniforms / improved student outcomes / and behavior.
+**划分依据**：意群切分依据句子的语法结构和逻辑意义。每个意群包含一个主谓结构或核心概念，朗读时在这些位置会有短暂停顿，以帮助理解句子的整体意思。
+
+---
+### Passage Three
+#### 句子8
+**原句**：As annual inflation climbs over 10%, many households are on tight budgets.
+**翻译**：随着年通胀率攀升超过10%，许多家庭预算紧张。
+
+**连读现象分析**
+1.  **As annual** /æz ˈænjuəl/
+    - 无明显连读或弱读现象
+2.  **annual inflation** /ˈænjuəl ɪnˈfleɪʃn/
+    - 无明显连读或弱读现象
+3.  **climbs over** /klaɪmz ˈoʊvər/
+    - 无明显连读或弱读现象
+4.  **over 10%** /ˈoʊvər 10%/
+    - 无明显连读或弱读现象
+5.  **many households** /ˈmeni ˈhaʊsˌhoʊldz/
+    - 无明显连读或弱读现象
+6.  **households are** /ˈhaʊsˌhoʊldz ɑːr/
+    - 无明显连读或弱读现象
+7.  **are on** /ɑːr ɑːn/
+    - 无明显连读或弱读现象
+8.  **on tight** /ɑːn taɪt/
+    - 无明显连读或弱读现象
+9.  **tight budgets** /taɪt ˈbʌdʒɪts/
+    - 无明显连读或弱读现象
+
+**意群切分**：As annual inflation / climbs over 10% / many households / are on tight budgets.
+**划分依据**：意群切分依据句子的语法结构和逻辑意义。第一部分 'As annual inflation' 表示背景条件；第二部分 'climbs over 10%' 是主句的动作；第三部分 'many households' 是主语；第四部分 'are on tight budgets' 是谓语和补语，表示状态。英语母语者在朗读时会在这些意群之间稍作停顿，以清晰传达信息。
+
+---
+### Passage Three
+#### 句子9
+**原句**：Private rental prices in Britain rose 3.2% over the 12 months to July 2022, the largest jump since 2016.
+**翻译**：截至2022年7月的12个月内，英国私人租金上涨了3.2%，这是自2016年以来的最大涨幅。
+
+**连读现象分析**
+1.  **rose 3.2%** /roʊz 3.2%/
+    - 元音 /oʊ/ 与 /3/ 相邻，可连读为轻微延长的音节
+2.  **over the 12** /ˈəʊvə ðə 12/
+    - /v/ 与 /ð/ 相邻，可连读为 /vð/ 音，但实际发音中可能因语速而产生轻微连读
+3.  **months to July** /mʌnθz tə ˈdʒuːlaɪ/
+    - /z/ 与 /t/ 相邻，可连读为 /zt/ 音，但实际发音中可能因语速而产生轻微连读
+
+**意群切分**：Private rental prices / in Britain / rose 3.2% / over the 12 months / to July 2022, / the largest jump / since 2016.
+**划分依据**：意群划分依据句子的语法结构和信息单元。每个意群包含一个主谓结构或核心信息，如名词短语、介词短语、时间状语等。英语母语者在朗读时会在每个意群之间稍作停顿，以清晰传达信息。
+
+---
+### Passage Three
+#### 句子10
+**原句**：Lucinda May, mum of a Taverham student, said she had to ask her parents for 65 pounds to buy her child the correct pair of shoes.
+**翻译**：Taverham学生家长Lucinda May说，她不得不向父母要65英镑给孩子买一双符合规定的鞋子。
+
+**连读现象分析**
+1.  **mum of** /mʌm əv/
+    - 元音 /m/ 与 /əv/ 相邻，可连读为 /məv/，形成辅元连读
+2.  **had to** /hæd tə/
+    - /d/ 与 /t/ 相邻，发生不完全爆破现象，/d/ 不完全发出
+3.  **ask her** /ɑːsk ɜːr/
+    - /k/ 与 /ɜːr/ 相邻，可连读为 /kɜːr/，形成辅元连读
+4.  **for 65 pounds** /fɔːr ˈsɪks.ti fɑːndz/
+    - /r/ 与 /ˈsɪks/ 相邻，可连读为 /rˈsɪks/，形成辅元连读
+
+**意群切分**：Lucinda May, / mum of a Taverham student, / said she had to ask her parents for 65 pounds / to buy her child the correct pair of shoes.
+**划分依据**：意群划分依据是句子的语法结构和逻辑意义。每个意群之间有自然的停顿，通常在介词短语、从句或动词短语后出现。母语者在朗读时会在这些位置稍作停顿，以增强表达清晰度。
+
+---
+### Passage Three
+#### 句子11
+**原句**：May said that the school's uniform policy showed the lack of regard for parents dealing with the high cost of living.
+**翻译**：May说学校的制服政策表明了对应对高生活成本家长缺乏体谅。
+
+**连读现象分析**
+1.  **said that** /sɛd ðæt/
+    - 单词 'said' 的 /d/ 与 'that' 的 /ð/ 相邻，可连读为 /dð/，形成不完全爆破
+2.  **the school's uniform** /ðə skuːlz ˈjuːnɪfɔːrm/
+    - 单词 'school's' 的 /z/ 与 'uniform' 的 /j/ 相邻，可连读为 /zj/，形成辅元连读
+3.  **regard for parents** /rɪˈɡɑːrd fɔːr pærənts/
+    - 单词 'regard' 的 /d/ 与 'for' 的 /f/ 相邻，可连读为 /df/，形成辅音连读
+4.  **dealing with the high** /ˈdiːlɪŋ wɪð ðə haɪ/
+    - 单词 'with' 的 /ð/ 与 'the' 的 /ð/ 相邻，可连读为 /ðð/，形成不完全爆破
+
+**意群切分**：May said / that the school's uniform policy / showed the lack of regard / for parents dealing with / the high cost of living.
+**划分依据**：意群切分依据句子的语法结构和逻辑意义。每个意群包含一个主谓结构或核心名词短语，朗读时在这些位置有自然停顿，帮助理解句子的整体意思。
+
+---

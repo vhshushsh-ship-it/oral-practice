@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef, useLayoutEffect } from 'react';
 import type { ListeningSetMeta, ListeningSet, ListeningSection, ListeningSentence, ListeningLevel, ListeningQuestion, ExamResult, ExamHistoryItem } from '../../types';
 import { fetchListeningSets, fetchListeningSetDetail, fetchQuestions, fetchExamHistory, fetchExamDetail } from '../../services/api';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
@@ -49,6 +49,8 @@ export function ListeningPage() {
   const [examHistory, setExamHistory] = useState<ExamHistoryItem[]>([]);
   const [examHistoryLoading, setExamHistoryLoading] = useState(false);
   const [analysisSentence, setAnalysisSentence] = useState<ListeningSentence | null>(null);
+  const sentenceListRef = useRef<HTMLDivElement | null>(null);
+  const savedScrollTopRef = useRef(0);
 
   const seq = useSequentialTTS(1.0);
   const speak = useSpeechSynthesis(1.0);
@@ -210,12 +212,21 @@ export function ListeningPage() {
   }, [showToast]);
 
   const handleAnalyzeSentence = useCallback((s: ListeningSentence) => {
+    if (sentenceListRef.current) {
+      savedScrollTopRef.current = sentenceListRef.current.scrollTop;
+    }
     setAnalysisSentence(s);
   }, []);
 
   const handleCloseAnalysis = useCallback(() => {
     setAnalysisSentence(null);
   }, []);
+
+  useLayoutEffect(() => {
+    if (!analysisSentence && sentenceListRef.current && savedScrollTopRef.current > 0) {
+      sentenceListRef.current.scrollTop = savedScrollTopRef.current;
+    }
+  }, [analysisSentence]);
 
   // ─── Playback handlers ───
 
@@ -458,7 +469,7 @@ export function ListeningPage() {
               onToggleTranslations={() => setShowTranslations((v) => !v)}
             />
 
-            <div className="listening-sentence-list">
+            <div className="listening-sentence-list" ref={sentenceListRef}>
               {practiceSentences.length === 0 ? (
                 <div className="listening-empty">暂无句子</div>
               ) : selectedSection?.items && selectedSection.items.length > 0 ? (
