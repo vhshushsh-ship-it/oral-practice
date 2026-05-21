@@ -15,6 +15,7 @@ interface Props {
   onStartRecord: () => void;
   onStopRecord: () => void;
   onPlayRecording: () => void;
+  onAnalyze: () => void;
 }
 
 export function SentenceItem({
@@ -31,6 +32,7 @@ export function SentenceItem({
   onStartRecord,
   onStopRecord,
   onPlayRecording,
+  onAnalyze,
 }: Props) {
   const singleDisabled = isPlayingFull;
 
@@ -77,6 +79,10 @@ export function SentenceItem({
           <button className="sentence-action-btn collect" onClick={onCollect} title="收藏">
             <BookmarkIcon size={13} />
           </button>
+
+          <button className="sentence-action-btn analyze" onClick={onAnalyze} title="分析发音">
+            <StudyIcon size={13} />
+          </button>
         </div>
       </div>
 
@@ -98,6 +104,20 @@ export function SentenceItem({
         <div className="listening-sentence-zh">{sentence.zh}</div>
       )}
     </div>
+  );
+}
+
+function StudyIcon({ size = 13 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+         strokeLinecap="round" strokeLinejoin="round" width={size} height={size}>
+      <circle cx="11" cy="11" r="7" />
+      <line x1="16.5" y1="16.5" x2="21" y2="21" />
+      <line x1="9" y1="9" x2="9.01" y2="9" />
+      <line x1="13" y1="9" x2="13.01" y2="9" />
+      <line x1="9" y1="13" x2="9.01" y2="13" />
+      <line x1="13" y1="13" x2="13.01" y2="13" />
+    </svg>
   );
 }
 

@@ -87,6 +87,69 @@ def translate_to_english(text: str) -> str:
         return "翻译出错"
 
 
+def analyze_sentence(text: str) -> dict:
+    """分析句子连读现象和意群切分，返回结构化数据"""
+    prompt = f"""你是英语发音专家。请分析以下英文句子的连读现象和意群切分，严格返回纯JSON格式，不要加任何多余的文字、注释、markdown：
+
+{{
+  "connected_speech": [
+    {{
+      "words": "原文词组，如 has survived",
+      "phonetic": "音标，如 /həz səˈvaɪvd/",
+      "description": "连读/弱读/不完全爆破现象的中文解释，说明具体发生了什么音变，如：/z/ 与 /s/ 相邻，可连成轻微延长或短暂停顿（避免吞音）"
+    }}
+  ],
+  "sense_groups": {{
+    "segmented": "用 / 分隔意群的完整句子",
+    "explanation": "意群切分依据的中文解释，说明为什么这样划分，以及英语母语者朗读时的停顿规律"
+  }}
+}}
+
+规则：
+- connected_speech 列出句子中所有连读、弱读、不完全爆破、辅元连读等现象，每条包含原词组、音标、现象解释
+- sense_groups.segmented 按意群用 " / " 切分整个句子
+- sense_groups.explanation 解释划分原则
+- 所有解释使用中文
+
+句子：{text}"""
+    try:
+        response = Generation.call(
+            model="qwen-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            result_format="message",
+            temperature=0.1,
+            max_tokens=800,
+        )
+        raw = response.output.choices[0].message["content"].strip()
+
+        json_match = re.search(r"\{[\s\S]*\}", raw)
+        if not json_match:
+            raise ValueError("AI未返回JSON格式")
+
+        clean_json = json_match.group(0)
+        clean_json = re.sub(r",\s*([}\]])", r"\1", clean_json)
+
+        try:
+            result = json.loads(clean_json)
+        except json.JSONDecodeError:
+            clean_json = clean_json.replace("'", '"')
+            result = json.loads(clean_json)
+
+        if "connected_speech" not in result or "sense_groups" not in result:
+            raise ValueError("JSON缺少必填字段")
+
+        return result
+    except Exception as e:
+        print(f"[ANALYZE ERROR] {e}")
+        return {
+            "connected_speech": [],
+            "sense_groups": {
+                "segmented": text,
+                "explanation": "分析失败，请稍后重试",
+            },
+        }
+
+
 def query_word_ai(word: str) -> dict:
     """调用 AI 查询单词释义，返回结构化数据"""
     prompt = f"""

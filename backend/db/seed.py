@@ -114,20 +114,41 @@ NEW_SET = {
             "name": "Section A: News Reports",
             "section_type": "news_report",
             "sort_order": 0,
-            "sentences": [
-                ("A terrified cat has survived a five-mile round trip under the engine cover of a car on a school run.", "一只受惊的猫在汽车引擎盖下经历了一次五英里的往返行程后幸存了下来。"),
-                ("The black cat was found curled up under the engine cover of David King's car when he decided to do an oil check after dropping his grandson off at school.", "这只黑猫被发现蜷缩在David King的汽车引擎盖下，当时他在送完孙子上学后决定检查机油。"),
-                ("We weren't even sure it was alive, so I gently pushed it with a stick to check it was breathing and saw it was a terrified little cat.", "我们甚至不确定它还活着，所以我用棍子轻轻推了推它，看它是否还在呼吸，发现是只受惊的小猫。"),
-                ("Following a rescue by UK charity Cats Protection, the four year old cat was later reunited with its owner, Mr King's neighbour.", "在英國慈善机构猫咪保护组织的救助下，这只四岁的猫后来与它的主人——King先生的邻居团聚了。"),
-                ("In less than a month, the Special Olympics Spring Games will make a return to Fayetteville for the first time in five years.", "在不到一个月的时间里，特奥会春季运动会将五年来首次重返费耶特维尔。"),
-                ("Event organizer Benjamin Koalzick says he's excited that athletes will get a chance to come back and demonstrate their abilities.", "活动组织者Benjamin Koalzick表示，他很兴奋运动员们将有机会回来展示他们的能力。"),
-                ("Organizers expect about one hundred athletes will come out to compete in a variety of events including running, throwing, and jumping.", "组织者预计约有一百名运动员将参加包括跑步、投掷和跳跃在内的各种项目比赛。"),
-                ("Kawalski said it's rewarding to see athletes with special needs triumph in the games.", "Kawalski说，看到有特殊需求的运动员在比赛中获胜是很有成就感的。"),
-                ("A German supermarket has been ordered to destroy its chocolate rabbits after losing a court battle with a Swiss chocolate manufacturer.", "一家德国超市在与瑞士巧克力制造商的官司败诉后，被勒令销毁其巧克力兔子。"),
-                ("The Swiss firm had argued its gold wrapped chocolate rabbit deserved copyright protection from a similar product sold by the budget supermarket.", "瑞士公司主张其金色包装的巧克力兔子应受到版权保护，免受廉价超市销售的类似产品侵害。"),
-                ("Switzerland's highest court agreed and overturned a ruling last year that had sided with the supermarket.", "瑞士最高法院同意了这一主张，并推翻了去年支持超市的裁决。"),
-                ("The court suggested the chocolate needn't be wasted; it could be melted for use in other products.", "法院建议巧克力不必浪费，可以融化用于其他产品。"),
-                ("The Swiss manufacturer's rabbit has a red bow and bell, while the German supermarket's has a green bow and bell.", "瑞士制造商的兔子有红色蝴蝶结和铃铛，而德国超市的兔子是绿色蝴蝶结和铃铛。"),
+            "items": [
+                {
+                    "id": "cet4-2025-12-itemA1",
+                    "name": "News Report One",
+                    "sort_order": 0,
+                    "sentences": [
+                        ("A terrified cat has survived a five-mile round trip under the engine cover of a car on a school run.", "一只受惊的猫在汽车引擎盖下经历了一次五英里的往返行程后幸存了下来。"),
+                        ("The black cat was found curled up under the engine cover of David King's car when he decided to do an oil check after dropping his grandson off at school.", "这只黑猫被发现蜷缩在David King的汽车引擎盖下，当时他在送完孙子上学后决定检查机油。"),
+                        ("We weren't even sure it was alive, so I gently pushed it with a stick to check it was breathing and saw it was a terrified little cat.", "我们甚至不确定它还活着，所以我用棍子轻轻推了推它，看它是否还在呼吸，发现是只受惊的小猫。"),
+                        ("Following a rescue by UK charity Cats Protection, the four year old cat was later reunited with its owner, Mr King's neighbour.", "在英國慈善机构猫咪保护组织的救助下，这只四岁的猫后来与它的主人——King先生的邻居团聚了。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2025-12-itemA2",
+                    "name": "News Report Two",
+                    "sort_order": 1,
+                    "sentences": [
+                        ("In less than a month, the Special Olympics Spring Games will make a return to Fayetteville for the first time in five years.", "在不到一个月的时间里，特奥会春季运动会将五年来首次重返费耶特维尔。"),
+                        ("Event organizer Benjamin Koalzick says he's excited that athletes will get a chance to come back and demonstrate their abilities.", "活动组织者Benjamin Koalzick表示，他很兴奋运动员们将有机会回来展示他们的能力。"),
+                        ("Organizers expect about one hundred athletes will come out to compete in a variety of events including running, throwing, and jumping.", "组织者预计约有一百名运动员将参加包括跑步、投掷和跳跃在内的各种项目比赛。"),
+                        ("Kawalski said it's rewarding to see athletes with special needs triumph in the games.", "Kawalski说，看到有特殊需求的运动员在比赛中获胜是很有成就感的。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2025-12-itemA3",
+                    "name": "News Report Three",
+                    "sort_order": 2,
+                    "sentences": [
+                        ("A German supermarket has been ordered to destroy its chocolate rabbits after losing a court battle with a Swiss chocolate manufacturer.", "一家德国超市在与瑞士巧克力制造商的官司败诉后，被勒令销毁其巧克力兔子。"),
+                        ("The Swiss firm had argued its gold wrapped chocolate rabbit deserved copyright protection from a similar product sold by the budget supermarket.", "瑞士公司主张其金色包装的巧克力兔子应受到版权保护，免受廉价超市销售的类似产品侵害。"),
+                        ("Switzerland's highest court agreed and overturned a ruling last year that had sided with the supermarket.", "瑞士最高法院同意了这一主张，并推翻了去年支持超市的裁决。"),
+                        ("The court suggested the chocolate needn't be wasted; it could be melted for use in other products.", "法院建议巧克力不必浪费，可以融化用于其他产品。"),
+                        ("The Swiss manufacturer's rabbit has a red bow and bell, while the German supermarket's has a green bow and bell.", "瑞士制造商的兔子有红色蝴蝶结和铃铛，而德国超市的兔子是绿色蝴蝶结和铃铛。"),
+                    ],
+                },
             ],
         },
         {
@@ -135,25 +156,39 @@ NEW_SET = {
             "name": "Section B: Long Conversations",
             "section_type": "long_conversation",
             "sort_order": 1,
-            "sentences": [
-                ("Can you please hand me that book over there? It has instructions for making a winter bean salad.", "你能把那本书递给我吗？上面有做冬季豆子沙拉的说明。"),
-                ("My sister's boyfriend is coming over for dinner. He's vegetarian, so I need to make a lot of vegetable dishes.", "我姐姐的男朋友要来吃晚饭。他是素食主义者，所以我需要做很多蔬菜菜肴。"),
-                ("He only eats vegetables, no meat. That doesn't sound like a very balanced diet.", "他只吃蔬菜不吃肉。这听起来不太均衡的饮食。"),
-                ("How can he get enough protein? What does he do to strengthen his muscles and all that?", "他怎么获得足够的蛋白质？他怎么增强肌肉什么的？"),
-                ("Apparently that's no problem. He eats a variety of different vegetables and nuts, especially those with high amounts of protein.", "显然这没问题。他吃各种不同的蔬菜和坚果，尤其是那些蛋白质含量高的。"),
-                ("He's an animal activist. He's always been very sensitive and sympathizes with animals.", "他是一个动物权益活动者。他一直非常敏感并同情动物。"),
-                ("He says that keeping animals in zoos and parks causes them great distress.", "他说把动物关在动物园和公园里会给它们带来巨大的痛苦。"),
-                ("Not all zoos and animal parks have the most favorable conditions, but without them it just wouldn't be feasible to learn about animals.", "并非所有动物园和动物公园都有最有利的条件，但没有它们就不可能了解动物。"),
-                ("I don't think I could ever give up a good hot dog at a baseball game.", "我觉得我永远无法在棒球比赛中放弃一个美味的热狗。"),
-                ("Did you see that television program on air travel last night?", "你昨晚看了那个关于航空旅行的电视节目吗？"),
-                ("I was surprised that the expert recommended not eating for the entire journey and avoiding sleeping on the plane.", "我很惊讶专家建议整个旅程不吃东西，并避免在飞机上睡觉。"),
-                ("I read an article on the subject in the past that suggested the opposite — that it was important not to miss meals.", "我过去读过一篇关于这个话题的文章，建议恰恰相反——不要错过餐食很重要。"),
-                ("Well, the expert on the show did cite research supporting her recommendations, so I guess I'll give it a try next time.", "节目中的专家确实引用了支持她建议的研究，所以我想下次我会试试。"),
-                ("Jet lag is a big problem for me and has been for the last few years even though I never suffered from it before.", "时差对我来说是个大问题，过去几年一直如此，尽管我以前从不受时差困扰。"),
-                ("She did say that jet lag often becomes more of a problem after 40, so I guess I'm lucky that I can still adjust.", "她确实说过时差通常在40岁以后变得更严重，所以我想我很幸运还能适应。"),
-                ("Actually, my mother is terrified of airplanes to the point where she can't even fly, so our family vacations were always by car or train.", "事实上，我妈妈非常害怕飞机，以至于她根本不能坐飞机，所以我们家的度假总是开车或坐火车。"),
-                ("I just get anxious before I fly and feel nervous the whole time we're in the air.", "我只是在飞行前感到焦虑，在空中一直都紧张。"),
-                ("The expert said 20% of people are afraid to fly, but actually it was a quarter of people, so the problem really is widespread.", "专家说20%的人害怕飞行，但实际上有四分之一的人害怕，所以这个问题确实很普遍。"),
+            "items": [
+                {
+                    "id": "cet4-2025-12-itemB1",
+                    "name": "Conversation One",
+                    "sort_order": 0,
+                    "sentences": [
+                        ("Can you please hand me that book over there? It has instructions for making a winter bean salad.", "你能把那本书递给我吗？上面有做冬季豆子沙拉的说明。"),
+                        ("My sister's boyfriend is coming over for dinner. He's vegetarian, so I need to make a lot of vegetable dishes.", "我姐姐的男朋友要来吃晚饭。他是素食主义者，所以我需要做很多蔬菜菜肴。"),
+                        ("He only eats vegetables, no meat. That doesn't sound like a very balanced diet.", "他只吃蔬菜不吃肉。这听起来不太均衡的饮食。"),
+                        ("How can he get enough protein? What does he do to strengthen his muscles and all that?", "他怎么获得足够的蛋白质？他怎么增强肌肉什么的？"),
+                        ("Apparently that's no problem. He eats a variety of different vegetables and nuts, especially those with high amounts of protein.", "显然这没问题。他吃各种不同的蔬菜和坚果，尤其是那些蛋白质含量高的。"),
+                        ("He's an animal activist. He's always been very sensitive and sympathizes with animals.", "他是一个动物权益活动者。他一直非常敏感并同情动物。"),
+                        ("He says that keeping animals in zoos and parks causes them great distress.", "他说把动物关在动物园和公园里会给它们带来巨大的痛苦。"),
+                        ("Not all zoos and animal parks have the most favorable conditions, but without them it just wouldn't be feasible to learn about animals.", "并非所有动物园和动物公园都有最有利的条件，但没有它们就不可能了解动物。"),
+                        ("I don't think I could ever give up a good hot dog at a baseball game.", "我觉得我永远无法在棒球比赛中放弃一个美味的热狗。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2025-12-itemB2",
+                    "name": "Conversation Two",
+                    "sort_order": 1,
+                    "sentences": [
+                        ("Did you see that television program on air travel last night?", "你昨晚看了那个关于航空旅行的电视节目吗？"),
+                        ("I was surprised that the expert recommended not eating for the entire journey and avoiding sleeping on the plane.", "我很惊讶专家建议整个旅程不吃东西，并避免在飞机上睡觉。"),
+                        ("I read an article on the subject in the past that suggested the opposite — that it was important not to miss meals.", "我过去读过一篇关于这个话题的文章，建议恰恰相反——不要错过餐食很重要。"),
+                        ("Well, the expert on the show did cite research supporting her recommendations, so I guess I'll give it a try next time.", "节目中的专家确实引用了支持她建议的研究，所以我想下次我会试试。"),
+                        ("Jet lag is a big problem for me and has been for the last few years even though I never suffered from it before.", "时差对我来说是个大问题，过去几年一直如此，尽管我以前从不受时差困扰。"),
+                        ("She did say that jet lag often becomes more of a problem after 40, so I guess I'm lucky that I can still adjust.", "她确实说过时差通常在40岁以后变得更严重，所以我想我很幸运还能适应。"),
+                        ("Actually, my mother is terrified of airplanes to the point where she can't even fly, so our family vacations were always by car or train.", "事实上，我妈妈非常害怕飞机，以至于她根本不能坐飞机，所以我们家的度假总是开车或坐火车。"),
+                        ("I just get anxious before I fly and feel nervous the whole time we're in the air.", "我只是在飞行前感到焦虑，在空中一直都紧张。"),
+                        ("The expert said 20% of people are afraid to fly, but actually it was a quarter of people, so the problem really is widespread.", "专家说20%的人害怕飞行，但实际上有四分之一的人害怕，所以这个问题确实很普遍。"),
+                    ],
+                },
             ],
         },
         {
@@ -161,79 +196,169 @@ NEW_SET = {
             "name": "Section C: Passages",
             "section_type": "passage",
             "sort_order": 2,
-            "sentences": [
-                ("Nothing can substitute real world experience when it comes to getting started in user experience design.", "在用户体验设计入门方面，没有什么能替代真实世界的经验。"),
-                ("Higher education is a great way to equip yourself with some core skills, but it will not prepare you for actual challenges with clients.", "高等教育是装备自己核心技能的好方法，但它不会让你为面对客户的实际挑战做好准备。"),
-                ("Being proficient with a design tool and a few methods doesn't make you a user experience designer.", "熟练使用设计工具和一些方法并不代表你就是一个用户体验设计师。"),
-                ("There simply isn't a one size fits all process. Being effective requires adaptability, something you don't really learn in school.", "根本不存在一刀切的流程。要有效就需要适应性，而这在学校是学不到的。"),
-                ("I found my way to user experience through graphic design and slowly over many different roles and experiences.", "我通过平面设计找到了通往用户体验的道路，并在许多不同的角色和经历中慢慢成长。"),
-                ("It took time and commitment to continue to pursue roles within teams that I knew could teach and challenge me.", "这需要时间和投入，继续在那些我知道能教导和挑战我的团队中追求角色。"),
-                ("You can start anywhere as long as you know your end goal and you commit to actively pursue opportunities to learn and grow.", "只要你知道自己的最终目标，并致力于积极追求学习和成长的机会，你可以从任何地方开始。"),
-                ("When planning for this year, our principal asked what needed to change to engage students more in their learning.", "在今年做规划时，我们的校长问需要改变什么才能让学生更多地参与学习。"),
-                ("I responded in a whisper: flexible seating, thinking about our classroom with rows of desks and name plates.", "我低声回答：灵活座位，想着我们那有着一排排课桌和姓名牌的教室。"),
-                ("Flexible seating has been defined as movable furniture to create an engaging learning environment.", "灵活座位被定义为可移动的家具，以创造有吸引力的学习环境。"),
-                ("It is a shift in practice from being teacher focused to student focused learning.", "这是从以教师为中心向以学生为中心学习的实践转变。"),
-                ("For us, flexible seating has meant removing most of the traditional chairs and desks and introducing a variety of seating options.", "对我们来说，灵活座位意味着移除大部分传统桌椅，引入各种座位选择。"),
-                ("Teachers tend to still use the rows format because of either the need to control students or the belief that the teacher is the most important person.", "教师仍然倾向于使用排排坐的形式，要么是因为需要控制学生，要么是认为教师是最重要的人。"),
-                ("Flexible seating enhances student ownership of space and engagement in learning while reducing rates of disengagement.", "灵活座位增强了学生对空间的主人翁感和学习参与度，同时降低了脱离学习的情况。"),
-                ("Dozens of British students arriving for their first day of school on Tuesday were sent home over their shoes.", "数十名英国学生周二第一天上学因鞋子问题被送回家。"),
-                ("About 30 students were turned away from Taverham high school in Norfolk due to a change in the school's uniform policy.", "由于学校制服政策的变更，诺福克郡Taverham高中有约30名学生被拒之门外。"),
-                ("The head teacher said he notified parents of the updated rules in an email in June.", "校长说他六月份通过电子邮件通知了家长们更新后的规定。"),
-                ("The price of school uniforms can spark panic among families struggling with the high cost of living.", "校服的价格可能在生活成本高涨中挣扎的家庭中引发恐慌。"),
-                ("Nearly all British schools have uniforms. They cost parents an average of 337 pounds per year for each secondary school child.", "几乎所有的英国学校都有校服。每个中学生的校服平均每年花费家长337英镑。"),
-                ("According to the new rules, students are required to wear smart black shoes appropriate for the workplace.", "根据新规定，学生需穿着适合工作场所的黑色正装皮鞋。"),
-                ("Harris held that strengthened rules around school uniforms improved student outcomes and behavior.", "Harris认为加强校服规定改善了学生的成绩和行为。"),
-                ("As annual inflation climbs over 10%, many households are on tight budgets.", "随着年通胀率攀升超过10%，许多家庭预算紧张。"),
-                ("Private rental prices in Britain rose 3.2% over the 12 months to July 2022, the largest jump since 2016.", "截至2022年7月的12个月内，英国私人租金上涨了3.2%，这是自2016年以来的最大涨幅。"),
-                ("Lucinda May, mum of a Taverham student, said she had to ask her parents for 65 pounds to buy her child the correct pair of shoes.", "Taverham学生家长Lucinda May说，她不得不向父母要65英镑给孩子买一双符合规定的鞋子。"),
-                ("May said that the school's uniform policy showed the lack of regard for parents dealing with the high cost of living.", "May说学校的制服政策表明了对应对高生活成本家长缺乏体谅。"),
+            "items": [
+                {
+                    "id": "cet4-2025-12-itemC1",
+                    "name": "Passage One",
+                    "sort_order": 0,
+                    "sentences": [
+                        ("Nothing can substitute real world experience when it comes to getting started in user experience design.", "在用户体验设计入门方面，没有什么能替代真实世界的经验。"),
+                        ("Higher education is a great way to equip yourself with some core skills, but it will not prepare you for actual challenges with clients.", "高等教育是装备自己核心技能的好方法，但它不会让你为面对客户的实际挑战做好准备。"),
+                        ("Being proficient with a design tool and a few methods doesn't make you a user experience designer.", "熟练使用设计工具和一些方法并不代表你就是一个用户体验设计师。"),
+                        ("There simply isn't a one size fits all process. Being effective requires adaptability, something you don't really learn in school.", "根本不存在一刀切的流程。要有效就需要适应性，而这在学校是学不到的。"),
+                        ("I found my way to user experience through graphic design and slowly over many different roles and experiences.", "我通过平面设计找到了通往用户体验的道路，并在许多不同的角色和经历中慢慢成长。"),
+                        ("It took time and commitment to continue to pursue roles within teams that I knew could teach and challenge me.", "这需要时间和投入，继续在那些我知道能教导和挑战我的团队中追求角色。"),
+                        ("You can start anywhere as long as you know your end goal and you commit to actively pursue opportunities to learn and grow.", "只要你知道自己的最终目标，并致力于积极追求学习和成长的机会，你可以从任何地方开始。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2025-12-itemC2",
+                    "name": "Passage Two",
+                    "sort_order": 1,
+                    "sentences": [
+                        ("When planning for this year, our principal asked what needed to change to engage students more in their learning.", "在今年做规划时，我们的校长问需要改变什么才能让学生更多地参与学习。"),
+                        ("I responded in a whisper: flexible seating, thinking about our classroom with rows of desks and name plates.", "我低声回答：灵活座位，想着我们那有着一排排课桌和姓名牌的教室。"),
+                        ("Flexible seating has been defined as movable furniture to create an engaging learning environment.", "灵活座位被定义为可移动的家具，以创造有吸引力的学习环境。"),
+                        ("It is a shift in practice from being teacher focused to student focused learning.", "这是从以教师为中心向以学生为中心学习的实践转变。"),
+                        ("For us, flexible seating has meant removing most of the traditional chairs and desks and introducing a variety of seating options.", "对我们来说，灵活座位意味着移除大部分传统桌椅，引入各种座位选择。"),
+                        ("Teachers tend to still use the rows format because of either the need to control students or the belief that the teacher is the most important person.", "教师仍然倾向于使用排排坐的形式，要么是因为需要控制学生，要么是认为教师是最重要的人。"),
+                        ("Flexible seating enhances student ownership of space and engagement in learning while reducing rates of disengagement.", "灵活座位增强了学生对空间的主人翁感和学习参与度，同时降低了脱离学习的情况。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2025-12-itemC3",
+                    "name": "Passage Three",
+                    "sort_order": 2,
+                    "sentences": [
+                        ("Dozens of British students arriving for their first day of school on Tuesday were sent home over their shoes.", "数十名英国学生周二第一天上学因鞋子问题被送回家。"),
+                        ("About 30 students were turned away from Taverham high school in Norfolk due to a change in the school's uniform policy.", "由于学校制服政策的变更，诺福克郡Taverham高中有约30名学生被拒之门外。"),
+                        ("The head teacher said he notified parents of the updated rules in an email in June.", "校长说他六月份通过电子邮件通知了家长们更新后的规定。"),
+                        ("The price of school uniforms can spark panic among families struggling with the high cost of living.", "校服的价格可能在生活成本高涨中挣扎的家庭中引发恐慌。"),
+                        ("Nearly all British schools have uniforms. They cost parents an average of 337 pounds per year for each secondary school child.", "几乎所有的英国学校都有校服。每个中学生的校服平均每年花费家长337英镑。"),
+                        ("According to the new rules, students are required to wear smart black shoes appropriate for the workplace.", "根据新规定，学生需穿着适合工作场所的黑色正装皮鞋。"),
+                        ("Harris held that strengthened rules around school uniforms improved student outcomes and behavior.", "Harris认为加强校服规定改善了学生的成绩和行为。"),
+                        ("As annual inflation climbs over 10%, many households are on tight budgets.", "随着年通胀率攀升超过10%，许多家庭预算紧张。"),
+                        ("Private rental prices in Britain rose 3.2% over the 12 months to July 2022, the largest jump since 2016.", "截至2022年7月的12个月内，英国私人租金上涨了3.2%，这是自2016年以来的最大涨幅。"),
+                        ("Lucinda May, mum of a Taverham student, said she had to ask her parents for 65 pounds to buy her child the correct pair of shoes.", "Taverham学生家长Lucinda May说，她不得不向父母要65英镑给孩子买一双符合规定的鞋子。"),
+                        ("May said that the school's uniform policy showed the lack of regard for parents dealing with the high cost of living.", "May说学校的制服政策表明了对应对高生活成本家长缺乏体谅。"),
+                    ],
+                },
             ],
         },
     ],
 }
 
 
+# ── 2025年12月 CET-4 真题 题目（第一套）──
+
+NEW_SET_QUESTIONS = [
+    # ── Section A: News Report One (Q1-Q2) ──
+    {"id": "cet4-2025-12-q1", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secA", "item_id": "cet4-2025-12-itemA1", "question_number": 1, "question_text": "Where was the black cat found?", "question_text_zh": "这只黑猫是在哪里被发现的？", "option_a": "Under a car engine cover.", "option_b": "In a school classroom.", "option_c": "Inside a delivery truck.", "option_d": "Beside a roadside garden.", "correct_answer": "A", "sort_order": 0},
+    {"id": "cet4-2025-12-q2", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secA", "item_id": "cet4-2025-12-itemA1", "question_number": 2, "question_text": "What do we learn about the cat at the end of the news report?", "question_text_zh": "在这篇新闻报道的结尾，我们了解到了关于这只猫的哪些情况？", "option_a": "It was badly injured in the trip.", "option_b": "It was taken in by the car owner.", "option_c": "It was returned to its owner finally.", "option_d": "It was sent to an animal hospital.", "correct_answer": "C", "sort_order": 1},
+    # ── Section A: News Report Two (Q3-Q4) ──
+    {"id": "cet4-2025-12-q3", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secA", "item_id": "cet4-2025-12-itemA2", "question_number": 3, "question_text": "What will Fayetteville witness in less than a month?", "question_text_zh": "在不到一个月的时间里，费耶特维尔将见证什么？", "option_a": "A national sports meeting.", "option_b": "The return of Special Olympics Spring Games.", "option_c": "A volunteer recruitment campaign.", "option_d": "An athletes training program.", "correct_answer": "B", "sort_order": 0},
+    {"id": "cet4-2025-12-q4", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secA", "item_id": "cet4-2025-12-itemA2", "question_number": 4, "question_text": "What did Benjamin Kowalzik say is rewarding to see?", "question_text_zh": "Benjamin Kowalzik说什么是有成就感的？", "option_a": "Athletes winning big prizes easily.", "option_b": "Children having fun in the activity tent.", "option_c": "More people signing up to be volunteers.", "option_d": "Disabled athletes achieving success in games.", "correct_answer": "D", "sort_order": 1},
+    # ── Section A: News Report Three (Q5-Q7) ──
+    {"id": "cet4-2025-12-q5", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secA", "item_id": "cet4-2025-12-itemA3", "question_number": 5, "question_text": "What has the German supermarket been ordered to do?", "question_text_zh": "这家德国超市被勒令做什么？", "option_a": "Destroy all its chocolate rabbit products.", "option_b": "Stop selling all kinds of chocolate goods.", "option_c": "Pay huge fines to the Swiss manufacturer.", "option_d": "Change the color of product wrappers.", "correct_answer": "A", "sort_order": 0},
+    {"id": "cet4-2025-12-q6", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secA", "item_id": "cet4-2025-12-itemA3", "question_number": 6, "question_text": "What did Switzerland's highest court suggest about the chocolate in question?", "question_text_zh": "瑞士最高法院对涉案巧克力提出了什么建议？", "option_a": "Sell them at a lower price quickly.", "option_b": "Donate them to local poor families.", "option_c": "Melt them to make other chocolate food.", "option_d": "Repackage them with new decorations.", "correct_answer": "C", "sort_order": 1},
+    {"id": "cet4-2025-12-q7", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secA", "item_id": "cet4-2025-12-itemA3", "question_number": 7, "question_text": "Why did Switzerland's highest court overturn the commercial court's ruling?", "question_text_zh": "瑞士最高法院为什么推翻了商事法院的裁决？", "option_a": "The German products sold much better.", "option_b": "The two products are easy to be confused.", "option_c": "The Swiss side failed to provide enough evidence.", "option_d": "The commercial court was bribed unfairly.", "correct_answer": "B", "sort_order": 2},
+    # ── Section B: Conversation One (Q8-Q11) ──
+    {"id": "cet4-2025-12-q8", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secB", "item_id": "cet4-2025-12-itemB1", "question_number": 8, "question_text": "What does the man request the woman to do?", "question_text_zh": "男士请求女士做什么？", "option_a": "Prepare some fresh vegetables.", "option_b": "Learn to make a simple salad.", "option_c": "Pick up his sister's boyfriend.", "option_d": "Pass him a recipe book.", "correct_answer": "D", "sort_order": 0},
+    {"id": "cet4-2025-12-q9", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secB", "item_id": "cet4-2025-12-itemB1", "question_number": 9, "question_text": "What does the woman say about eating vegetables only?", "question_text_zh": "女士对只吃蔬菜有什么看法？", "option_a": "It is not a well-balanced diet.", "option_b": "It is good for people's health.", "option_c": "It is popular among young people.", "option_d": "It needs plenty of cooking skills.", "correct_answer": "A", "sort_order": 1},
+    {"id": "cet4-2025-12-q10", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secB", "item_id": "cet4-2025-12-itemB1", "question_number": 10, "question_text": "Why does the boyfriend of the man's sister choose to be a vegetarian?", "question_text_zh": "男士姐姐的男朋友为什么选择做素食主义者？", "option_a": "He wants to keep slim and fit.", "option_b": "His religious belief requires it.", "option_c": "He is an advocate of animal protection.", "option_d": "He suffers from certain diseases.", "correct_answer": "C", "sort_order": 2},
+    {"id": "cet4-2025-12-q11", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secB", "item_id": "cet4-2025-12-itemB1", "question_number": 11, "question_text": "On what point does the man agree with the woman at the end of the conversation?", "question_text_zh": "对话结尾男士在哪一点上同意女士？", "option_a": "Zoos should be cancelled completely.", "option_b": "It is hard for them to stick to vegetarian diet.", "option_c": "Animals in zoos live in great pain.", "option_d": "Hot dogs are unhealthy fast food.", "correct_answer": "B", "sort_order": 3},
+    # ── Section B: Conversation Two (Q12-Q15) ──
+    {"id": "cet4-2025-12-q12", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secB", "item_id": "cet4-2025-12-itemB2", "question_number": 12, "question_text": "What part of the TV program does the man say was interesting?", "question_text_zh": "男士说电视节目的哪一部分有趣？", "option_a": "Ways to choose comfortable flights.", "option_b": "Advice on choosing travel destinations.", "option_c": "Knowledge about air safety rules.", "option_d": "Tips on getting over jet lag.", "correct_answer": "D", "sort_order": 0},
+    {"id": "cet4-2025-12-q13", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secB", "item_id": "cet4-2025-12-itemB2", "question_number": 13, "question_text": "What does the man say he will do next time he flies a long distance?", "question_text_zh": "男士说他下次长途飞行会怎么做？", "option_a": "Follow the expert's advice on long flights.", "option_b": "Have enough meals during the flight.", "option_c": "Take a good sleep on the plane in advance.", "option_d": "Read related articles before travelling.", "correct_answer": "A", "sort_order": 1},
+    {"id": "cet4-2025-12-q14", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secB", "item_id": "cet4-2025-12-itemB2", "question_number": 14, "question_text": "Why does the woman think she is lucky?", "question_text_zh": "女士为什么认为自己是幸运的？", "option_a": "She seldom takes long-distance flights.", "option_b": "She has learned ways to beat jet lag.", "option_c": "She can still adapt to different time zones easily.", "option_d": "She never feels tired after long journeys.", "correct_answer": "C", "sort_order": 2},
+    {"id": "cet4-2025-12-q15", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secB", "item_id": "cet4-2025-12-itemB2", "question_number": 15, "question_text": "Why does the woman think the problem of being afraid to fly deserves attention?", "question_text_zh": "女士为什么认为害怕飞行的问题值得关注？", "option_a": "It has caused many traffic accidents.", "option_b": "A large number of people have this problem.", "option_c": "It will affect people's mental health seriously.", "option_d": "Few people know how to solve this problem.", "correct_answer": "B", "sort_order": 3},
+    # ── Section C: Passage One (Q16-Q18) ──
+    {"id": "cet4-2025-12-q16", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC1", "question_number": 16, "question_text": "What does the speaker think is the best way to get started in user experience design?", "question_text_zh": "演讲者认为入门用户体验设计的最佳方式是什么？", "option_a": "Master various professional textbooks.", "option_b": "Take part in different training courses.", "option_c": "Learn design skills from famous designers.", "option_d": "Accumulate practical working experience.", "correct_answer": "D", "sort_order": 0},
+    {"id": "cet4-2025-12-q17", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC1", "question_number": 17, "question_text": "What does the speaker say being effective requires?", "question_text_zh": "演讲者说要想有效需要什么？", "option_a": "Strong ability to adapt to changes.", "option_b": "Rich knowledge of fine arts.", "option_c": "Good communication skills with clients.", "option_d": "Mastery of all kinds of design software.", "correct_answer": "A", "sort_order": 1},
+    {"id": "cet4-2025-12-q18", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC1", "question_number": 18, "question_text": "What can people do as long as they know their end goal and strive for it?", "question_text_zh": "只要人们知道最终目标并为之努力，他们可以做什么？", "option_a": "Change career directions timely.", "option_b": "Teach others relevant professional skills.", "option_c": "Seize chances to learn and make progress.", "option_d": "Set up personal design teams early.", "correct_answer": "C", "sort_order": 2},
+    # ── Section C: Passage Two (Q19-Q21) ──
+    {"id": "cet4-2025-12-q19", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC2", "question_number": 19, "question_text": "Why did the school principal ask what needed to change?", "question_text_zh": "学校校长为什么问需要改变什么？", "option_a": "To reduce students' learning pressure.", "option_b": "To make students more involved in study.", "option_c": "To improve teachers' teaching methods.", "option_d": "To build a more beautiful campus environment.", "correct_answer": "B", "sort_order": 0},
+    {"id": "cet4-2025-12-q20", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC2", "question_number": 20, "question_text": "What has flexible seating meant at the speaker's school?", "question_text_zh": "灵活座位在演讲者的学校意味着什么？", "option_a": "Canceling all after-class activities.", "option_b": "Arranging students to sit in fixed seats.", "option_c": "Letting students study outside classrooms.", "option_d": "Replacing traditional desks with various movable seats.", "correct_answer": "D", "sort_order": 1},
+    {"id": "cet4-2025-12-q21", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC2", "question_number": 21, "question_text": "What has flexible seating brought about at the speaker's school?", "question_text_zh": "灵活座位在演讲者的学校带来了什么？", "option_a": "It raises students' learning enthusiasm greatly.", "option_b": "It saves a lot of classroom space.", "option_c": "It makes teachers' management easier.", "option_d": "It shortens students' study time.", "correct_answer": "A", "sort_order": 2},
+    # ── Section C: Passage Three (Q22-Q25) ──
+    {"id": "cet4-2025-12-q22", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC3", "question_number": 22, "question_text": "Why were dozens of British students sent home on Tuesday?", "question_text_zh": "为什么数十名英国学生周二被送回家？", "option_a": "They were late for the first day of school.", "option_b": "They broke the school classroom rules.", "option_c": "Their shoes failed to meet new uniform rules.", "option_d": "They didn't wear complete school uniforms.", "correct_answer": "C", "sort_order": 0},
+    {"id": "cet4-2025-12-q23", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC3", "question_number": 23, "question_text": "What can the price of school uniforms Spark among families in financial difficulty?", "question_text_zh": "校服的价格会在经济困难的家庭中引发什么？", "option_a": "It may make children hate going to school.", "option_b": "It may cause worries among those families.", "option_c": "It will change people's consumption habits.", "option_d": "It will lead to the rise of local commodity prices.", "correct_answer": "B", "sort_order": 1},
+    {"id": "cet4-2025-12-q24", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC3", "question_number": 24, "question_text": "What did the head teacher think of the school's new uniform rules?", "question_text_zh": "校长对学校的新校服规定有什么看法？", "option_a": "It brings too much trouble to parents.", "option_b": "It is not suitable for poor students.", "option_c": "It needs to be discussed and improved.", "option_d": "It helps improve students' behavior and study.", "correct_answer": "D", "sort_order": 2},
+    {"id": "cet4-2025-12-q25", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC3", "question_number": 25, "question_text": "What did Lucinda May have to do to buy her child the correct pair of shoes?", "question_text_zh": "Lucinda May为了给孩子买一双符合规定的鞋子不得不做了什么？", "option_a": "Borrow money from her own parents.", "option_b": "Complain about the rule to the school.", "option_c": "Buy cheap second-hand shoes for her kid.", "option_d": "Ask the school to reduce uniform costs.", "correct_answer": "A", "sort_order": 3},
+]
+
+
 async def seed_listening_data() -> None:
     db = await get_db()
     try:
+        # Seed sets/sections/sentences if empty
         async with db.cursor() as cur:
             await cur.execute("SELECT COUNT(*) FROM listening_set")
             row = await cur.fetchone()
-            if row and row[0] > 0:
-                return
+            if not row or row[0] == 0:
+                pass  # fall through to seed
+            else:
+                row = None  # signal to skip set seeding
 
-        all_sets = list(OLD_SETS)
+        if row is not None:
+            all_sets = list(OLD_SETS)
 
-        for s in all_sets:
+            for s in all_sets:
+                async with db.cursor() as cur:
+                    await cur.execute(
+                        "INSERT INTO listening_set(id, name, type, year, month, set_order) VALUES(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
+                        (s["id"], s["name"], s["type"], s["year"], s["month"], 0),
+                    )
+                    for i, (en, zh) in enumerate(s["sentences"]):
+                        await cur.execute(
+                            "INSERT INTO listening_sentence(id, set_id, section_id, en, zh, sort_order) VALUES(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE en=VALUES(en), zh=VALUES(zh)",
+                            (f"{s['id']}-s{i+1}", s["id"], None, en, zh, i),
+                        )
+
+            ns = NEW_SET
             async with db.cursor() as cur:
                 await cur.execute(
                     "INSERT INTO listening_set(id, name, type, year, month, set_order) VALUES(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
-                    (s["id"], s["name"], s["type"], s["year"], s["month"], 0),
+                    (ns["id"], ns["name"], ns["type"], ns["year"], ns["month"], 1),
                 )
-                for i, (en, zh) in enumerate(s["sentences"]):
+            for sec in ns["sections"]:
+                async with db.cursor() as cur:
                     await cur.execute(
-                        "INSERT INTO listening_sentence(id, set_id, section_id, en, zh, sort_order) VALUES(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE en=VALUES(en), zh=VALUES(zh)",
-                        (f"{s['id']}-s{i+1}", s["id"], None, en, zh, i),
+                        "INSERT INTO listening_section(id, set_id, name, section_type, sort_order) VALUES(%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
+                        (sec["id"], ns["id"], sec["name"], sec["section_type"], sec["sort_order"]),
                     )
+                for item in sec.get("items", []):
+                    async with db.cursor() as cur:
+                        await cur.execute(
+                            "INSERT INTO listening_item(id, set_id, section_id, name, sort_order) VALUES(%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
+                            (item["id"], ns["id"], sec["id"], item["name"], item["sort_order"]),
+                        )
+                        for i, (en, zh) in enumerate(item["sentences"]):
+                            await cur.execute(
+                                "INSERT INTO listening_sentence(id, set_id, section_id, item_id, en, zh, sort_order) VALUES(%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE en=VALUES(en), zh=VALUES(zh)",
+                                (f"{item['id']}-s{i+1}", ns["id"], sec["id"], item["id"], en, zh, i),
+                            )
 
-        ns = NEW_SET
+            await db.commit()
+
+        # Seed questions (always check — handles upgrade from old schema)
         async with db.cursor() as cur:
-            await cur.execute(
-                "INSERT INTO listening_set(id, name, type, year, month, set_order) VALUES(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
-                (ns["id"], ns["name"], ns["type"], ns["year"], ns["month"], 1),
-            )
-        for sec in ns["sections"]:
-            async with db.cursor() as cur:
-                await cur.execute(
-                    "INSERT INTO listening_section(id, set_id, name, section_type, sort_order) VALUES(%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
-                    (sec["id"], ns["id"], sec["name"], sec["section_type"], sec["sort_order"]),
-                )
-                for i, (en, zh) in enumerate(sec["sentences"]):
+            await cur.execute("SELECT COUNT(*) FROM listening_question")
+            q_row = await cur.fetchone()
+            if not q_row or q_row[0] == 0:
+                for q in NEW_SET_QUESTIONS:
                     await cur.execute(
-                        "INSERT INTO listening_sentence(id, set_id, section_id, en, zh, sort_order) VALUES(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE en=VALUES(en), zh=VALUES(zh)",
-                        (f"{sec['id']}-s{i+1}", ns["id"], sec["id"], en, zh, i),
+                        "INSERT INTO listening_question(id, set_id, section_id, item_id, question_number, question_text, question_text_zh, option_a, option_b, option_c, option_d, correct_answer, sort_order) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE question_text=VALUES(question_text), question_text_zh=VALUES(question_text_zh), correct_answer=VALUES(correct_answer)",
+                        (q["id"], q["set_id"], q["section_id"], q.get("item_id"), q["question_number"], q["question_text"], q.get("question_text_zh", ""), q["option_a"], q["option_b"], q["option_c"], q["option_d"], q["correct_answer"], q["sort_order"]),
                     )
-
-        await db.commit()
+                await db.commit()
+            else:
+                # Always update options for existing questions (handles data upgrades)
+                for q in NEW_SET_QUESTIONS:
+                    await cur.execute(
+                        "UPDATE listening_question SET option_a=%s, option_b=%s, option_c=%s, option_d=%s WHERE id=%s",
+                        (q["option_a"], q["option_b"], q["option_c"], q["option_d"], q["id"]),
+                    )
+                await db.commit()
     finally:
         await release_db(db)

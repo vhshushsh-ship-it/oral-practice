@@ -64,6 +64,7 @@ async def init_db() -> None:
                     id VARCHAR(50) PRIMARY KEY,
                     set_id VARCHAR(50) NOT NULL,
                     section_id VARCHAR(50),
+                    item_id VARCHAR(50) DEFAULT NULL,
                     en TEXT NOT NULL,
                     zh TEXT NOT NULL,
                     audio_url VARCHAR(500) DEFAULT '',
@@ -71,5 +72,70 @@ async def init_db() -> None:
                     sort_order INT NOT NULL DEFAULT 0,
                     FOREIGN KEY (set_id) REFERENCES listening_set(id) ON DELETE CASCADE,
                     FOREIGN KEY (section_id) REFERENCES listening_section(id) ON DELETE SET NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS listening_item (
+                    id VARCHAR(50) PRIMARY KEY,
+                    set_id VARCHAR(50) NOT NULL,
+                    section_id VARCHAR(50) NOT NULL,
+                    name VARCHAR(200) NOT NULL,
+                    sort_order INT NOT NULL DEFAULT 0,
+                    FOREIGN KEY (set_id) REFERENCES listening_set(id) ON DELETE CASCADE,
+                    FOREIGN KEY (section_id) REFERENCES listening_section(id) ON DELETE CASCADE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS listening_question (
+                    id VARCHAR(50) PRIMARY KEY,
+                    set_id VARCHAR(50) NOT NULL,
+                    section_id VARCHAR(50),
+                    item_id VARCHAR(50) DEFAULT NULL,
+                    question_number INT NOT NULL,
+                    question_text TEXT NOT NULL,
+                    question_text_zh TEXT,
+                    option_a VARCHAR(500) NOT NULL DEFAULT '',
+                    option_b VARCHAR(500) NOT NULL DEFAULT '',
+                    option_c VARCHAR(500) NOT NULL DEFAULT '',
+                    option_d VARCHAR(500) NOT NULL DEFAULT '',
+                    correct_answer CHAR(1) NOT NULL,
+                    sort_order INT NOT NULL DEFAULT 0,
+                    FOREIGN KEY (set_id) REFERENCES listening_set(id) ON DELETE CASCADE,
+                    FOREIGN KEY (section_id) REFERENCES listening_section(id) ON DELETE SET NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            # Migration: add item_id to existing tables if they predate the migration
+            try:
+                await cur.execute("ALTER TABLE listening_sentence ADD COLUMN item_id VARCHAR(50) DEFAULT NULL AFTER section_id")
+            except Exception:
+                pass
+            try:
+                await cur.execute("ALTER TABLE listening_question ADD COLUMN item_id VARCHAR(50) DEFAULT NULL AFTER section_id")
+            except Exception:
+                pass
+            try:
+                await cur.execute("ALTER TABLE listening_question ADD COLUMN question_text_zh TEXT AFTER question_text")
+            except Exception:
+                pass
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS listening_exam_record (
+                    id VARCHAR(50) PRIMARY KEY,
+                    set_id VARCHAR(50) NOT NULL,
+                    total_questions INT NOT NULL,
+                    correct_count INT NOT NULL,
+                    accuracy DECIMAL(5,2) NOT NULL,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (set_id) REFERENCES listening_set(id) ON DELETE CASCADE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS listening_exam_answer (
+                    id VARCHAR(50) PRIMARY KEY,
+                    exam_record_id VARCHAR(50) NOT NULL,
+                    question_id VARCHAR(50) NOT NULL,
+                    user_answer CHAR(1) NOT NULL,
+                    is_correct BOOLEAN NOT NULL,
+                    FOREIGN KEY (exam_record_id) REFERENCES listening_exam_record(id) ON DELETE CASCADE,
+                    FOREIGN KEY (question_id) REFERENCES listening_question(id) ON DELETE CASCADE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             """)
