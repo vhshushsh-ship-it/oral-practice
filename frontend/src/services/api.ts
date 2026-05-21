@@ -143,3 +143,17 @@ export async function analyzeSentence(text: string): Promise<SentenceAnalysisRes
   if (!res.ok) throw new Error(`句子分析失败: ${res.status}`);
   return res.json();
 }
+
+export async function deleteExamRecord(examId: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/listening/exam/history/${encodeURIComponent(examId)}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`删除模考记录失败: ${res.status}`);
+}
+
+export async function clearExamHistory(): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/listening/exam/history`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error(`清空模考记录失败: ${res.status}`);
+}

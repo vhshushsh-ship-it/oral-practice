@@ -225,6 +225,42 @@ async def submit_exam(body: ExamSubmitBody):
     }
 
 
+async def clear_exam_history():
+    db = await get_db()
+    try:
+        async with db.cursor() as cur:
+            await cur.execute("DELETE FROM listening_exam_answer")
+            await cur.execute("DELETE FROM listening_exam_record")
+            await db.commit()
+    finally:
+        await release_db(db)
+    return {"message": "已清空所有记录"}
+
+
+async def delete_exam_record(exam_id: str):
+    db = await get_db()
+    try:
+        async with db.cursor() as cur:
+            await cur.execute(
+                "DELETE FROM listening_exam_answer WHERE exam_record_id = %s",
+                (exam_id,),
+            )
+            await cur.execute(
+                "DELETE FROM listening_exam_record WHERE id = %s",
+                (exam_id,),
+            )
+            if cur.rowcount == 0:
+                raise HTTPException(status_code=404, detail="Exam record not found")
+            await db.commit()
+    finally:
+        await release_db(db)
+    return {"message": "删除成功"}
+
+
+router.add_api_route("/exam/history", clear_exam_history, methods=["DELETE"])
+router.add_api_route("/exam/history/{exam_id}", delete_exam_record, methods=["DELETE"])
+
+
 @router.get("/exam/history")
 async def get_exam_history():
     db = await get_db()

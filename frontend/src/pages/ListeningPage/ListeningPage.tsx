@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo, useRef, useLayoutEffect } from 'react';
 import type { ListeningSetMeta, ListeningSet, ListeningSection, ListeningSentence, ListeningLevel, ListeningQuestion, ExamResult, ExamHistoryItem } from '../../types';
-import { fetchListeningSets, fetchListeningSetDetail, fetchQuestions, fetchExamHistory, fetchExamDetail } from '../../services/api';
+import { fetchListeningSets, fetchListeningSetDetail, fetchQuestions, fetchExamHistory, fetchExamDetail, deleteExamRecord, clearExamHistory } from '../../services/api';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { useSequentialTTS } from '../../hooks/useSequentialTTS';
 import { useRecording } from '../../hooks/useRecording';
@@ -211,6 +211,26 @@ export function ListeningPage() {
     }
   }, [showToast]);
 
+  const handleDeleteRecord = useCallback(async (record: ExamHistoryItem) => {
+    try {
+      await deleteExamRecord(record.id);
+      setExamHistory((prev) => prev.filter((r) => r.id !== record.id));
+      showToast('删除成功', 'success');
+    } catch {
+      showToast('删除失败，请重试', 'warning');
+    }
+  }, [showToast]);
+
+  const handleClearAllHistory = useCallback(async () => {
+    try {
+      await clearExamHistory();
+      setExamHistory([]);
+      showToast('已清空所有记录', 'success');
+    } catch {
+      showToast('清空失败，请重试', 'warning');
+    }
+  }, [showToast]);
+
   const handleAnalyzeSentence = useCallback((s: ListeningSentence) => {
     if (sentenceListRef.current) {
       savedScrollTopRef.current = sentenceListRef.current.scrollTop;
@@ -343,6 +363,8 @@ export function ListeningPage() {
             <ExamHistoryPanel
               history={examHistory}
               onSelectRecord={handleViewHistoryRecord}
+              onDeleteRecord={handleDeleteRecord}
+              onClearAll={handleClearAllHistory}
               loading={examHistoryLoading}
               visible={true}
             />
@@ -369,6 +391,8 @@ export function ListeningPage() {
             <ExamHistoryPanel
               history={examHistory}
               onSelectRecord={handleViewHistoryRecord}
+              onDeleteRecord={handleDeleteRecord}
+              onClearAll={handleClearAllHistory}
               loading={examHistoryLoading}
               visible={true}
             />

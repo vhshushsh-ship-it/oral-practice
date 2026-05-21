@@ -2724,6 +2724,54 @@ select {
   color: var(--accent-warm);
 }
 
+.history-item-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  color: var(--ink-muted);
+  padding: 0;
+  margin-left: 2px;
+}
+
+.history-item-delete:hover {
+  color: #fff;
+  background: var(--accent-warm);
+  border-color: var(--accent-warm);
+  transform: scale(1.1);
+}
+
+.exam-history-clear-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.exam-history-clear-btn:hover {
+  color: var(--accent-warm);
+  border-color: var(--accent-warm);
+}
+
+.exam-history-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
 /* ── Analyze button hover ── */
 .sentence-action-btn.analyze:hover:not(:disabled) {
   background: var(--accent-cool);
