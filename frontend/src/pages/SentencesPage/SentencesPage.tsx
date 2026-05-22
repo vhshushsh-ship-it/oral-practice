@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import { useSentenceCollection } from '../../hooks/useSentenceCollection';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { SpeakerButton } from '../../components/SpeakerButton';
+import { SentenceAnalysis } from '../../components/SentenceAnalysis';
+import { StudyIcon } from '../../icons';
 import { useToast } from '../../components/Toast/toastContext';
 
 export function SentencesPage() {
   const { collection, deleteSentence, clearAll } = useSentenceCollection();
   const speak = useSpeechSynthesis(1.0);
   const { showToast } = useToast();
+  const [analyzingItem, setAnalyzingItem] = useState<{ en: string; zh: string } | null>(null);
 
   const handleDelete = (index: number) => {
     deleteSentence(index);
@@ -18,6 +22,21 @@ export function SentencesPage() {
     clearAll();
     showToast('已清空所有收藏！', 'success');
   };
+
+  // Sentence analysis sub-view
+  if (analyzingItem) {
+    return (
+      <div className="page">
+        <SentenceAnalysis
+          en={analyzingItem.en}
+          zh={analyzingItem.zh}
+          onPlay={() => speak(analyzingItem.en)}
+          onCollect={() => {}}
+          onBack={() => setAnalyzingItem(null)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="page" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -47,7 +66,14 @@ export function SentencesPage() {
                 <span style={{ flex: 1, color: 'var(--ink)', lineHeight: 1.5 }}>
                   {item.text}
                 </span>
-                <div style={{ display: 'flex', gap: 8, marginLeft: 10, flexShrink: 0 }}>
+                <div style={{ display: 'flex', gap: 8, marginLeft: 10, flexShrink: 0, alignItems: 'center' }}>
+                  <button
+                    className="sentence-action-btn analyze"
+                    onClick={() => setAnalyzingItem({ en: item.text, zh: item.translation || '' })}
+                    title="分析发音"
+                  >
+                    <StudyIcon size={13} />
+                  </button>
                   <button
                     className="speak-btn-text"
                     onClick={() => speak(item.text)}

@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, Query
 from db import get_db, release_db
 from models.schemas import ExamSubmitBody, SentenceAnalysisBody
 
+
 router = APIRouter(prefix="/api/listening", tags=["listening"])
 
 
@@ -369,5 +370,43 @@ async def analyze(body: SentenceAnalysisBody):
     finally:
         await release_db(db)
 
-    # Not found in DB
-    raise HTTPException(status_code=404, detail="该句子暂无分析数据")
+    # Not in DB — call DeepSeek to generate analysis in real-time
+    try:
+        from services.ai_service import analyze_sentence_deepseek
+        result = analyze_sentence_deepseek(body.text)
+    except Exception as e:
+        print(f"[ANALYZE ERROR] DeepSeek call failed: {e}")
+        return {
+            "connected_speech": [],
+            "sense_groups": {
+                "segmented": body.text,
+                "explanation": "分析失败，请返回重试",
+            },
+        }
+
+    # Save to DB for future reuse
+    db2 = await get_db()
+    try:
+        async with db2.cursor() as cur:
+            await cur.execute(
+                "INSERT IGNORE INTO listening_sentence_analysis (sentence_text, connected_speech, sense_groups_segmented, sense_groups_explanation) VALUES (%s, %s, %s, %s)",
+                (
+                    body.text,
+                    json.dumps(result["connected_speech"], ensure_ascii=False),
+                    result["sense_groups"]["segmented"],
+                    result["sense_groups"]["explanation"],
+                ),
+            )
+            await db2.commit()
+    except Exception as e:
+        print(f"[ANALYZE ERROR] Failed to save analysis to DB: {e}")
+    finally:
+        await release_db(db2)
+
+    return {
+        "connected_speech": result["connected_speech"],
+        "sense_groups": {
+            "segmented": result["sense_groups"]["segmented"],
+            "explanation": result["sense_groups"]["explanation"],
+        },
+    }

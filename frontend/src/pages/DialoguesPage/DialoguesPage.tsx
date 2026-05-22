@@ -1,8 +1,9 @@
-import { useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useSceneDialogues } from '../../hooks/useSceneDialogues';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { useSentenceCollection } from '../../hooks/useSentenceCollection';
 import { useToast } from '../../components/Toast/toastContext';
+import { SentenceAnalysis } from '../../components/SentenceAnalysis';
 import { DialogueSceneList } from './DialogueSceneList';
 import { DialogueContent } from './DialogueContent';
 import type { DialogueScene } from '../../types';
@@ -12,11 +13,21 @@ export function DialoguesPage() {
   const speak = useSpeechSynthesis(1.0);
   const { addSentence } = useSentenceCollection();
   const { showToast } = useToast();
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [analyzingTurn, setAnalyzingTurn] = useState<{ en: string; zh: string } | null>(null);
+
+  const scrollPositions = useRef<Record<string, number>>({});
+  const currentSceneId = useRef<string | null>(null);
 
   const handleSelectScene = (scene: DialogueScene) => {
-    setSelectedScene(scene, contentRef.current);
+    setSelectedScene(scene);
   };
+
+  const handleSaveScroll = useCallback((scrollTop: number) => {
+    const sceneId = currentSceneId.current;
+    if (sceneId) {
+      scrollPositions.current[sceneId] = scrollTop;
+    }
+  }, []);
 
   const handleCollect = async (text: string) => {
     const result = await addSentence(text);
@@ -27,6 +38,32 @@ export function DialoguesPage() {
     }
   };
 
+  const handleAnalyze = (en: string, zh: string) => {
+    setAnalyzingTurn({ en, zh });
+  };
+
+  const handleCloseAnalysis = () => {
+    setAnalyzingTurn(null);
+  };
+
+  // Keep currentSceneId in sync for the scroll save callback
+  currentSceneId.current = selectedScene?.id ?? null;
+
+  // Sentence analysis sub-view
+  if (analyzingTurn) {
+    return (
+      <div className="page">
+        <SentenceAnalysis
+          en={analyzingTurn.en}
+          zh={analyzingTurn.zh}
+          onPlay={() => speak(analyzingTurn.en)}
+          onCollect={() => handleCollect(analyzingTurn.en)}
+          onBack={handleCloseAnalysis}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="page" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <h1>情景对话范本</h1>
@@ -36,11 +73,14 @@ export function DialoguesPage() {
           selectedScene={selectedScene}
           onSelectScene={handleSelectScene}
         />
-        <div ref={contentRef} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <DialogueContent
             scene={selectedScene}
+            savedScrollTop={selectedScene ? scrollPositions.current[selectedScene.id] ?? 0 : 0}
+            onScrollSave={handleSaveScroll}
             onSpeak={speak}
             onCollect={handleCollect}
+            onAnalyze={handleAnalyze}
           />
         </div>
       </div>
