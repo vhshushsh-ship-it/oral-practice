@@ -1,90 +1,136 @@
-我已经为你**更新完整版 README**，精准加入**单词查询功能**，格式统一、简洁专业，直接复制使用即可；同时附上适配的 Git 提交备注！
-
-# SceneTalk 英语口语陪练工具
-一款**沉浸式场景化、带AI上下文记忆**的英语口语对话练习网页，搭配全语音交互、双语翻译与单词查询，提供一站式口语练习体验。
-当前版本为**可完整演示的MVP雏形**，已打通前后端交互。
-
----
-
-## ✨ 核心亮点
-- 🎭 **场景化对话**：内置高频生活场景，AI角色化回复，告别生硬对话
-- 🧠 **连贯记忆**：基于Chroma实现对话上下文记忆，交流自然不脱节
-- 🔊 **全语音交互**：支持语音输入+AI语音播报，点击句子可重复播放
-- 📖 **双语辅助**：实时中英对照翻译，边练边学，理解无压力
-- 🔍 **单词查询**：实时查询生词释义，对话中快速积累词汇
-- 📱 **轻量化体验**：纯网页运行，无需安装，打开即用
+<p align="center">
+  <h1 align="center">SceneTalk</h1>
+  <p align="center">AI-Powered English Oral Practice Platform</p>
+</p>
 
 ---
 
-## 🎯 核心功能清单
-### 1. 多场景模拟练习
-- 内置**餐厅点餐 / 英语面试 / 酒店入住**三大高频生活场景
-- 每个场景配备专属AI角色（服务员/面试官/前台）与定制开场白
-- 场景切换自动重置对话，避免不同场景内容串场
+## Overview
 
-### 2. AI智能对话记忆
-- 完整保留对话历史，AI基于上下文连贯回复，告别机械式单轮对话
-- 场景隔离记忆机制，切换场景自动清空历史，保证对话真实性
-
-### 3. 双模式输入交互
-- **语音输入**：调用麦克风实时录音，还原口语交流场景
-- **文字输入**：键盘输入英文快速发送，适配安静练习场景
-
-### 4. 智能语音播报
-- AI回复自动英文语音朗读，全程发音示范
-- 点击任意聊天句子，即可重新播放对应语音，方便反复跟读模仿
-
-### 5. 实时双语翻译
-- 对话内容同步中英对照翻译，左侧对话+右侧翻译双栏展示
-- 对照学习，快速理解表达含义
-
-### 6. 实时单词查询（新增）
-- 支持快速查询单词**音标、中文释义**
-- 练习过程中实时解决生词问题，不打断学习节奏
-- 轻量化查询，边练口语边积累英语词汇
-
-### 7. 简洁易用的界面交互
-- 对话区+翻译区对称布局，界面整洁直观
-- 场景一键切换、聊天气泡样式、对话自动滚动
-- 录音按钮智能切换，操作便捷无门槛
+SceneTalk is an immersive, scene-based English speaking practice platform with AI-powered conversational memory, full voice interaction, bilingual translation, and vocabulary lookup. It supports **17 real-life scenarios** — from restaurants and interviews to travel and medical visits — giving learners a realistic environment to build oral fluency.
 
 ---
 
-## 🛠️ 技术栈
-- **前端**：Web交互界面（场景选择、聊天窗口、语音/文字输入、语音重播、单词查询）
-- **后端**：AI对话服务、单词查询接口，支撑全链路交互逻辑
-- **核心依赖**：Chroma（对话记忆）、语音识别/合成服务、AI对话Agent、词典服务
+## Features
+
+### Scene-Based Dialogue
+- 17 high-frequency scenarios with dedicated AI role-play (waiter, interviewer, doctor, guide, etc.)
+- Scene-specific opening lines and AI personas for authentic conversation flow
+- Scene switching auto-resets context to avoid cross-scene interference
+
+### Contextual Memory
+- Powered by **ChromaDB** for persistent conversation memory
+- AI responses are context-aware, enabling natural multi-turn dialogue
+- Scene-isolated memory ensures conversations stay on-topic
+
+### Full Voice Interaction
+- **Speech-to-Text**: Real-time microphone input for hands-free speaking practice
+- **Text-to-Speech**: AI replies are auto-read aloud with natural pronunciation
+- **Replay**: Click any sentence bubble to replay its audio — perfect for shadowing practice
+
+### Bilingual Side-by-Side Translation
+- Real-time Chinese-English parallel translation display
+- Side-by-side layout: dialogue on the left, translations on the right
+
+### Listening & Pronunciation
+- Dedicated **Listening Practice** module with structured exercises
+- **Sentence Analysis** with detailed breakdowns
+- **Linking Rules** reference for connected speech patterns
+
+### Word Tools
+- **Quick Word Lookup**: Search any word for phonetics and Chinese definitions
+- **Word Notebook**: Save and review vocabulary collected during practice
 
 ---
 
-## 🚀 快速开始
-1. 克隆项目到本地
-```bash
-git clone <你的仓库地址>
-cd SceneTalk
+## Pages
+
+| Page | Path | Description |
+|------|------|-------------|
+| Practice | `/` | Main oral practice — scene selection, AI chat, TTS/ASR |
+| Listening | `/listening` | Structured listening comprehension exercises |
+| Dialogues | `/dialogues` | Browse and study example dialogues by scene |
+| Sentences | `/sentences` | In-depth sentence analysis and breakdown |
+| Linking Rules | `/linking-rules` | Pronunciation linking and connected speech guide |
+| Notes | `/notes` | Saved word notebook for vocabulary review |
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | React 18, TypeScript, Vite, React Router |
+| **Backend** | Python FastAPI, Uvicorn |
+| **Vector Memory** | ChromaDB |
+| **AI / LLM** | DeepSeek API, DashScope (Qwen) |
+| **Speech** | Edge-TTS (synthesis), ASR service (recognition) |
+| **Database** | MySQL (aiomysql), local JSON/file storage |
+| **Audio** | Server-side audio processing & storage |
+
+---
+
+## Project Structure
+
 ```
-2. 启动后端服务
-3. 打开前端网页，选择场景开始口语练习
+oral-practice/
+├── frontend/               # React + TypeScript + Vite
+│   └── src/
+│       ├── pages/          # 6 page modules
+│       ├── components/     # Reusable UI components
+│       ├── hooks/          # Custom React hooks
+│       ├── services/       # API client layer
+│       └── assets/         # Static assets
+├── backend/                # Python FastAPI
+│   ├── main.py             # App entry point
+│   ├── config.py           # Configuration & scene definitions
+│   ├── routers/            # API route handlers
+│   ├── services/           # AI, TTS, ASR, audio, storage
+│   ├── scripts/            # Data generation & ETL scripts
+│   └── data/               # Runtime data & ChromaDB persistence
+├── start.bat               # Windows quick-start launcher
+└── start.ps1               # PowerShell quick-start launcher
+```
 
 ---
 
-## 📌 项目说明
-本项目聚焦解决英语口语练习**无陪练、无场景、无反馈、无词汇辅助**的痛点，打造随时随地可练的AI口语陪练工具。
+## Getting Started
+
+### Prerequisites
+- **Python 3.10+** with pip
+- **Node.js 18+** with npm
+- **MySQL** (for listening data; fallback to local storage for other modules)
+
+### Backend Setup
+
+```bash
+cd backend
+pip install -r requirements.txt
+
+# Configure your API keys in backend/.env:
+#   DASHSCOPE_API_KEY=your_key
+#   DEEPSEEK_API_KEY=your_key
+#   DB_HOST=...  DB_USER=...  DB_PASSWORD=...  DB_NAME=...
+
+python main.py
+# API server runs at http://127.0.0.1:8000
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+# Dev server runs at http://localhost:5173
+```
+
+### Quick Start (Windows)
+
+Run `start.bat` or `start.ps1` to launch both frontend and backend simultaneously.
 
 ---
 
-### 配套 Git 提交备注（直接复制）
-#### 首选推荐（清晰规范）
-```bash
-git commit -m "feat: 新增实时单词查询功能，支持音标+释义查询"
-```
-#### 极简版
-```bash
-git commit -m "feat: 添加单词查询模块"
-```
-#### 详细版
-```bash
-git commit -m "feat: 新增单词查询功能
-- 支持单词音标、中文释义实时查询
-- 口语练习中快速查词，边练边积累词汇"
-```
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
