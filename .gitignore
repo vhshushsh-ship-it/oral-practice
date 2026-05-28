@@ -221,10 +221,23 @@ __marimo__/
 test.py
 input.wav
 
+# Node
+node_modules/
+
 # 后端运行时数据
 backend/data/word_cache.json
 backend/data/word_notes.json
 backend/data/chroma_db/
 backend/data/temp_audio/
 backend/data/chat_records/
+backend/data/*.db
+backend/data/*_log.txt
+backend/data/*_backup.json
+
+# 临时文件
+a.txt
+startup.log
+
+# Claude Code 本地配置
+.claude/settings.local.json
 
