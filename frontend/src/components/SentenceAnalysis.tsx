@@ -1,54 +1,81 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { ListeningSentence, SentenceAnalysisResult } from '../../types';
-import { analyzeSentence } from '../../services/api';
-import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
-import { SpeakerIcon, MicIcon, BookmarkIcon } from '../../icons';
+import type { SentenceAnalysisResult } from '../types';
+import { analyzeSentence } from '../services/api';
+import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis';
+import { useRecording } from '../hooks/useRecording';
+import { useRecordingPlayback } from '../hooks/useRecordingPlayback';
+import { SpeakerIcon, MicIcon, BookmarkIcon } from '../icons';
+
+const CACHE_PREFIX = 'sa_';
+
+function hashString(s: string): string {
+  let hash = 0;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s.charCodeAt(i);
+    hash = ((hash << 5) - hash) + ch;
+    hash |= 0;
+  }
+  return CACHE_PREFIX + Math.abs(hash).toString(36);
+}
+
+function getCachedAnalysis(text: string): SentenceAnalysisResult | null {
+  try {
+    const raw = localStorage.getItem(hashString(text));
+    if (raw) return JSON.parse(raw);
+  } catch { /* localStorage unavailable or corrupted */ }
+  return null;
+}
+
+function setCachedAnalysis(text: string, data: SentenceAnalysisResult): void {
+  try {
+    localStorage.setItem(hashString(text), JSON.stringify(data));
+  } catch { /* localStorage full or unavailable */ }
+}
 
 interface Props {
-  sentence: ListeningSentence;
-  showTranslation: boolean;
-  isPlayingFull: boolean;
-  isRecording: boolean;
-  recordingSeconds: number;
-  hasRecording: boolean;
-  isPlayingRecording: boolean;
+  en: string;
+  zh?: string;
+  showTranslation?: boolean;
   onPlay: () => void;
   onCollect: () => void;
-  onStartRecord: () => void;
-  onStopRecord: () => void;
-  onPlayRecording: () => void;
   onBack: () => void;
 }
 
 export function SentenceAnalysis({
-  sentence,
-  showTranslation,
-  isPlayingFull,
-  isRecording,
-  recordingSeconds,
-  hasRecording,
-  isPlayingRecording,
+  en,
+  zh,
+  showTranslation = true,
   onPlay,
   onCollect,
-  onStartRecord,
-  onStopRecord,
-  onPlayRecording,
   onBack,
 }: Props) {
   const [result, setResult] = useState<SentenceAnalysisResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const speak = useSpeechSynthesis(1.0);
+  const recordingPlayback = useRecordingPlayback();
+  const recording = useRecording(recordingPlayback.storeRecording);
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
     setError('');
     setResult(null);
 
-    analyzeSentence(sentence.en)
+    const cached = getCachedAnalysis(en);
+    if (cached) {
+      setResult(cached);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+
+    analyzeSentence(en)
       .then((data) => {
-        if (!cancelled) setResult(data);
+        if (!cancelled) {
+          setResult(data);
+          setCachedAnalysis(en, data);
+        }
       })
       .catch(() => {
         if (!cancelled) setError('分析失败，请返回重试');
@@ -58,7 +85,7 @@ export function SentenceAnalysis({
       });
 
     return () => { cancelled = true; };
-  }, [sentence.en]);
+  }, [en]);
 
   const formatTime = useCallback((s: number) => {
     const m = Math.floor(s / 60).toString().padStart(2, '0');
@@ -71,7 +98,7 @@ export function SentenceAnalysis({
       {/* ── Header ── */}
       <div className="sa-header">
         <button className="sa-back-btn" onClick={onBack}>
-          &larr; 返回分段精听
+          &larr; 返回
         </button>
         <span className="sa-title">句子分析</span>
       </div>
@@ -80,31 +107,30 @@ export function SentenceAnalysis({
         {/* ── Sentence reading area ── */}
         <div className="sa-reading-area">
           <div className="sa-sentence-en">
-            <span>{sentence.en}</span>
+            <span>{en}</span>
             <div className="sa-sentence-actions">
               <button
                 className="sentence-action-btn"
                 onClick={onPlay}
-                disabled={isPlayingFull}
                 title="播放"
               >
                 <SpeakerIcon size={13} />
               </button>
 
-              {isRecording ? (
-                <button className="sentence-action-btn recording" onClick={onStopRecord} title="停止录音">
+              {recording.state.isRecording ? (
+                <button className="sentence-action-btn recording" onClick={recording.stop} title="停止录音">
                   <StopSmallIcon size={13} />
                 </button>
               ) : (
-                <button className="sentence-action-btn" onClick={onStartRecord} title="录音跟读">
+                <button className="sentence-action-btn" onClick={recording.start} title="录音跟读">
                   <MicIcon size={13} />
                 </button>
               )}
 
-              {hasRecording && (
+              {recordingPlayback.hasRecording && (
                 <button
-                  className={`sentence-action-btn${isPlayingRecording ? ' playing' : ''}`}
-                  onClick={onPlayRecording}
+                  className={`sentence-action-btn${recordingPlayback.isPlayingRecording ? ' playing' : ''}`}
+                  onClick={recordingPlayback.playRecording}
                   title="回放录音"
                 >
                   <PlaySmallIcon size={13} />
@@ -117,7 +143,7 @@ export function SentenceAnalysis({
             </div>
           </div>
 
-          {isRecording && (
+          {recording.state.isRecording && (
             <div className="listening-recording-bar">
               <span className="waveform">
                 <span className="wave-bar" />
@@ -126,13 +152,13 @@ export function SentenceAnalysis({
                 <span className="wave-bar" />
                 <span className="wave-bar" />
               </span>
-              <span>{formatTime(recordingSeconds)}</span>
+              <span>{formatTime(recording.state.seconds)}</span>
               <span>录音中...</span>
             </div>
           )}
 
-          {showTranslation && (
-            <div className="sa-sentence-zh">{sentence.zh}</div>
+          {showTranslation && zh && (
+            <div className="sa-sentence-zh">{zh}</div>
           )}
         </div>
 
@@ -141,7 +167,7 @@ export function SentenceAnalysis({
           {loading && (
             <div className="sa-loading">
               <span className="sa-loading-spinner" />
-              <span>正在加载句子分析数据...</span>
+              <span>正在分析句子发音...</span>
             </div>
           )}
 

@@ -16,7 +16,7 @@ import { MockExamPlayer } from './MockExamPlayer';
 import { QuestionCard } from './QuestionCard';
 import { ExamResultView } from './ExamResultView';
 import { ExamHistoryPanel } from './ExamHistoryPanel';
-import { SentenceAnalysis } from './SentenceAnalysis';
+import { SentenceAnalysis } from '../../components/SentenceAnalysis';
 
 type PageStep = 'level_select' | 'set_select' | 'section_select' | 'practice' | 'exam' | 'exam_result';
 
@@ -448,18 +448,11 @@ export function ListeningPage() {
         <div className="page">
           <div className="listening-linear">
             <SentenceAnalysis
-              sentence={s}
+              en={s.en}
+              zh={s.zh}
               showTranslation={showTranslations}
-              isPlayingFull={isPlayingFull}
-              isRecording={recordingTarget === s.id && recording.state.isRecording}
-              recordingSeconds={recording.state.seconds}
-              hasRecording={recordingTarget === s.id && recordingPlayback.hasRecording}
-              isPlayingRecording={recordingTarget === s.id && recordingPlayback.isPlayingRecording}
               onPlay={() => handleSinglePlay(s.en, s.id)}
               onCollect={() => handleCollect(s.en)}
-              onStartRecord={() => handleStartRecord(s.id)}
-              onStopRecord={handleStopRecord}
-              onPlayRecording={handlePlayRecording}
               onBack={handleCloseAnalysis}
             />
           </div>

@@ -95,7 +95,7 @@ def analyze_sentence(text: str) -> dict:
   "connected_speech": [
     {{
       "words": "原文词组，如 has survived",
-      "phonetic": "音标，如 /həz səˈvaɪvd/",
+      "phonetic": "美式音标（American IPA），如 /həz sərˈvaɪvd/（注意：请使用美式音标体系，不要使用英式音标符号如 /ɒ/ /əʊ/ /ɪə/ /eə/ /ʊə/ /ɜː/ /ɔː/ /ɑː/ /iː/ /uː/，应使用对应的美式 /ɑ/ /oʊ/ /ɪr/ /er/ /ʊr/ /ɜr/ /ɔ/ /ɑ/ /i/ /u/）",
       "description": "连读/弱读/不完全爆破现象的中文解释，说明具体发生了什么音变，如：/z/ 与 /s/ 相邻，可连成轻微延长或短暂停顿（避免吞音）"
     }}
   ],
@@ -148,6 +148,71 @@ def analyze_sentence(text: str) -> dict:
                 "explanation": "分析失败，请稍后重试",
             },
         }
+
+
+def analyze_sentence_deepseek(text: str) -> dict:
+    """使用 DeepSeek V4 Pro 实时分析句子连读和意群切分"""
+    from openai import OpenAI
+    from config import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
+
+    if not DEEPSEEK_API_KEY:
+        raise ValueError("DEEPSEEK_API_KEY not configured")
+
+    client = OpenAI(base_url=DEEPSEEK_BASE_URL, api_key=DEEPSEEK_API_KEY)
+
+    prompt = f"""你是英语发音专家。请分析以下英文句子的连读现象和意群切分，严格返回纯JSON格式，不要加任何多余的文字、注释、markdown：
+
+{{
+  "connected_speech": [
+    {{
+      "words": "原文词组，如 has survived",
+      "phonetic": "美式音标（American IPA），如 /həz sərˈvaɪvd/（注意：请使用美式音标体系，不要使用英式音标符号如 /ɒ/ /əʊ/ /ɪə/ /eə/ /ʊə/ /ɜː/ /ɔː/ /ɑː/ /iː/ /uː/，应使用对应的美式 /ɑ/ /oʊ/ /ɪr/ /er/ /ʊr/ /ɜr/ /ɔ/ /ɑ/ /i/ /u/）",
+      "description": "连读/弱读/不完全爆破现象的中文解释，说明具体发生了什么音变，如：/z/ 与 /s/ 相邻，可连成轻微延长或短暂停顿（避免吞音）"
+    }}
+  ],
+  "sense_groups": {{
+    "segmented": "用 / 分隔意群的完整句子",
+    "explanation": "意群切分依据的中文解释，说明为什么这样划分，以及英语母语者朗读时的停顿规律"
+  }}
+}}
+
+规则：
+- connected_speech 列出句子中所有连读、弱读、不完全爆破、辅元连读等现象，每条包含原词组、音标、现象解释
+- sense_groups.segmented 按意群用 " / " 切分整个句子
+- sense_groups.explanation 解释划分原则
+- 所有解释使用中文
+
+句子：{text}"""
+
+    try:
+        response = client.chat.completions.create(
+            model="deepseek-chat",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
+            max_tokens=800,
+        )
+        raw = response.choices[0].message.content.strip()
+
+        json_match = re.search(r"\{[\s\S]*\}", raw)
+        if not json_match:
+            raise ValueError("DeepSeek未返回JSON格式")
+
+        clean_json = json_match.group(0)
+        clean_json = re.sub(r",\s*([}\]])", r"\1", clean_json)
+
+        try:
+            result = json.loads(clean_json)
+        except json.JSONDecodeError:
+            clean_json = clean_json.replace("'", '"')
+            result = json.loads(clean_json)
+
+        if "connected_speech" not in result or "sense_groups" not in result:
+            raise ValueError("JSON缺少必填字段")
+
+        return result
+    except Exception as e:
+        print(f"[DEEPSEEK ANALYZE ERROR] {e}")
+        raise
 
 
 def query_word_ai(word: str) -> dict:

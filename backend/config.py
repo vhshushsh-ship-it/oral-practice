@@ -14,6 +14,8 @@ env_path = BASE_DIR / ".env"
 load_dotenv(dotenv_path=env_path)
 
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 
 # ====================== ChromaDB 持久化 ======================
 chroma_db_path = DATA_DIR / "chroma_db"

@@ -913,6 +913,7 @@ select {
   border: 1px solid var(--paper-edge);
   box-shadow: var(--shadow-md);
   padding: 18px;
+  overflow: hidden;
 }
 
 .dialogue-scene-list h3 {
@@ -959,6 +960,7 @@ select {
   border: 1px solid var(--paper-edge);
   box-shadow: var(--shadow-md);
   padding: 18px;
+  overflow: hidden;
 }
 
 .dialogue-title {
