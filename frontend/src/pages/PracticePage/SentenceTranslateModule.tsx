@@ -1,11 +1,9 @@
 import { useState, useCallback } from 'react';
-import type { ToastType } from '../../types';
 import { translateToEnglish } from '../../services/api';
 import { useToast } from '../../components/Toast/toastContext';
 
 interface Props {
   onSpeak: (text: string) => void;
-  onToast: (message: string, type?: ToastType) => void;
 }
 
 export function SentenceTranslateModule({ onSpeak }: Props) {
@@ -15,6 +13,7 @@ export function SentenceTranslateModule({ onSpeak }: Props) {
   const [showCopy, setShowCopy] = useState(false);
   const { showToast } = useToast();
 
+  // ---- Translate handlers ----
   const handleTranslate = useCallback(async () => {
     const text = input.trim();
     if (!text) {

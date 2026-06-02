@@ -184,6 +184,21 @@ export interface SentenceAnalysisResult {
   sense_groups: SenseGroups;
 }
 
+// ====================== 语法检测 ======================
+export interface GrammarErrorInfo {
+  error_text: string;
+  error_type: string;
+  explain: string;
+}
+
+export interface GrammarCheckResult {
+  score: number;
+  source_sent: string;
+  error_index: [number, number][];
+  error_info: GrammarErrorInfo[];
+  fixed_sent: string;
+}
+
 // ====================== Toast ======================
 export type ToastType = 'success' | 'info' | 'warning';
 

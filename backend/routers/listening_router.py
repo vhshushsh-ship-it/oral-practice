@@ -3,7 +3,7 @@ import json
 import aiomysql
 from fastapi import APIRouter, HTTPException, Query, Depends
 from db import get_db, release_db
-from models.schemas import ExamSubmitBody, SentenceAnalysisBody
+from models.schemas import ExamSubmitBody, SentenceAnalysisBody, GrammarCheckBody
 from routers.auth_dependency import get_current_user
 
 
@@ -410,3 +410,18 @@ async def analyze(body: SentenceAnalysisBody):
             "explanation": result["sense_groups"]["explanation"],
         },
     }
+
+
+@router.post("/grammar-check")
+async def grammar_check(body: GrammarCheckBody):
+    """AI grammar checking and scoring — calls DeepSeek V4 Pro"""
+    import traceback
+    try:
+        from services.ai_service import check_grammar_deepseek
+        result = check_grammar_deepseek(body.text)
+    except Exception as e:
+        print(f"[GRAMMAR CHECK ERROR] {type(e).__name__}: {e}")
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"语法检测失败: {type(e).__name__}: {e}")
+
+    return result

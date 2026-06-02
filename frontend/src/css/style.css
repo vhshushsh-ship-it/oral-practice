@@ -842,3 +842,186 @@
             from { opacity: 1; transform: translateX(0); }
             to   { opacity: 0; transform: translateX(40px); }
         }
+
+/* ========== 语法检测按钮（聊天消息上） ========== */
+.grammar-check-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    color: rgba(255,255,255,0.8);
+    vertical-align: middle;
+}
+.grammar-check-btn:hover {
+    background: rgba(255,255,255,0.3);
+    color: #fff;
+    border-color: rgba(255,255,255,0.6);
+    transform: scale(1.1);
+}
+.grammar-check-btn:active {
+    transform: scale(0.92);
+    transition: transform 0.08s ease;
+}
+.grammar-check-btn svg {
+    width: 13px;
+    height: 13px;
+    pointer-events: none;
+}
+
+/* ========== 语法打分面板 ========== */
+.grammar-score-header {
+    text-align: center;
+    padding: 20px 16px;
+    margin-bottom: 16px;
+    background: var(--paper-light);
+    border-radius: 3px;
+    border: 1px solid var(--line-light);
+}
+.grammar-score-header .score-label {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--ink-light);
+    margin-bottom: 6px;
+}
+.grammar-score-header .score-value {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+.score-excellent { color: var(--accent-cool); }
+.score-good { color: var(--accent-warm); }
+.score-poor { color: var(--accent); }
+
+.grammar-section {
+    margin-bottom: 18px;
+}
+.grammar-section-title {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--line);
+    letter-spacing: 0.04em;
+}
+
+/* 错误高亮 */
+.grammar-error-highlight {
+    color: var(--accent);
+    background: rgba(139,58,58,0.10);
+    padding: 1px 2px;
+    border-radius: 2px;
+    border-bottom: 2px solid var(--accent);
+    font-weight: 600;
+}
+
+/* 错误列表 */
+.grammar-error-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.grammar-error-item {
+    padding: 10px 12px;
+    background: var(--paper-light);
+    border-radius: 3px;
+    border-left: 3px solid var(--accent);
+    font-size: 13px;
+}
+.grammar-error-text {
+    font-weight: 600;
+    color: var(--accent);
+    font-family: var(--font-mono);
+}
+.grammar-error-type {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    font-size: 11px;
+    background: var(--line-light);
+    color: var(--ink-light);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+}
+.grammar-error-explain {
+    margin-top: 6px;
+    color: var(--ink-light);
+    line-height: 1.6;
+}
+
+/* 修正对比 */
+.grammar-compare-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.grammar-compare-col {
+    flex: 1;
+    padding: 12px;
+    background: var(--paper-light);
+    border-radius: 3px;
+    border: 1px solid var(--line-light);
+    min-height: 60px;
+}
+.grammar-compare-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.grammar-compare-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink);
+}
+.grammar-compare-text.fixed {
+    color: var(--accent-cool);
+    font-weight: 500;
+}
+
+/* 填入输入框按钮 */
+.grammar-fill-btn {
+    display: block;
+    margin-left: auto;
+    padding: 8px 18px;
+    background: var(--accent-cool);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition);
+}
+.grammar-fill-btn:hover { opacity: 0.88; }
+
+/* 语法加载/空态 */
+.grammar-loading {
+    text-align: center;
+    color: var(--ink-muted);
+    padding: 40px 20px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+}
+.grammar-empty {
+    text-align: center;
+    color: var(--ink-muted);
+    padding: 40px 20px;
+    font-family: var(--font-serif);
+    font-size: 14px;
+}
