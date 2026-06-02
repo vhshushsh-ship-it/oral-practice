@@ -216,7 +216,7 @@ def analyze_sentence_deepseek(text: str) -> dict:
 
 
 def check_grammar_deepseek(text: str) -> dict:
-    """使用 DeepSeek V4 Pro 进行语法检测和打分"""
+    """使用 DeepSeek V4 Flash 进行语法检测和打分（极速轻量模型）"""
     from openai import OpenAI
     from config import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
 
@@ -230,7 +230,7 @@ def check_grammar_deepseek(text: str) -> dict:
 
     client = OpenAI(base_url=DEEPSEEK_BASE_URL, api_key=DEEPSEEK_API_KEY)
 
-    # Ultra-compact prompt to minimize token usage
+    # Compact prompt — grammar check output is ~200-400 tokens
     prompt = (
         "Check grammar of this English sentence. Return ONLY valid JSON (no markdown):\n"
         '{"score":int(0-100),"source_sent":"<original>","error_index":[[start,end],...],"error_info":[{"error_text":"...","error_type":"tense/SVA/prep/article/word_order/spelling","explain":"Chinese explanation"}],"fixed_sent":"<corrected>"}\n'
@@ -257,22 +257,6 @@ def check_grammar_deepseek(text: str) -> dict:
             return json.loads(candidate)
         raise ValueError(f"Cannot extract JSON from response: {raw[:200]}")
 
-    def _call_api(max_tokens: int) -> dict:
-        response = client.chat.completions.create(
-            model="deepseek-v4-pro",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.1,
-            max_tokens=max_tokens,
-        )
-        raw = response.choices[0].message.content
-        finish = response.choices[0].finish_reason
-        if not raw:
-            raise ValueError(f"DeepSeek empty response: finish_reason={finish}")
-        # If truncated, signal caller to retry with more tokens
-        if finish == "length":
-            raise ValueError(f"finish_reason=length at max_tokens={max_tokens}")
-        return _try_parse(raw)
-
     def _validate(result: dict) -> dict:
         for k in ("score", "source_sent", "error_index", "error_info", "fixed_sent"):
             if k not in result:
@@ -280,17 +264,17 @@ def check_grammar_deepseek(text: str) -> dict:
         return result
 
     try:
-        try:
-            raw_result = _call_api(max_tokens=4096)
-            return _validate(raw_result)
-        except (ValueError, json.JSONDecodeError) as first_error:
-            err_str = str(first_error)
-            # Retry with higher tokens on truncation OR JSON parse failure
-            if "finish_reason=length" in err_str or isinstance(first_error, json.JSONDecodeError):
-                print(f"[GRAMMAR CHECK] First attempt failed ({first_error}), retrying with max_tokens=8192...")
-                raw_result = _call_api(max_tokens=8192)
-                return _validate(raw_result)
-            raise
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
+            max_tokens=1024,
+        )
+        raw = response.choices[0].message.content
+        if not raw:
+            raise ValueError(f"DeepSeek empty response: finish_reason={response.choices[0].finish_reason}")
+        result = _try_parse(raw)
+        return _validate(result)
     except Exception as e:
         import traceback
         print(f"[GRAMMAR CHECK ERROR] {type(e).__name__}: {e}")

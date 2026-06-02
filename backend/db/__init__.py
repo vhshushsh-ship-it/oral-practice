@@ -158,6 +158,17 @@ async def init_db() -> None:
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             """)
             await cur.execute("""
+                CREATE TABLE IF NOT EXISTS listening_grammar_cache (
+                    sentence_text VARCHAR(500) PRIMARY KEY,
+                    score INT NOT NULL,
+                    source_sent TEXT NOT NULL,
+                    error_index JSON NOT NULL,
+                    error_info JSON NOT NULL,
+                    fixed_sent TEXT NOT NULL,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            await cur.execute("""
                 CREATE TABLE IF NOT EXISTS listening_exam_answer (
                     id VARCHAR(50) PRIMARY KEY,
                     exam_record_id VARCHAR(50) NOT NULL,
