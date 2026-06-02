@@ -1,13 +1,21 @@
 import json
 import os
-from fastapi import APIRouter, UploadFile, File, Form
-from config import SCENE_MAP, CHAT_DIR, INITIAL_MESSAGES
+from pathlib import Path
+from fastapi import APIRouter, UploadFile, File, Form, Depends
+from config import SCENE_MAP, CHAT_BASE_DIR, INITIAL_MESSAGES
 from services.ai_service import agent_reply
 from services.asr_service import asr, is_exit
 from services.audio_service import save_uploaded_audio
 from services.storage_service import save_memory, search_memories
+from routers.auth_dependency import get_current_user
 
 router = APIRouter(tags=["chat"])
+
+
+def _get_chat_file(user_id: str, scene: str) -> Path:
+    user_dir = CHAT_BASE_DIR / user_id
+    user_dir.mkdir(parents=True, exist_ok=True)
+    return user_dir / f"{scene}.json"
 
 
 @router.post("/init")
@@ -17,18 +25,18 @@ async def init_conversation(scene_choice: str = Form(...)):
 
 
 @router.post("/chat/save")
-async def save_chat_history(data: dict):
+async def save_chat_history(data: dict, user_id: str = Depends(get_current_user)):
     scene = data.get("scene")
     history = data.get("history", [])
-    file_path = CHAT_DIR / f"{scene}.json"
+    file_path = _get_chat_file(user_id, scene)
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
     return {"status": "success"}
 
 
 @router.get("/chat/history")
-async def get_chat_history(scene: str):
-    file_path = CHAT_DIR / f"{scene}.json"
+async def get_chat_history(scene: str, user_id: str = Depends(get_current_user)):
+    file_path = _get_chat_file(user_id, scene)
     if file_path.exists():
         with open(file_path, "r", encoding="utf-8") as f:
             history = json.load(f)
@@ -38,8 +46,8 @@ async def get_chat_history(scene: str):
 
 
 @router.get("/chat/clear")
-async def clear_chat_history(scene: str):
-    file_path = CHAT_DIR / f"{scene}.json"
+async def clear_chat_history(scene: str, user_id: str = Depends(get_current_user)):
+    file_path = _get_chat_file(user_id, scene)
     if file_path.exists():
         os.remove(file_path)
     return {"status": "success"}
@@ -50,6 +58,7 @@ async def chat(
     audio: UploadFile = File(...),
     scene: str = Form(...),
     conversation_history: str = Form("[]"),
+    user_id: str = Depends(get_current_user),
 ):
     try:
         audio_path = save_uploaded_audio(audio)
@@ -59,10 +68,10 @@ async def chat(
             return {"user_text": user_text, "ai_text": "Goodbye!"}
 
         history = json.loads(conversation_history)
-        memories = search_memories(scene, user_text)
+        memories = search_memories(scene, user_text, user_id)
         ai_reply = agent_reply(user_text, scene, history, memory_context=memories)
 
-        save_memory(scene, user_text, ai_reply)
+        save_memory(scene, user_text, ai_reply, user_id)
 
         if os.path.exists(audio_path):
             os.remove(audio_path)
@@ -79,12 +88,13 @@ async def chat_text(
     user_text: str = Form(...),
     scene: str = Form(...),
     conversation_history: str = Form("[]"),
+    user_id: str = Depends(get_current_user),
 ):
     try:
         history = json.loads(conversation_history)
-        memories = search_memories(scene, user_text)
+        memories = search_memories(scene, user_text, user_id)
         ai_reply_text = agent_reply(user_text, scene, history, memory_context=memories)
-        save_memory(scene, user_text, ai_reply_text)
+        save_memory(scene, user_text, ai_reply_text, user_id)
         return {"user_text": user_text, "ai_text": ai_reply_text}
     except Exception as e:
         print(f"文本对话失败: {e}")

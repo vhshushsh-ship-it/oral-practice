@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthProvider';
 
 const NAV_ITEMS = [
   { page: 'practice', label: '* SceneTalk' },
@@ -12,8 +13,14 @@ const NAV_ITEMS = [
 export function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const currentPage = location.pathname === '/' ? 'practice' : location.pathname.slice(1);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <aside className="sidebar">
@@ -26,6 +33,12 @@ export function Sidebar() {
           {item.label}
         </div>
       ))}
+      <div className="sidebar-footer">
+        {user && <div className="sidebar-user">{user.email}</div>}
+        <div className="nav-item logout-btn" onClick={handleLogout}>
+          — 退出登录
+        </div>
+      </div>
     </aside>
   );
 }

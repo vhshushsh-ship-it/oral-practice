@@ -3015,3 +3015,160 @@ select {
   line-height: 1.7;
   color: var(--ink-light);
 }
+
+/* ========== 认证页面 ========== */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d0 50%, #d5c9b5 100%);
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 48px 40px;
+  background: var(--paper-light);
+  border: 1px solid var(--paper-edge);
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(44, 36, 22, 0.08);
+}
+
+.auth-form h1 {
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.auth-subtitle {
+  font-size: 13px;
+  color: var(--ink-muted);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.auth-field {
+  margin-bottom: 18px;
+}
+
+.auth-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-light);
+  margin-bottom: 6px;
+}
+
+.auth-field input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-family: var(--font-mono);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.auth-field input:focus {
+  border-color: var(--accent);
+}
+
+.auth-field input::placeholder {
+  color: var(--ink-muted);
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 6px;
+}
+
+.auth-btn:hover {
+  background: #7a2e2e;
+}
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-switch {
+  font-size: 13px;
+  color: var(--ink-muted);
+  text-align: center;
+  margin-top: 20px;
+}
+
+.auth-switch a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+.auth-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  font-size: 16px;
+  color: var(--ink-muted);
+  background: var(--paper);
+}
+
+/* ========== Sidebar 用户信息 ========== */
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--paper-edge);
+}
+
+.sidebar-user {
+  font-size: 12px;
+  color: var(--ink-light);
+  padding: 8px 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  font-size: 13px;
+  color: var(--ink-muted) !important;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  color: var(--accent) !important;
+}
