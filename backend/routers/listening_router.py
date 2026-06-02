@@ -1,9 +1,10 @@
 import time
 import json
 import aiomysql
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Depends
 from db import get_db, release_db
 from models.schemas import ExamSubmitBody, SentenceAnalysisBody
+from routers.auth_dependency import get_current_user
 
 
 router = APIRouter(prefix="/api/listening", tags=["listening"])
@@ -154,7 +155,7 @@ async def get_questions(set_id: str):
 
 
 @router.post("/exam/submit")
-async def submit_exam(body: ExamSubmitBody):
+async def submit_exam(body: ExamSubmitBody, user_id: str = Depends(get_current_user)):
     db = await get_db()
     try:
         async with db.cursor(aiomysql.DictCursor) as cur:
@@ -201,14 +202,14 @@ async def submit_exam(body: ExamSubmitBody):
             exam_id = f"exam-{int(time.time() * 1000)}"
 
             await cur.execute(
-                "INSERT INTO listening_exam_record(id, set_id, total_questions, correct_count, accuracy) VALUES(%s,%s,%s,%s,%s)",
-                (exam_id, body.set_id, total, correct_count, accuracy),
+                "INSERT INTO listening_exam_record(id, user_id, set_id, total_questions, correct_count, accuracy) VALUES(%s,%s,%s,%s,%s,%s)",
+                (exam_id, user_id, body.set_id, total, correct_count, accuracy),
             )
             for d in details:
                 ans_id = f"{exam_id}-{d['questionId']}"
                 await cur.execute(
-                    "INSERT INTO listening_exam_answer(id, exam_record_id, question_id, user_answer, is_correct) VALUES(%s,%s,%s,%s,%s)",
-                    (ans_id, exam_id, d["questionId"], d["userAnswer"], d["isCorrect"]),
+                    "INSERT INTO listening_exam_answer(id, user_id, exam_record_id, question_id, user_answer, is_correct) VALUES(%s,%s,%s,%s,%s,%s)",
+                    (ans_id, user_id, exam_id, d["questionId"], d["userAnswer"], d["isCorrect"]),
                 )
             await db.commit()
 
@@ -226,29 +227,31 @@ async def submit_exam(body: ExamSubmitBody):
     }
 
 
-async def clear_exam_history():
+@router.delete("/exam/history")
+async def clear_exam_history(user_id: str = Depends(get_current_user)):
     db = await get_db()
     try:
         async with db.cursor() as cur:
-            await cur.execute("DELETE FROM listening_exam_answer")
-            await cur.execute("DELETE FROM listening_exam_record")
+            await cur.execute("DELETE FROM listening_exam_answer WHERE user_id = %s", (user_id,))
+            await cur.execute("DELETE FROM listening_exam_record WHERE user_id = %s", (user_id,))
             await db.commit()
     finally:
         await release_db(db)
     return {"message": "已清空所有记录"}
 
 
-async def delete_exam_record(exam_id: str):
+@router.delete("/exam/history/{exam_id}")
+async def delete_exam_record(exam_id: str, user_id: str = Depends(get_current_user)):
     db = await get_db()
     try:
         async with db.cursor() as cur:
             await cur.execute(
-                "DELETE FROM listening_exam_answer WHERE exam_record_id = %s",
-                (exam_id,),
+                "DELETE FROM listening_exam_answer WHERE exam_record_id = %s AND user_id = %s",
+                (exam_id, user_id),
             )
             await cur.execute(
-                "DELETE FROM listening_exam_record WHERE id = %s",
-                (exam_id,),
+                "DELETE FROM listening_exam_record WHERE id = %s AND (user_id = %s OR user_id IS NULL)",
+                (exam_id, user_id),
             )
             if cur.rowcount == 0:
                 raise HTTPException(status_code=404, detail="Exam record not found")
@@ -258,12 +261,8 @@ async def delete_exam_record(exam_id: str):
     return {"message": "删除成功"}
 
 
-router.add_api_route("/exam/history", clear_exam_history, methods=["DELETE"])
-router.add_api_route("/exam/history/{exam_id}", delete_exam_record, methods=["DELETE"])
-
-
 @router.get("/exam/history")
-async def get_exam_history():
+async def get_exam_history(user_id: str = Depends(get_current_user)):
     db = await get_db()
     try:
         async with db.cursor(aiomysql.DictCursor) as cur:
@@ -273,8 +272,9 @@ async def get_exam_history():
                        ls.name AS set_name
                 FROM listening_exam_record er
                 LEFT JOIN listening_set ls ON ls.id = er.set_id
+                WHERE er.user_id = %s
                 ORDER BY er.created_at DESC
-            """)
+            """, (user_id,))
             rows = list(await cur.fetchall())
     finally:
         await release_db(db)
@@ -295,13 +295,13 @@ async def get_exam_history():
 
 
 @router.get("/exam/history/{exam_id}")
-async def get_exam_detail(exam_id: str):
+async def get_exam_detail(exam_id: str, user_id: str = Depends(get_current_user)):
     db = await get_db()
     try:
         async with db.cursor(aiomysql.DictCursor) as cur:
             await cur.execute(
-                "SELECT * FROM listening_exam_record WHERE id = %s",
-                (exam_id,),
+                "SELECT * FROM listening_exam_record WHERE id = %s AND (user_id = %s OR user_id IS NULL)",
+                (exam_id, user_id),
             )
             record = await cur.fetchone()
             if not record:

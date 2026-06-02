@@ -7,6 +7,7 @@ from routers.word_router import router as word_router
 from routers.notes_router import router as notes_router
 from routers.tts_router import router as tts_router
 from routers.listening_router import router as listening_router
+from routers.auth_router import router as auth_router
 from db import init_db
 from db.seed import seed_listening_data
 
@@ -26,9 +27,11 @@ app.add_middleware(
     allow_origins=[
         "http://127.0.0.1:5500",
         "http://localhost:5500",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
         "null",
     ],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -40,6 +43,7 @@ app.include_router(word_router)
 app.include_router(notes_router)
 app.include_router(tts_router)
 app.include_router(listening_router)
+app.include_router(auth_router)
 
 if __name__ == "__main__":
     import uvicorn

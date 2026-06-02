@@ -1,5 +1,6 @@
 import os
 import json
+import secrets
 from pathlib import Path
 from dotenv import load_dotenv
 import dashscope
@@ -17,24 +18,31 @@ dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 
+# ====================== JWT 认证配置 ======================
+JWT_SECRET = os.getenv("JWT_SECRET", secrets.token_hex(32))
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+JWT_EXPIRE_HOURS = int(os.getenv("JWT_EXPIRE_HOURS", "168"))
+
 # ====================== ChromaDB 持久化 ======================
 chroma_db_path = DATA_DIR / "chroma_db"
 chroma_client = chromadb.PersistentClient(path=str(chroma_db_path))
 memory_collection = chroma_client.get_or_create_collection(name="scene_talk_memory")
 
 # ====================== 数据文件路径 ======================
-CHAT_DIR = DATA_DIR / "chat_records"
-CHAT_DIR.mkdir(exist_ok=True)
+CHAT_BASE_DIR = DATA_DIR / "chat_records"
+CHAT_BASE_DIR.mkdir(exist_ok=True)
 
-NOTES_FILE = DATA_DIR / "word_notes.json"
-if not NOTES_FILE.exists():
-    with open(NOTES_FILE, "w", encoding="utf-8") as f:
-        json.dump([], f, ensure_ascii=False, indent=2)
+NOTES_BASE_DIR = DATA_DIR / "word_notes"
+NOTES_BASE_DIR.mkdir(exist_ok=True)
 
 CACHE_FILE = DATA_DIR / "word_cache.json"
 if not CACHE_FILE.exists():
     with open(CACHE_FILE, "w", encoding="utf-8") as f:
         json.dump({}, f, ensure_ascii=False, indent=2)
+
+# 向后兼容旧路径
+CHAT_DIR = CHAT_BASE_DIR
+NOTES_FILE = DATA_DIR / "word_notes.json"
 
 # ====================== 场景映射 ======================
 SCENE_MAP = {

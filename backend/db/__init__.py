@@ -39,6 +39,17 @@ async def init_db() -> None:
     pool = await _get_pool()
     async with pool.acquire() as conn:
         async with conn.cursor() as cur:
+            # ====================== 用户认证表 ======================
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS users (
+                    id VARCHAR(50) PRIMARY KEY,
+                    email VARCHAR(255) NOT NULL UNIQUE,
+                    password_hash VARCHAR(255) NOT NULL,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_email (email)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            # ====================== 听力练习表 ======================
             await cur.execute("""
                 CREATE TABLE IF NOT EXISTS listening_set (
                     id VARCHAR(50) PRIMARY KEY,
@@ -115,6 +126,15 @@ async def init_db() -> None:
                 pass
             try:
                 await cur.execute("ALTER TABLE listening_question ADD COLUMN question_text_zh TEXT AFTER question_text")
+            except Exception:
+                pass
+            # Auth migration: add user_id to exam tables
+            try:
+                await cur.execute("ALTER TABLE listening_exam_record ADD COLUMN user_id VARCHAR(50) DEFAULT NULL AFTER id")
+            except Exception:
+                pass
+            try:
+                await cur.execute("ALTER TABLE listening_exam_answer ADD COLUMN user_id VARCHAR(50) DEFAULT NULL AFTER id")
             except Exception:
                 pass
             await cur.execute("""

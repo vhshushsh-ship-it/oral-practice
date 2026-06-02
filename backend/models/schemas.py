@@ -52,3 +52,27 @@ class ExamSubmitBody(BaseModel):
 
 class SentenceAnalysisBody(BaseModel):
     text: str
+
+
+# ====================== 认证相关 ======================
+
+class UserRegisterRequest(BaseModel):
+    email: str = Field(..., pattern=r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+    password: str = Field(..., min_length=6, max_length=128)
+
+
+class UserLoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class UserResponse(BaseModel):
+    id: str
+    email: str
+    created_at: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
