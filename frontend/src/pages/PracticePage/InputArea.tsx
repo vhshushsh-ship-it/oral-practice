@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface RecordingState {
   isRecording: boolean;
@@ -17,10 +17,20 @@ interface Props {
   recording: RecordingAPI;
   onSendText: (text: string) => void;
   isLoading: boolean;
+  prefillText?: string | null;
+  onPrefillConsumed?: () => void;
 }
 
-export function InputArea({ recording, onSendText, isLoading }: Props) {
+export function InputArea({ recording, onSendText, isLoading, prefillText, onPrefillConsumed }: Props) {
   const [text, setText] = useState('');
+
+  // Accept prefill text from outside (e.g. grammar correction)
+  useEffect(() => {
+    if (prefillText) {
+      setText(prefillText);
+      onPrefillConsumed?.();
+    }
+  }, [prefillText, onPrefillConsumed]);
 
   const handleSend = () => {
     if (text.trim()) {

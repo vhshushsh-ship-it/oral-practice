@@ -186,7 +186,7 @@ def analyze_sentence_deepseek(text: str) -> dict:
 
     try:
         response = client.chat.completions.create(
-            model="deepseek-chat",
+            model="deepseek-v4-pro",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.1,
             max_tokens=800,
@@ -212,6 +212,89 @@ def analyze_sentence_deepseek(text: str) -> dict:
         return result
     except Exception as e:
         print(f"[DEEPSEEK ANALYZE ERROR] {e}")
+        raise
+
+
+def check_grammar_deepseek(text: str) -> dict:
+    """使用 DeepSeek V4 Pro 进行语法检测和打分"""
+    from openai import OpenAI
+    from config import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
+
+    if not DEEPSEEK_API_KEY:
+        raise ValueError("DEEPSEEK_API_KEY not configured")
+
+    # Truncate very long input to avoid overwhelming the model
+    MAX_INPUT_CHARS = 500
+    if len(text) > MAX_INPUT_CHARS:
+        text = text[:MAX_INPUT_CHARS] + "..."
+
+    client = OpenAI(base_url=DEEPSEEK_BASE_URL, api_key=DEEPSEEK_API_KEY)
+
+    # Ultra-compact prompt to minimize token usage
+    prompt = (
+        "Check grammar of this English sentence. Return ONLY valid JSON (no markdown):\n"
+        '{"score":int(0-100),"source_sent":"<original>","error_index":[[start,end],...],"error_info":[{"error_text":"...","error_type":"tense/SVA/prep/article/word_order/spelling","explain":"Chinese explanation"}],"fixed_sent":"<corrected>"}\n'
+        "Rules: casual spoken contractions OK (gonna/wanna). Score: 0 errors=95-100, 1 err=-5~10, 2-3 err=-15~30, 4+ err=-35~60.\n"
+        f"Sentence: {text}"
+    )
+
+    def _try_parse(raw: str) -> dict:
+        """Extract and parse JSON from model response"""
+        raw = raw.strip()
+        # Remove markdown code fences
+        raw = re.sub(r'^```(?:json)?\s*\n?', '', raw)
+        raw = re.sub(r'\n?```\s*$', '', raw)
+        # Try direct parse first
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            pass
+        # Try to find JSON object in response, fix trailing commas
+        m = re.search(r'\{[\s\S]*\}', raw)
+        if m:
+            candidate = m.group(0)
+            candidate = re.sub(r',\s*([}\]])', r'\1', candidate)
+            return json.loads(candidate)
+        raise ValueError(f"Cannot extract JSON from response: {raw[:200]}")
+
+    def _call_api(max_tokens: int) -> dict:
+        response = client.chat.completions.create(
+            model="deepseek-v4-pro",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
+            max_tokens=max_tokens,
+        )
+        raw = response.choices[0].message.content
+        finish = response.choices[0].finish_reason
+        if not raw:
+            raise ValueError(f"DeepSeek empty response: finish_reason={finish}")
+        # If truncated, signal caller to retry with more tokens
+        if finish == "length":
+            raise ValueError(f"finish_reason=length at max_tokens={max_tokens}")
+        return _try_parse(raw)
+
+    def _validate(result: dict) -> dict:
+        for k in ("score", "source_sent", "error_index", "error_info", "fixed_sent"):
+            if k not in result:
+                raise ValueError(f"JSON missing field: {k}")
+        return result
+
+    try:
+        try:
+            raw_result = _call_api(max_tokens=4096)
+            return _validate(raw_result)
+        except (ValueError, json.JSONDecodeError) as first_error:
+            err_str = str(first_error)
+            # Retry with higher tokens on truncation OR JSON parse failure
+            if "finish_reason=length" in err_str or isinstance(first_error, json.JSONDecodeError):
+                print(f"[GRAMMAR CHECK] First attempt failed ({first_error}), retrying with max_tokens=8192...")
+                raw_result = _call_api(max_tokens=8192)
+                return _validate(raw_result)
+            raise
+    except Exception as e:
+        import traceback
+        print(f"[GRAMMAR CHECK ERROR] {type(e).__name__}: {e}")
+        traceback.print_exc()
         raise
 
 

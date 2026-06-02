@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { initScene } from '../../services/api';
+import { initScene, checkGrammar, sendVoiceMessage } from '../../services/api';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { useChat } from '../../hooks/useChat';
 import { useRecording } from '../../hooks/useRecording';
@@ -10,6 +10,8 @@ import { InputArea } from './InputArea';
 import { TranslatePanel } from './TranslatePanel';
 import { WordQueryModule } from './WordQueryModule';
 import { SentenceTranslateModule } from './SentenceTranslateModule';
+import { GrammarScorePanel } from './GrammarScorePanel';
+import type { GrammarCheckResult } from '../../types';
 
 const SCENE_OPTIONS = [
   { value: '0', label: '英语自由交流' },
@@ -38,7 +40,14 @@ export function PracticePage() {
   const [isTranslateVisible, setIsTranslateVisible] = useState(() => {
     return localStorage.getItem('translate_visible_free_talk') === 'true';
   });
-  const [rightModule, setRightModule] = useState<'word' | 'translate'>('word');
+  const [rightModule, setRightModule] = useState<'word' | 'translate' | 'grammar'>('word');
+  const [grammarCheckText, setGrammarCheckText] = useState<string | null>(null);
+  const [prefillText, setPrefillText] = useState<string | null>(null);
+
+  // ---- Grammar state (lifted from SentenceTranslateModule) ----
+  const [grammarResult, setGrammarResult] = useState<GrammarCheckResult | null>(null);
+  const [grammarLoading, setGrammarLoading] = useState(false);
+  const [grammarError, setGrammarError] = useState('');
 
   const speak = useSpeechSynthesis(speechRate);
   const { messages, translations, isLoading, sendText, sendVoice, clearHistory, pendingAutoPlayRef } = useChat(scene);
@@ -52,6 +61,24 @@ export function PracticePage() {
   );
 
   const recording = useRecording(handleVoiceSend);
+
+  // ---- Grammar recording (separate instance for grammar tab) ----
+  const handleGrammarVoiceSend = useCallback(
+    async (blob: Blob) => {
+      try {
+        const res = await sendVoiceMessage(blob, scene, []);
+        if (res.user_text) {
+          setGrammarCheckText(res.user_text);
+        } else {
+          showToast('语音识别未返回文本，请重试', 'warning');
+        }
+      } catch {
+        showToast('语音识别失败，请重试', 'warning');
+      }
+    },
+    [scene, showToast],
+  );
+  const grammarRecording = useRecording(handleGrammarVoiceSend);
 
   const handleSendText = useCallback(
     (text: string) => {
@@ -84,6 +111,56 @@ export function PracticePage() {
     clearHistory();
     showToast('聊天记录已清空，开场白已保留！', 'success');
   }, [clearHistory, showToast]);
+
+  const handleGrammarCheck = useCallback((text: string) => {
+    setGrammarCheckText(text);
+    setRightModule('grammar');
+  }, []);
+
+  const handleGrammarTextSend = useCallback((text: string) => {
+    setGrammarCheckText(text);
+  }, []);
+
+  const handleFillInput = useCallback((text: string) => {
+    setPrefillText(text);
+  }, []);
+
+  const handlePrefillConsumed = useCallback(() => {
+    setPrefillText(null);
+  }, []);
+
+  // ---- Grammar check trigger ----
+  useEffect(() => {
+    if (!grammarCheckText) return;
+
+    const text = grammarCheckText.trim();
+
+    if (!text || !/[a-zA-Z]/.test(text)) {
+      showToast('请输入英文内容后再检测语法', 'warning');
+      setGrammarCheckText(null);
+      return;
+    }
+
+    setGrammarLoading(true);
+    setGrammarError('');
+    setGrammarResult(null);
+
+    let cancelled = false;
+
+    checkGrammar(text)
+      .then((data) => {
+        if (!cancelled) setGrammarResult(data);
+      })
+      .catch(() => {
+        if (!cancelled) setGrammarError('语法检测失败，请稍后重试');
+      })
+      .finally(() => {
+        if (!cancelled) setGrammarLoading(false);
+        setGrammarCheckText(null);
+      });
+
+    return () => { cancelled = true; };
+  }, [grammarCheckText]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Sync translation visibility with persisted per-scene preference
   useEffect(() => {
@@ -137,11 +214,13 @@ export function PracticePage() {
             }}
             onClearHistory={handleClearHistory}
           />
-          <ChatBox messages={messages} onSpeak={speak} />
+          <ChatBox messages={messages} onSpeak={speak} onGrammarCheck={handleGrammarCheck} />
           <InputArea
             recording={recording}
             onSendText={handleSendText}
             isLoading={isLoading}
+            prefillText={prefillText}
+            onPrefillConsumed={handlePrefillConsumed}
           />
         </div>
 
@@ -155,7 +234,7 @@ export function PracticePage() {
           </div>
         )}
 
-        {/* Right: Word Query / Sentence Translate */}
+        {/* Right: Word Query / Sentence Translate / Grammar Score */}
         <div className="panel">
           <div style={{ display: 'flex', gap: 10, marginBottom: 15 }}>
             <button
@@ -170,11 +249,28 @@ export function PracticePage() {
             >
               句子翻译
             </button>
+            <button
+              className={`toggle-btn${rightModule === 'grammar' ? ' active' : ''}`}
+              onClick={() => setRightModule('grammar')}
+            >
+              语法打分
+            </button>
           </div>
           {rightModule === 'word' ? (
             <WordQueryModule onSpeak={speak} onToast={showToast} />
+          ) : rightModule === 'translate' ? (
+            <SentenceTranslateModule onSpeak={speak} />
           ) : (
-            <SentenceTranslateModule onSpeak={speak} onToast={showToast} />
+            <GrammarScorePanel
+              sourceText=""
+              result={grammarResult}
+              loading={grammarLoading}
+              error={grammarError}
+              onFillInput={handleFillInput}
+              onSpeak={speak}
+              recording={grammarRecording}
+              onSendText={handleGrammarTextSend}
+            />
           )}
         </div>
       </div>

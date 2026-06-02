@@ -1,4 +1,4 @@
-import type { ConversationMessage, WordData, SentenceItem, ListeningSetMeta, ListeningSet, ListeningQuestion, ExamResult, ExamHistoryItem, ListeningLevel, SentenceAnalysisResult } from '../types';
+import type { ConversationMessage, WordData, SentenceItem, ListeningSetMeta, ListeningSet, ListeningQuestion, ExamResult, ExamHistoryItem, ListeningLevel, SentenceAnalysisResult, GrammarCheckResult } from '../types';
 
 const API_BASE = 'http://127.0.0.1:8000';
 
@@ -169,6 +169,20 @@ export async function analyzeSentence(text: string): Promise<SentenceAnalysisRes
     body: JSON.stringify({ text }),
   });
   if (!res.ok) throw new Error(`句子分析失败: ${res.status}`);
+  return res.json();
+}
+
+// ====================== 语法检测 ======================
+export async function checkGrammar(text: string): Promise<GrammarCheckResult> {
+  const res = await fetch(`${API_BASE}/api/listening/grammar-check`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify({ text }),
+  });
+  if (!res.ok) throw new Error(`语法检测失败: ${res.status}`);
   return res.json();
 }
 

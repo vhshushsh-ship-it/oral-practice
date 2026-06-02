@@ -54,6 +54,10 @@ class SentenceAnalysisBody(BaseModel):
     text: str
 
 
+class GrammarCheckBody(BaseModel):
+    text: str
+
+
 # ====================== 认证相关 ======================
 
 class UserRegisterRequest(BaseModel):
