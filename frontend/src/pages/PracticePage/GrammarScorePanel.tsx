@@ -32,6 +32,25 @@ function getScoreClass(score: number): string {
   return 'score-poor';
 }
 
+type ErrorBadge = 'spelling' | 'article' | 'word-order' | 'word-choice' | 'grammar';
+
+function getErrorBadge(errorType: string): { type: ErrorBadge; label: string } {
+  const t = errorType.toLowerCase();
+  if (t.includes('拼写') || t.includes('spell')) {
+    return { type: 'spelling', label: '拼写' };
+  }
+  if (t.includes('冠词') || t.includes('article')) {
+    return { type: 'article', label: '冠词' };
+  }
+  if (t.includes('语序') || t.includes('order') || t.includes('词序')) {
+    return { type: 'word-order', label: '语序' };
+  }
+  if (t.includes('用词') || t.includes('措辞') || t.includes('词汇') || t.includes('word choice')) {
+    return { type: 'word-choice', label: '用词' };
+  }
+  return { type: 'grammar', label: '语法' };
+}
+
 /** Render source_sent with error_index ranges highlighted in red */
 function renderHighlightedSentence(text: string, errorIndex: [number, number][]) {
   if (!errorIndex || errorIndex.length === 0) {
@@ -86,19 +105,30 @@ export function GrammarScorePanel({ sourceText, result, loading, error, onFillIn
 
   const renderContent = () => {
     if (loading) {
-      return <div className="grammar-loading">AI语法分析中...</div>;
+      return (
+        <div className="grammar-card grammar-status-card">
+          <div className="grammar-loading">AI 语法分析中...</div>
+          <div className="grammar-loading-sub">正在逐句检测语法错误，请稍候</div>
+        </div>
+      );
     }
 
     if (error) {
-      return <div className="grammar-loading" style={{ color: 'var(--accent)' }}>{error}</div>;
+      return (
+        <div className="grammar-card grammar-status-card">
+          <div className="grammar-loading" style={{ color: 'var(--accent)' }}>{error}</div>
+        </div>
+      );
     }
 
     if (!result) {
       return (
-        <div className="grammar-empty">
-          输入英文句子后点击发送，或点击聊天消息左侧的
-          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-cool)' }}> 🔍 </span>
-          按钮进行语法检测
+        <div className="grammar-card grammar-status-card">
+          <div className="grammar-empty">
+            输入英文句子后点击发送，或点击聊天消息左侧的
+            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-cool)' }}> 🔍 </span>
+            按钮进行语法检测
+          </div>
         </div>
       );
     }
@@ -108,83 +138,91 @@ export function GrammarScorePanel({ sourceText, result, loading, error, onFillIn
 
     return (
       <>
-        {/* Section A: Score Header */}
-        <div className="grammar-score-header">
-          <div className="score-label">日常口语语法得分</div>
-          <div className={`score-value ${scoreClass}`}>
-            {result.score}<span style={{ fontSize: 18 }}>/100</span>
+        {/* ① Score Card */}
+        <div className="grammar-card grammar-score-card">
+          <div className="grammar-score-header">
+            <div className="score-label">日常口语语法得分</div>
+            <div className={`score-value ${scoreClass}`}>
+              {result.score}<span className="score-unit">/100</span>
+            </div>
+            <div className="score-divider" />
+            <div className="score-desc">
+              {result.score >= 80 ? '表达地道，语法掌握优秀' : result.score >= 60 ? '基本正确，仍有提升空间' : '存在较多语法错误，建议加强练习'}
+            </div>
           </div>
         </div>
 
-        {/* Section B: Error Annotation */}
-        <div className="grammar-section">
-          <div className="grammar-section-title">错误标注</div>
-          <div
-            className="grammar-compare-text"
-            style={{
-              padding: '10px 12px',
-              background: 'var(--paper-light)',
-              borderRadius: 3,
-              border: '1px solid var(--line-light)',
-              lineHeight: 1.8,
-              marginBottom: 12,
-            }}
-          >
-            {hasErrors
-              ? renderHighlightedSentence(result.source_sent, result.error_index)
-              : result.source_sent}
-          </div>
-
-          {hasErrors && (
+        {/* ② Error Annotation Card */}
+        {hasErrors && (
+          <div className="grammar-card grammar-error-card">
+            <div className="grammar-section-title">错误标注</div>
+            <div className="grammar-sentence-display">
+              {renderHighlightedSentence(result.source_sent, result.error_index)}
+            </div>
             <ul className="grammar-error-list">
-              {(result.error_info || []).map((info, i) => (
-                <li key={i} className="grammar-error-item">
-                  <span className="grammar-error-text">{info.error_text}</span>
-                  <span className="grammar-error-type">{info.error_type}</span>
-                  <div className="grammar-error-explain">{info.explain}</div>
-                </li>
-              ))}
+              {(result.error_info || []).map((info, i) => {
+                const badge = getErrorBadge(info.error_type);
+                return (
+                  <li key={i} className="grammar-error-item">
+                    <div className="grammar-error-head">
+                      <span className="grammar-error-text">{info.error_text}</span>
+                      <span className={`grammar-error-badge grammar-error-badge--${badge.type}`}>
+                        {badge.label}
+                      </span>
+                      <span className="grammar-error-type-label">{info.error_type}</span>
+                    </div>
+                    <div className="grammar-error-explain">{info.explain}</div>
+                  </li>
+                );
+              })}
             </ul>
-          )}
+          </div>
+        )}
 
-          {!hasErrors && (
-            <div style={{ padding: '10px 12px', color: 'var(--accent-cool)', fontSize: 13 }}>
-              ✓ 未发现语法错误，表达地道！
+        {!hasErrors && (
+          <div className="grammar-card grammar-error-card">
+            <div className="grammar-section-title">错误标注</div>
+            <div className="grammar-no-error">
+              <span className="grammar-no-error-icon">✓</span>
+              未发现语法错误，表达地道！
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Section C: Correction Comparison */}
-        <div className="grammar-section">
+        {/* ③ Correction Comparison Card */}
+        <div className="grammar-card grammar-compare-card">
           <div className="grammar-section-title">修正对比</div>
-          <div className="grammar-compare-row">
-            <div className="grammar-compare-col">
-              <div className="grammar-compare-label">原文</div>
-              <div className="grammar-compare-text">
-                {hasErrors
-                  ? renderHighlightedSentence(result.source_sent, result.error_index)
-                  : result.source_sent}
-              </div>
+          <div className="grammar-compare-original">
+            <div className="grammar-compare-label">原文</div>
+            <div className="grammar-compare-text">
+              {hasErrors
+                ? renderHighlightedSentence(result.source_sent, result.error_index)
+                : result.source_sent}
             </div>
-            <div className="grammar-compare-col">
-              <div className="grammar-compare-label">AI 优化</div>
-              <div className="grammar-compare-text fixed">{result.fixed_sent}</div>
+          </div>
+          <div className="grammar-compare-divider">
+            <span className="grammar-compare-arrow">↓ AI 优化 ↓</span>
+          </div>
+          <div className="grammar-compare-fixed">
+            <div className="grammar-compare-label" style={{ color: 'var(--accent-cool)' }}>AI 优化</div>
+            <div className="grammar-compare-text fixed">{result.fixed_sent}</div>
+            <div className="grammar-compare-actions">
               <span
                 onClick={(e) => { e.stopPropagation(); onSpeak(result.fixed_sent); }}
-                style={{ cursor: 'pointer', display: 'inline-flex', marginTop: 6, color: 'var(--accent-cool)' }}
+                className="speak-btn-text"
                 title="朗读修正句"
               >
                 <SpeakerIcon size={13} />
+                朗读
               </span>
+              <button
+                className="grammar-fill-btn"
+                onClick={() => onFillInput(result.fixed_sent)}
+              >
+                填入输入框
+              </button>
             </div>
           </div>
-
-          <button
-            className="grammar-fill-btn"
-            onClick={() => onFillInput(result.fixed_sent)}
-          >
-            填入输入框
-          </button>
         </div>
       </>
     );
@@ -192,107 +230,84 @@ export function GrammarScorePanel({ sourceText, result, loading, error, onFillIn
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
-      {/* ---- Custom input area (matching InputArea style) ---- */}
-      <div className="input-container" style={{ flexShrink: 0, marginBottom: 12 }}>
-        {/* Voice input */}
-        <div className="voice-input">
-          <span>语音输入</span>
+      {/* ---- Custom input area (wrapped in card, matching InputArea style) ---- */}
+      <div className="grammar-input-card">
+        <div className="input-container">
+          {/* Voice input */}
+          <div className="voice-input">
+            <span>语音输入</span>
 
-          {recording.state.isRecording && (
-            <>
-              <div className="waveform">
-                <span className="wave-bar" />
-                <span className="wave-bar" />
-                <span className="wave-bar" />
-                <span className="wave-bar" />
-                <span className="wave-bar" />
-              </div>
-              <span style={{ color: 'var(--accent)', fontWeight: 'bold', margin: '0 8px', fontFamily: 'var(--font-mono)' }}>
-                {recording.formatTime(recording.state.seconds)}
-              </span>
-            </>
-          )}
+            {recording.state.isRecording && (
+              <>
+                <div className="waveform">
+                  <span className="wave-bar" />
+                  <span className="wave-bar" />
+                  <span className="wave-bar" />
+                  <span className="wave-bar" />
+                  <span className="wave-bar" />
+                </div>
+                <span className="grammar-recording-time">
+                  {recording.formatTime(recording.state.seconds)}
+                </span>
+              </>
+            )}
 
-          {!recording.state.isRecording ? (
+            {!recording.state.isRecording ? (
+              <button
+                onClick={recording.start}
+                className="grammar-record-btn-start"
+              >
+                开始录音
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={recording.stop}
+                  className="grammar-record-btn-start"
+                >
+                  结束并发送
+                </button>
+                <button
+                  onClick={recording.cancel}
+                  className="grammar-record-btn-cancel"
+                >
+                  取消录音
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Text input */}
+          <div className="text-input">
+            <span className="grammar-text-label">键盘输入</span>
+            <input
+              type="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={loading ? '检测中...' : '输入英文句子...'}
+              disabled={loading}
+              style={{ flex: 1 }}
+            />
             <button
-              onClick={recording.start}
+              onClick={handleSend}
+              disabled={loading || !text.trim()}
+              className="grammar-send-btn"
               style={{
-                padding: '8px 18px',
-                background: 'var(--accent)',
-                color: '#fff',
-                fontSize: 13,
-                fontFamily: 'var(--font-mono)',
-                letterSpacing: '0.04em',
+                opacity: loading || !text.trim() ? 0.6 : 1,
               }}
             >
-              开始录音
+              发送
             </button>
-          ) : (
-            <>
-              <button
-                onClick={recording.stop}
-                style={{
-                  padding: '8px 18px',
-                  background: 'var(--accent)',
-                  color: '#fff',
-                  fontSize: 13,
-                  fontFamily: 'var(--font-mono)',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                结束并发送
-              </button>
-              <button
-                onClick={recording.cancel}
-                style={{
-                  padding: '8px 14px',
-                  background: 'var(--ink-muted)',
-                  color: '#fff',
-                  fontSize: 13,
-                  fontFamily: 'var(--font-mono)',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                取消录音
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Text input */}
-        <div className="text-input">
-          <span style={{ display: 'flex', alignItems: 'center', padding: '0 8px', fontSize: 13, color: 'var(--ink-light)', whiteSpace: 'nowrap' }}>
-            键盘输入
-          </span>
-          <input
-            type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={loading ? '检测中...' : '输入英文句子...'}
-            disabled={loading}
-            style={{ flex: 1 }}
-          />
-          <button
-            onClick={handleSend}
-            disabled={loading || !text.trim()}
-            style={{
-              padding: '10px 20px',
-              background: 'var(--accent-cool)',
-              color: '#fff',
-              fontSize: 13,
-              fontFamily: 'var(--font-mono)',
-              letterSpacing: '0.04em',
-              opacity: loading || !text.trim() ? 0.6 : 1,
-            }}
-          >
-            发送
-          </button>
+          </div>
         </div>
       </div>
 
+      {/* ---- Divider ---- */}
+      <div className="grammar-section-divider" />
+
       {/* ---- Result area ---- */}
-      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+      <div className="grammar-result-area">
         {renderContent()}
       </div>
     </div>

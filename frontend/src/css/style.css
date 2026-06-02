@@ -876,49 +876,192 @@
 }
 
 /* ========== 语法打分面板 ========== */
+
+/* 输入卡片 */
+.grammar-input-card {
+    background: var(--paper-light);
+    border: 1px solid var(--line-light);
+    border-radius: 3px;
+    padding: 14px;
+    flex-shrink: 0;
+}
+
+/* 录音计时 */
+.grammar-recording-time {
+    color: var(--accent);
+    font-weight: bold;
+    margin: 0 8px;
+    font-family: var(--font-mono);
+}
+
+/* 录音按钮 */
+.grammar-record-btn-start {
+    padding: 8px 18px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition);
+}
+.grammar-record-btn-start:hover { opacity: 0.88; }
+.grammar-record-btn-cancel {
+    padding: 8px 14px;
+    background: var(--ink-muted);
+    color: #fff;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition);
+}
+.grammar-record-btn-cancel:hover { opacity: 0.88; }
+
+/* 键盘输入标签 */
+.grammar-text-label {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 13px;
+    color: var(--ink-light);
+    white-space: nowrap;
+}
+
+/* 发送按钮 */
+.grammar-send-btn {
+    padding: 10px 20px;
+    background: var(--accent-cool);
+    color: #fff;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: opacity var(--transition);
+}
+.grammar-send-btn:hover:not(:disabled) { opacity: 0.88; }
+
+/* 输入与结果之间的分隔线 */
+.grammar-section-divider {
+    flex-shrink: 0;
+    margin: 14px 4px 16px;
+    border-top: 1px dashed var(--line);
+    opacity: 0.7;
+}
+
+/* 结果滚动区域 */
+.grammar-result-area {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.grammar-result-area::-webkit-scrollbar {
+    width: 6px;
+}
+.grammar-result-area::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 3px;
+}
+.grammar-result-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ===== 三块独立卡片基类 ===== */
+.grammar-card {
+    background: var(--surface);
+    border: 1px solid var(--paper-edge);
+    border-radius: 3px;
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* 状态卡片（loading / error / empty） */
+.grammar-status-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+/* ===== ① 分数卡片 ===== */
 .grammar-score-header {
     text-align: center;
-    padding: 20px 16px;
-    margin-bottom: 16px;
-    background: var(--paper-light);
-    border-radius: 3px;
-    border: 1px solid var(--line-light);
 }
 .grammar-score-header .score-label {
     font-family: var(--font-serif);
-    font-size: 15px;
+    font-size: 14px;
     color: var(--ink-light);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 .grammar-score-header .score-value {
     font-family: var(--font-mono);
-    font-size: 32px;
+    font-size: 48px;
     font-weight: 700;
     letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 12px;
+}
+.grammar-score-header .score-unit {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--ink-muted);
 }
 .score-excellent { color: var(--accent-cool); }
 .score-good { color: var(--accent-warm); }
 .score-poor { color: var(--accent); }
-
-.grammar-section {
-    margin-bottom: 18px;
+.grammar-score-header .score-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--line);
+    margin: 0 auto 10px;
 }
+.grammar-score-header .score-desc {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+}
+
+/* ===== ② 错误标注卡片 ===== */
 .grammar-section-title {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 400;
     color: var(--ink);
-    margin-bottom: 8px;
-    padding-bottom: 6px;
+    margin-bottom: 10px;
+    padding-bottom: 7px;
     border-bottom: 1px dashed var(--line);
     letter-spacing: 0.04em;
+}
+
+/* 标注句子展示 */
+.grammar-sentence-display {
+    padding: 12px 14px;
+    background: var(--paper-light);
+    border-radius: 3px;
+    border: 1px solid var(--line-light);
+    line-height: 1.9;
+    margin-bottom: 14px;
+    font-size: 14px;
+    word-break: break-word;
 }
 
 /* 错误高亮 */
 .grammar-error-highlight {
     color: var(--accent);
-    background: rgba(139,58,58,0.10);
-    padding: 1px 2px;
+    background: rgba(139, 58, 58, 0.10);
+    padding: 1px 3px;
     border-radius: 2px;
     border-bottom: 2px solid var(--accent);
     font-weight: 600;
@@ -928,75 +1071,156 @@
 .grammar-error-list {
     list-style: none;
     padding: 0;
-    margin: 12px 0 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 .grammar-error-item {
-    padding: 10px 12px;
+    padding: 12px 14px;
     background: var(--paper-light);
     border-radius: 3px;
     border-left: 3px solid var(--accent);
     font-size: 13px;
+    line-height: 1.7;
+}
+.grammar-error-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
 }
 .grammar-error-text {
     font-weight: 600;
     color: var(--accent);
     font-family: var(--font-mono);
 }
-.grammar-error-type {
-    display: inline-block;
-    margin-left: 8px;
-    padding: 2px 8px;
-    font-size: 11px;
-    background: var(--line-light);
-    color: var(--ink-light);
-    border-radius: 2px;
-    font-family: var(--font-mono);
-}
-.grammar-error-explain {
-    margin-top: 6px;
-    color: var(--ink-light);
-    line-height: 1.6;
+.grammar-error-type-label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    font-family: var(--font-serif);
 }
 
-/* 修正对比 */
-.grammar-compare-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 14px;
+/* 错误类型小标识 */
+.grammar-error-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
 }
-.grammar-compare-col {
-    flex: 1;
-    padding: 12px;
-    background: var(--paper-light);
+.grammar-error-badge--spelling {
+    background: rgba(160, 82, 45, 0.12);
+    color: var(--accent-warm);
+}
+.grammar-error-badge--article {
+    background: rgba(74, 111, 165, 0.12);
+    color: var(--accent-cool);
+}
+.grammar-error-badge--word-order {
+    background: rgba(139, 58, 58, 0.10);
+    color: var(--accent);
+}
+.grammar-error-badge--word-choice {
+    background: rgba(90, 125, 90, 0.10);
+    color: #4a6d4a;
+}
+.grammar-error-badge--grammar {
+    background: rgba(155, 141, 126, 0.12);
+    color: var(--ink-muted);
+}
+
+.grammar-error-explain {
+    color: var(--ink-light);
+    line-height: 1.7;
+}
+
+/* 无错误提示 */
+.grammar-no-error {
+    padding: 16px 14px;
+    color: var(--accent-cool);
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.6;
+}
+.grammar-no-error-icon {
+    display: inline-block;
+    margin-right: 6px;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* ===== ③ 修正对比卡片 ===== */
+.grammar-compare-original {
+    padding: 14px;
+    background: #faf5f0;
     border-radius: 3px;
     border: 1px solid var(--line-light);
-    min-height: 60px;
+}
+.grammar-compare-fixed {
+    padding: 14px;
+    background: #f4f7fa;
+    border-radius: 3px;
+    border: 1px solid var(--line-light);
 }
 .grammar-compare-label {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--ink-muted);
-    margin-bottom: 6px;
-    letter-spacing: 0.04em;
+    margin-bottom: 7px;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 .grammar-compare-text {
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.8;
     color: var(--ink);
+    word-break: break-word;
 }
 .grammar-compare-text.fixed {
     color: var(--accent-cool);
     font-weight: 500;
 }
 
+/* 原文与优化之间的分隔 */
+.grammar-compare-divider {
+    text-align: center;
+    padding: 8px 0;
+    position: relative;
+}
+.grammar-compare-divider::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 50%;
+    border-top: 1px dashed var(--line);
+}
+.grammar-compare-arrow {
+    position: relative;
+    display: inline-block;
+    padding: 0 12px;
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.03em;
+}
+
+/* 修正卡片底部操作行 */
+.grammar-compare-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 12px;
+}
+
 /* 填入输入框按钮 */
 .grammar-fill-btn {
-    display: block;
-    margin-left: auto;
     padding: 8px 18px;
     background: var(--accent-cool);
     color: #fff;
@@ -1014,14 +1238,21 @@
 .grammar-loading {
     text-align: center;
     color: var(--ink-muted);
-    padding: 40px 20px;
     font-family: var(--font-mono);
     font-size: 14px;
+}
+.grammar-loading-sub {
+    text-align: center;
+    color: var(--ink-muted);
+    font-family: var(--font-serif);
+    font-size: 12px;
+    margin-top: 8px;
+    opacity: 0.7;
 }
 .grammar-empty {
     text-align: center;
     color: var(--ink-muted);
-    padding: 40px 20px;
     font-family: var(--font-serif);
     font-size: 14px;
+    line-height: 1.7;
 }

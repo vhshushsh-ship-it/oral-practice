@@ -414,14 +414,61 @@ async def analyze(body: SentenceAnalysisBody):
 
 @router.post("/grammar-check")
 async def grammar_check(body: GrammarCheckBody):
-    """AI grammar checking and scoring — calls DeepSeek V4 Pro"""
+    """AI grammar checking and scoring — cache-first, then DeepSeek Chat"""
     import traceback
+
+    text = body.text.strip()
+    if not text:
+        raise HTTPException(status_code=400, detail="句子不能为空")
+
+    # ---- Cache lookup ----
+    db = await get_db()
+    try:
+        async with db.cursor(aiomysql.DictCursor) as cur:
+            await cur.execute(
+                "SELECT score, source_sent, error_index, error_info, fixed_sent FROM listening_grammar_cache WHERE sentence_text = %s",
+                (text,),
+            )
+            row = await cur.fetchone()
+            if row:
+                return {
+                    "score": row["score"],
+                    "source_sent": row["source_sent"],
+                    "error_index": json.loads(row["error_index"]) if isinstance(row["error_index"], str) else row["error_index"],
+                    "error_info": json.loads(row["error_info"]) if isinstance(row["error_info"], str) else row["error_info"],
+                    "fixed_sent": row["fixed_sent"],
+                }
+    finally:
+        await release_db(db)
+
+    # ---- Cache miss — call AI ----
     try:
         from services.ai_service import check_grammar_deepseek
-        result = check_grammar_deepseek(body.text)
+        result = check_grammar_deepseek(text)
     except Exception as e:
         print(f"[GRAMMAR CHECK ERROR] {type(e).__name__}: {e}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"语法检测失败: {type(e).__name__}: {e}")
+
+    # ---- Save to cache ----
+    db2 = await get_db()
+    try:
+        async with db2.cursor() as cur:
+            await cur.execute(
+                "INSERT IGNORE INTO listening_grammar_cache (sentence_text, score, source_sent, error_index, error_info, fixed_sent) VALUES (%s, %s, %s, %s, %s, %s)",
+                (
+                    text,
+                    result["score"],
+                    result["source_sent"],
+                    json.dumps(result["error_index"], ensure_ascii=False),
+                    json.dumps(result["error_info"], ensure_ascii=False),
+                    result["fixed_sent"],
+                ),
+            )
+            await db2.commit()
+    except Exception as e:
+        print(f"[GRAMMAR CHECK] Failed to cache result: {e}")
+    finally:
+        await release_db(db2)
 
     return result
