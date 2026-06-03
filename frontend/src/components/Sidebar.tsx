@@ -3,6 +3,7 @@ import { useAuth } from './AuthProvider';
 
 const NAV_ITEMS = [
   { page: 'practice', label: '* SceneTalk' },
+  { page: 'dashboard', label: '— 数据看板' },
   { page: 'notes', label: '— 单词笔记' },
   { page: 'dialogues', label: '— 情景对话' },
   { page: 'linking-rules', label: '— 连读规则' },

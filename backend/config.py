@@ -23,6 +23,15 @@ JWT_SECRET = os.getenv("JWT_SECRET", secrets.token_hex(32))
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 JWT_EXPIRE_HOURS = int(os.getenv("JWT_EXPIRE_HOURS", "168"))
 
+# ====================== 邮件验证码配置 ======================
+SMTP_HOST = os.getenv("SMTP_HOST", "smtp.qq.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
+SMTP_USER = os.getenv("SMTP_USER", "")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+MAIL_FROM = os.getenv("MAIL_FROM", SMTP_USER)  # 发件人地址，默认同 SMTP_USER
+VERIFICATION_CODE_TTL = int(os.getenv("VERIFICATION_CODE_TTL", "300"))  # 验证码有效期，默认5分钟
+VERIFICATION_CODE_COOLDOWN = int(os.getenv("VERIFICATION_CODE_COOLDOWN", "60"))  # 发送冷却期，默认60秒
+
 # ====================== ChromaDB 持久化 ======================
 chroma_db_path = DATA_DIR / "chroma_db"
 chroma_client = chromadb.PersistentClient(path=str(chroma_db_path))

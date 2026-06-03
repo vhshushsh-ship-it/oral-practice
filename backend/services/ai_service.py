@@ -263,23 +263,33 @@ def check_grammar_deepseek(text: str) -> dict:
                 raise ValueError(f"JSON missing field: {k}")
         return result
 
-    try:
-        response = client.chat.completions.create(
-            model="deepseek-v4-flash",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.1,
-            max_tokens=1024,
-        )
-        raw = response.choices[0].message.content
-        if not raw:
-            raise ValueError(f"DeepSeek empty response: finish_reason={response.choices[0].finish_reason}")
-        result = _try_parse(raw)
-        return _validate(result)
-    except Exception as e:
-        import traceback
-        print(f"[GRAMMAR CHECK ERROR] {type(e).__name__}: {e}")
-        traceback.print_exc()
-        raise
+    import time as _time
+    last_exc = None
+    for attempt in range(3):
+        try:
+            response = client.chat.completions.create(
+                model="deepseek-v4-flash",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.1,
+                max_tokens=1024,
+                timeout=30,
+            )
+            raw = response.choices[0].message.content
+            if not raw:
+                raise ValueError(f"DeepSeek empty response: finish_reason={response.choices[0].finish_reason}")
+            result = _try_parse(raw)
+            return _validate(result)
+        except Exception as e:
+            last_exc = e
+            if attempt < 2:
+                wait = 2 ** attempt  # 1s, 2s
+                print(f"[GRAMMAR CHECK] Attempt {attempt + 1} failed ({type(e).__name__}: {e}), retrying in {wait}s...")
+                _time.sleep(wait)
+            else:
+                import traceback
+                print(f"[GRAMMAR CHECK ERROR] All 3 attempts failed. Last: {type(e).__name__}: {e}")
+                traceback.print_exc()
+    raise last_exc
 
 
 def query_word_ai(word: str) -> dict:

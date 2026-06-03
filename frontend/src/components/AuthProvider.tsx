@@ -1,6 +1,12 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import type { AuthUser } from '../services/api';
-import { login as apiLogin, register as apiRegister, fetchCurrentUser } from '../services/api';
+import {
+  login as apiLogin,
+  register as apiRegister,
+  sendVerificationCode,
+  verifyCodeAndRegister,
+  fetchCurrentUser,
+} from '../services/api';
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -8,6 +14,8 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
+  sendCode: (email: string) => Promise<void>;
+  registerWithCode: (email: string, code: string, password: string, confirmPassword: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -37,13 +45,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(res.user);
   }, []);
 
+  const sendCode = useCallback(async (email: string) => {
+    await sendVerificationCode(email);
+  }, []);
+
+  const registerWithCode = useCallback(async (email: string, code: string, password: string, confirmPassword: string) => {
+    const res = await verifyCodeAndRegister(email, code, password, confirmPassword);
+    localStorage.setItem('access_token', res.access_token);
+    setUser(res.user);
+  }, []);
+
   const logout = useCallback(() => {
     localStorage.removeItem('access_token');
     setUser(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, isAuthenticated: !!user, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        isAuthenticated: !!user,
+        login,
+        register,
+        sendCode,
+        registerWithCode,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
