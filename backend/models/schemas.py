@@ -80,3 +80,19 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+
+# ====================== 邮箱验证码认证 ======================
+
+class SendCodeRequest(BaseModel):
+    """发送验证码请求 — 仅用于注册"""
+    email: str = Field(..., pattern=r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+    purpose: str = Field(default="register", pattern=r'^register$')  # 仅允许 register
+
+
+class VerifyCodeRequest(BaseModel):
+    """验证码校验 + 注册请求 — 含密码"""
+    email: str = Field(..., pattern=r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+    code: str = Field(..., pattern=r'^\d{6}$')
+    password: str = Field(..., min_length=6, max_length=128)
+    confirm_password: str = Field(..., min_length=6, max_length=128)

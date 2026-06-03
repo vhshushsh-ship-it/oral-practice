@@ -44,9 +44,35 @@ async def init_db() -> None:
                 CREATE TABLE IF NOT EXISTS users (
                     id VARCHAR(50) PRIMARY KEY,
                     email VARCHAR(255) NOT NULL UNIQUE,
-                    password_hash VARCHAR(255) NOT NULL,
+                    email_verified TINYINT(1) NOT NULL DEFAULT 0,
+                    password_hash VARCHAR(255) NULL,
                     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                     INDEX idx_email (email)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            # Migration: add email_verified column (for tables created before the schema update)
+            try:
+                await cur.execute("ALTER TABLE users ADD COLUMN email_verified TINYINT(1) NOT NULL DEFAULT 0 AFTER email")
+            except Exception:
+                pass  # Column already exists — fine
+            # Migration: make password_hash nullable (for tables created before the schema update)
+            try:
+                await cur.execute("ALTER TABLE users MODIFY password_hash VARCHAR(255) NULL")
+            except Exception:
+                pass  # Already nullable — fine
+            # ====================== 验证码表 ======================
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS verification_codes (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    email VARCHAR(255) NOT NULL,
+                    code VARCHAR(6) NOT NULL,
+                    purpose ENUM('register', 'login') NOT NULL,
+                    expires_at DATETIME NOT NULL,
+                    used TINYINT(1) NOT NULL DEFAULT 0,
+                    attempts INT NOT NULL DEFAULT 0,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_email_purpose (email, purpose),
+                    INDEX idx_expires (expires_at)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             """)
             # ====================== 听力练习表 ======================

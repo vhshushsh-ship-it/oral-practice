@@ -8,6 +8,7 @@ from routers.notes_router import router as notes_router
 from routers.tts_router import router as tts_router
 from routers.listening_router import router as listening_router
 from routers.auth_router import router as auth_router
+from routers.stats_router import router as stats_router
 from db import init_db
 from db.seed import seed_listening_data
 
@@ -44,6 +45,7 @@ app.include_router(notes_router)
 app.include_router(tts_router)
 app.include_router(listening_router)
 app.include_router(auth_router)
+app.include_router(stats_router)
 
 if __name__ == "__main__":
     import uvicorn

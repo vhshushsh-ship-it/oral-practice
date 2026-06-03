@@ -11,6 +11,7 @@ import { DialoguesPage } from './pages/DialoguesPage/DialoguesPage';
 import { SentencesPage } from './pages/SentencesPage/SentencesPage';
 import { LinkingRulesPage } from './pages/LinkingRulesPage/LinkingRulesPage';
 import { ListeningPage } from './pages/ListeningPage/ListeningPage';
+import DashboardPage from './pages/DashboardPage/DashboardPage';
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
                       <Route path="/sentences" element={<SentencesPage />} />
                       <Route path="/linking-rules" element={<LinkingRulesPage />} />
                       <Route path="/listening" element={<ListeningPage />} />
+                      <Route path="/dashboard" element={<DashboardPage />} />
                       <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                   </main>

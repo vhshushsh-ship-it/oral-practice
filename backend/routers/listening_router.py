@@ -441,10 +441,18 @@ async def grammar_check(body: GrammarCheckBody):
     finally:
         await release_db(db)
 
-    # ---- Cache miss — call AI ----
+    # ---- Cache miss — call AI (with overall timeout) ----
     try:
+        import asyncio
         from services.ai_service import check_grammar_deepseek
-        result = check_grammar_deepseek(text)
+        loop = asyncio.get_running_loop()
+        result = await asyncio.wait_for(
+            loop.run_in_executor(None, check_grammar_deepseek, text),
+            timeout=100.0,  # generous timeout to accommodate 3 retries × 30s
+        )
+    except asyncio.TimeoutError:
+        print(f"[GRAMMAR CHECK ERROR] Overall timeout after 100s")
+        raise HTTPException(status_code=500, detail="语法检测超时，请稍后重试")
     except Exception as e:
         print(f"[GRAMMAR CHECK ERROR] {type(e).__name__}: {e}")
         traceback.print_exc()

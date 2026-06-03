@@ -151,8 +151,18 @@ export function PracticePage() {
       .then((data) => {
         if (!cancelled) setGrammarResult(data);
       })
-      .catch(() => {
-        if (!cancelled) setGrammarError('语法检测失败，请稍后重试');
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          const msg = err instanceof Error ? err.message : '语法检测失败，请稍后重试';
+          // Classify error type for user-friendly messages
+          if (msg.includes('AbortError') || msg.includes('timeout') || msg.includes('abort')) {
+            setGrammarError('语法检测超时，请稍后重试');
+          } else if (msg.includes('Failed to fetch') || msg.includes('NetworkError')) {
+            setGrammarError('网络连接失败，请检查服务是否运行');
+          } else {
+            setGrammarError(msg || '语法检测失败，请稍后重试');
+          }
+        }
       })
       .finally(() => {
         if (!cancelled) setGrammarLoading(false);

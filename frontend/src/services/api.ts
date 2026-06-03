@@ -174,16 +174,31 @@ export async function analyzeSentence(text: string): Promise<SentenceAnalysisRes
 
 // ====================== 语法检测 ======================
 export async function checkGrammar(text: string): Promise<GrammarCheckResult> {
-  const res = await fetch(`${API_BASE}/api/listening/grammar-check`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...getAuthHeaders(),
-    },
-    body: JSON.stringify({ text }),
-  });
-  if (!res.ok) throw new Error(`语法检测失败: ${res.status}`);
-  return res.json();
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000); // 45s timeout
+  try {
+    const res = await fetch(`${API_BASE}/api/listening/grammar-check`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeaders(),
+      },
+      body: JSON.stringify({ text }),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      // Try to extract backend error detail
+      let detail = '';
+      try {
+        const errBody = await res.json();
+        detail = errBody.detail || '';
+      } catch { /* ignore parse errors */ }
+      throw new Error(detail || `语法检测失败: HTTP ${res.status}`);
+    }
+    return res.json();
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 export async function deleteExamRecord(examId: string): Promise<void> {
@@ -238,6 +253,174 @@ export async function login(email: string, password: string): Promise<AuthRespon
     const err = await res.json();
     throw new Error(err.detail || 'Login failed');
   }
+  return res.json();
+}
+
+// ====================== 邮箱验证码认证（仅用于注册）======================
+export async function sendVerificationCode(email: string): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/api/auth/send-code`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, purpose: 'register' }),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || '发送验证码失败');
+  }
+  return res.json();
+}
+
+export async function verifyCodeAndRegister(
+  email: string,
+  code: string,
+  password: string,
+  confirmPassword: string,
+): Promise<AuthResponse> {
+  const res = await fetch(`${API_BASE}/api/auth/verify-code`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, code, password, confirm_password: confirmPassword }),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || '验证失败');
+  }
+  return res.json();
+}
+
+// ====================== 个人看板统计 ======================
+export interface OverviewStats {
+  totalMessages: number;
+  practiceMinutes: number;
+  sceneCount: number;
+  wordCount: number;
+  examCount: number;
+  avgAccuracy: number;
+  todayMessages: number;
+}
+
+export interface SceneStat {
+  scene: string;
+  label: string;
+  messageCount: number;
+}
+
+export interface DailyTrend {
+  date: string;
+  count: number;
+}
+
+export interface SpeakingStats {
+  sceneStats: SceneStat[];
+  dailyTrend: DailyTrend[];
+  totalScenes: number;
+  practicedScenes: number;
+}
+
+export interface LevelSummary {
+  count: number;
+  avgAccuracy: number;
+  bestAccuracy: number;
+}
+
+export interface WeakSection {
+  type: string;
+  label: string;
+  total: number;
+  correct: number;
+  accuracy: number;
+}
+
+export interface ListeningRecord {
+  id: string;
+  setId: string;
+  setName: string;
+  level: string;
+  totalQuestions: number;
+  correctCount: number;
+  accuracy: number;
+  createdAt: string;
+}
+
+export interface ListeningStats {
+  records: ListeningRecord[];
+  cet4: LevelSummary;
+  cet6: LevelSummary;
+  weakSections: WeakSection[];
+  totalExams: number;
+  overallAvgAccuracy: number;
+}
+
+export interface WeeklyTrend {
+  week: string;
+  count: number;
+}
+
+export interface RecentWord {
+  word: string;
+  phonetic: string;
+  meaning: string;
+  createTime: number;
+}
+
+export interface VocabularyStats {
+  totalWords: number;
+  weeklyTrend: WeeklyTrend[];
+  recentWords: RecentWord[];
+}
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  unlocked: boolean;
+}
+
+export interface StreakStats {
+  streak: number;
+  activeDates: string[];
+  achievements: Achievement[];
+  totalActiveDays: number;
+}
+
+export async function fetchOverviewStats(): Promise<OverviewStats> {
+  const res = await fetch(`${API_BASE}/api/stats/overview`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取概览失败: ${res.status}`);
+  return res.json();
+}
+
+export async function fetchSpeakingStats(): Promise<SpeakingStats> {
+  const res = await fetch(`${API_BASE}/api/stats/speaking`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取口语统计失败: ${res.status}`);
+  return res.json();
+}
+
+export async function fetchListeningStats(): Promise<ListeningStats> {
+  const res = await fetch(`${API_BASE}/api/stats/listening`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取听力统计失败: ${res.status}`);
+  return res.json();
+}
+
+export async function fetchVocabularyStats(): Promise<VocabularyStats> {
+  const res = await fetch(`${API_BASE}/api/stats/vocabulary`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取词汇统计失败: ${res.status}`);
+  return res.json();
+}
+
+export async function fetchStreakStats(): Promise<StreakStats> {
+  const res = await fetch(`${API_BASE}/api/stats/streak`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取打卡统计失败: ${res.status}`);
   return res.json();
 }
 
