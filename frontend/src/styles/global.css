@@ -985,6 +985,12 @@ select {
   border-radius: 2px;
 }
 
+.dialogue-turn.now-playing {
+  border-left: 3px solid var(--accent-cool);
+  background: rgba(74, 111, 165, 0.06);
+  box-shadow: 0 0 6px rgba(74, 111, 165, 0.15);
+}
+
 .dialogue-speaker {
   font-weight: 600;
   color: var(--accent);
@@ -2786,6 +2792,16 @@ select {
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* 小屏幕自适应：占满可用宽度 */
+@media (max-width: 768px) {
+  .sentence-analysis {
+    max-width: 100%;
+  }
 }
 
 .sa-header {

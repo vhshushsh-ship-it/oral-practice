@@ -3,6 +3,7 @@ import type { DialogueScene } from '../../types';
 import { SpeakerButton } from '../../components/SpeakerButton';
 import { CollectButton } from '../../components/CollectButton';
 import { StudyIcon } from '../../icons';
+import { GlobalAudioBar } from '../../components/GlobalAudioBar';
 
 interface Props {
   scene: DialogueScene | null;
@@ -11,9 +12,35 @@ interface Props {
   onSpeak: (text: string) => void;
   onCollect: (text: string) => void;
   onAnalyze: (en: string, zh: string) => void;
+  // 全局播放器
+  playState: 'idle' | 'playing' | 'paused';
+  currentIndex: number;
+  totalCount: number;
+  onPlayAll: () => void;
+  onPause: () => void;
+  onResume: () => void;
+  onStop: () => void;
+  onNext: () => void;
+  onPrev: () => void;
 }
 
-export function DialogueContent({ scene, savedScrollTop, onScrollSave, onSpeak, onCollect, onAnalyze }: Props) {
+export function DialogueContent({
+  scene,
+  savedScrollTop,
+  onScrollSave,
+  onSpeak,
+  onCollect,
+  onAnalyze,
+  playState,
+  currentIndex,
+  totalCount,
+  onPlayAll,
+  onPause,
+  onResume,
+  onStop,
+  onNext,
+  onPrev,
+}: Props) {
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Restore scroll position when scene changes (before paint to avoid flash)
@@ -46,10 +73,25 @@ export function DialogueContent({ scene, savedScrollTop, onScrollSave, onSpeak, 
 
   return (
     <div className="dialogue-display">
+      <GlobalAudioBar
+        playState={playState}
+        currentIndex={currentIndex}
+        totalCount={totalCount}
+        hasContent={scene.turns.length > 0}
+        onPlayAll={onPlayAll}
+        onPause={onPause}
+        onResume={onResume}
+        onStop={onStop}
+        onNext={onNext}
+        onPrev={onPrev}
+      />
       <div className="dialogue-title">{scene.name}</div>
       <div className="dialogue-content" ref={contentRef} onScroll={handleScroll}>
         {scene.turns.map((turn, i) => (
-          <div className="dialogue-turn" key={i}>
+          <div
+            className={`dialogue-turn${i === currentIndex ? ' now-playing' : ''}`}
+            key={i}
+          >
             <div className="dialogue-speaker">
               {turn.speaker}
               <button

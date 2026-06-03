@@ -35,13 +35,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await apiLogin(email, password);
-    localStorage.setItem('access_token', res.access_token);
+    sessionStorage.setItem('access_token', res.access_token);
     setUser(res.user);
   }, []);
 
   const register = useCallback(async (email: string, password: string) => {
     const res = await apiRegister(email, password);
-    localStorage.setItem('access_token', res.access_token);
+    sessionStorage.setItem('access_token', res.access_token);
     setUser(res.user);
   }, []);
 
@@ -51,12 +51,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const registerWithCode = useCallback(async (email: string, code: string, password: string, confirmPassword: string) => {
     const res = await verifyCodeAndRegister(email, code, password, confirmPassword);
-    localStorage.setItem('access_token', res.access_token);
+    sessionStorage.setItem('access_token', res.access_token);
     setUser(res.user);
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('access_token');
+    sessionStorage.removeItem('access_token');
     setUser(null);
   }, []);
 

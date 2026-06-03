@@ -100,7 +100,7 @@ Here is the dialogue:
     for attempt in range(3):
         try:
             response = client.chat.completions.create(
-                model="deepseek-chat",
+                model="deepseek-v4-flash",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3,
                 max_tokens=4000,

@@ -1,0 +1,100 @@
+[
+  {
+    "word": "feel",
+    "phonetic": "/fiːl/",
+    "meaning": "感觉，感到",
+    "meanings": [
+      {
+        "part_of_speech": "v.",
+        "definition": "感觉，感到",
+        "example": "I feel tired.|我觉得累了。"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "触觉，感觉",
+        "example": "The fabric has a soft feel.|这种布料摸起来很柔软。"
+      },
+      {
+        "part_of_speech": "adj.",
+        "definition": "感到的，内心的",
+        "example": "She had a deep feeling of loss.|她感到一种深深的失落感。"
+      }
+    ],
+    "createTime": 1779090268961
+  },
+  {
+    "word": "mind",
+    "phonetic": "/maɪnd/",
+    "meaning": "思维，智力",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "思维，智力",
+        "example": "Use your mind to solve the problem.|用你的智慧解决问题。"
+      },
+      {
+        "part_of_speech": "v.",
+        "definition": "介意，关心",
+        "example": "Do you mind if I open the window?|你介意我打开窗户吗？"
+      },
+      {
+        "part_of_speech": "n.",
+        "definition": "头脑，精神",
+        "example": "She has a sharp mind.|她思维敏捷。"
+      }
+    ],
+    "createTime": 1779524241410
+  },
+  {
+    "word": "basical",
+    "phonetic": "/ˈbeɪsɪkəl/",
+    "meaning": "基本的",
+    "meanings": [
+      {
+        "part_of_speech": "adj.",
+        "definition": "基本的",
+        "example": "This is a basical concept in physics|这是物理学中的一个基本概念"
+      }
+    ],
+    "createTime": 1780410385207
+  },
+  {
+    "word": "europe",
+    "phonetic": "/ˈjʊrəp/",
+    "meaning": "欧洲",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "欧洲",
+        "example": "Europe is a continent located in the western part of the Northern Hemisphere.|欧洲位于北半球的西部。"
+      }
+    ],
+    "createTime": 1780454175305
+  },
+  {
+    "word": "so far",
+    "phonetic": "/soʊ fɑːr/",
+    "meaning": "到目前为止",
+    "meanings": [
+      {
+        "part_of_speech": "adv.",
+        "definition": "到目前为止",
+        "example": "So far, we have made good progress.|到目前为止，我们已经取得了良好的进展。"
+      }
+    ],
+    "createTime": 1780454457383
+  },
+  {
+    "word": "machine learning",
+    "phonetic": "/ˈməʃɪn ˈlɜːrniŋ/",
+    "meaning": "机器学习",
+    "meanings": [
+      {
+        "part_of_speech": "n.",
+        "definition": "机器学习",
+        "example": "Machine learning allows computers to improve at tasks through experience.|机器学习使计算机能够通过经验提高任务完成能力。"
+      }
+    ],
+    "createTime": 1780455151911
+  }
+]

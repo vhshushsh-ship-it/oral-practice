@@ -1,21 +1,17 @@
 import json
 import os
-from pathlib import Path
 from fastapi import APIRouter, UploadFile, File, Form, Depends
-from config import SCENE_MAP, CHAT_BASE_DIR, INITIAL_MESSAGES
-from services.ai_service import agent_reply
+from fastapi.responses import StreamingResponse
+from config import SCENE_MAP, INITIAL_MESSAGES
+from services.ai_service import agent_reply, agent_reply_stream
 from services.asr_service import asr, is_exit
 from services.audio_service import save_uploaded_audio
 from services.storage_service import save_memory, search_memories
+from services.chat_service import save_chat_session, get_chat_session, delete_chat_session
+from db import get_db, release_db
 from routers.auth_dependency import get_current_user
 
 router = APIRouter(tags=["chat"])
-
-
-def _get_chat_file(user_id: str, scene: str) -> Path:
-    user_dir = CHAT_BASE_DIR / user_id
-    user_dir.mkdir(parents=True, exist_ok=True)
-    return user_dir / f"{scene}.json"
 
 
 @router.post("/init")
@@ -28,29 +24,38 @@ async def init_conversation(scene_choice: str = Form(...)):
 async def save_chat_history(data: dict, user_id: str = Depends(get_current_user)):
     scene = data.get("scene")
     history = data.get("history", [])
-    file_path = _get_chat_file(user_id, scene)
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(history, f, ensure_ascii=False, indent=2)
+    translations = data.get("translations", [])
+    db = await get_db()
+    try:
+        await save_chat_session(db, user_id, scene, history, translations)
+    finally:
+        await release_db(db)
     return {"status": "success"}
 
 
 @router.get("/chat/history")
 async def get_chat_history(scene: str, user_id: str = Depends(get_current_user)):
-    file_path = _get_chat_file(user_id, scene)
-    if file_path.exists():
-        with open(file_path, "r", encoding="utf-8") as f:
-            history = json.load(f)
-    else:
-        history = []
-    return {"history": history}
+    db = await get_db()
+    try:
+        result = await get_chat_session(db, user_id, scene)
+    finally:
+        await release_db(db)
+    return result
 
 
 @router.get("/chat/clear")
 async def clear_chat_history(scene: str, user_id: str = Depends(get_current_user)):
-    file_path = _get_chat_file(user_id, scene)
-    if file_path.exists():
-        os.remove(file_path)
+    db = await get_db()
+    try:
+        await delete_chat_session(db, user_id, scene)
+    finally:
+        await release_db(db)
     return {"status": "success"}
+
+
+def _sse_event(data: str) -> str:
+    """Format a Server-Sent Event line."""
+    return f"data: {data}\n\n"
 
 
 @router.post("/chat")
@@ -58,6 +63,7 @@ async def chat(
     audio: UploadFile = File(...),
     scene: str = Form(...),
     conversation_history: str = Form("[]"),
+    stream: str = Form("false"),
     user_id: str = Depends(get_current_user),
 ):
     try:
@@ -65,12 +71,41 @@ async def chat(
         user_text = asr(audio_path)
 
         if is_exit(user_text):
+            if stream.lower() == "true":
+                def exit_stream():
+                    yield _sse_event(json.dumps({"token": "Goodbye!"}))
+                    yield _sse_event("[DONE]")
+                return StreamingResponse(exit_stream(), media_type="text/event-stream")
             return {"user_text": user_text, "ai_text": "Goodbye!"}
 
         history = json.loads(conversation_history)
         memories = search_memories(scene, user_text, user_id)
-        ai_reply = agent_reply(user_text, scene, history, memory_context=memories)
 
+        if stream.lower() == "true":
+            def generate():
+                # 先发送 ASR 识别结果，让前端展示用户消息
+                yield _sse_event(json.dumps({"user_text": user_text}))
+                full_text = ""
+                try:
+                    for token in agent_reply_stream(user_text, scene, history, memory_context=memories):
+                        full_text += token
+                        yield _sse_event(json.dumps({"token": token}))
+                    yield _sse_event("[DONE]")
+                except Exception as e:
+                    print(f"[STREAM ERROR] {e}")
+                    if not full_text:
+                        yield _sse_event(json.dumps({"token": "Sorry, I can't reply now."}))
+                        yield _sse_event("[DONE]")
+                finally:
+                    if full_text:
+                        save_memory(scene, user_text, full_text, user_id)
+                    if os.path.exists(audio_path):
+                        os.remove(audio_path)
+
+            return StreamingResponse(generate(), media_type="text/event-stream")
+
+        # Non-streaming fallback
+        ai_reply = agent_reply(user_text, scene, history, memory_context=memories)
         save_memory(scene, user_text, ai_reply, user_id)
 
         if os.path.exists(audio_path):
@@ -88,11 +123,33 @@ async def chat_text(
     user_text: str = Form(...),
     scene: str = Form(...),
     conversation_history: str = Form("[]"),
+    stream: str = Form("false"),
     user_id: str = Depends(get_current_user),
 ):
     try:
         history = json.loads(conversation_history)
         memories = search_memories(scene, user_text, user_id)
+
+        if stream.lower() == "true":
+            def generate():
+                full_text = ""
+                try:
+                    for token in agent_reply_stream(user_text, scene, history, memory_context=memories):
+                        full_text += token
+                        yield _sse_event(json.dumps({"token": token}))
+                    yield _sse_event("[DONE]")
+                except Exception as e:
+                    print(f"[STREAM ERROR] {e}")
+                    if not full_text:
+                        yield _sse_event(json.dumps({"token": "Sorry, I can't reply now."}))
+                        yield _sse_event("[DONE]")
+                finally:
+                    if full_text:
+                        save_memory(scene, user_text, full_text, user_id)
+
+            return StreamingResponse(generate(), media_type="text/event-stream")
+
+        # Non-streaming fallback
         ai_reply_text = agent_reply(user_text, scene, history, memory_context=memories)
         save_memory(scene, user_text, ai_reply_text, user_id)
         return {"user_text": user_text, "ai_text": ai_reply_text}

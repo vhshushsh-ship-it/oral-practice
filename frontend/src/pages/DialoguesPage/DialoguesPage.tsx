@@ -1,9 +1,11 @@
 import { useState, useRef, useCallback } from 'react';
 import { useSceneDialogues } from '../../hooks/useSceneDialogues';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
+import { useSequentialTTS } from '../../hooks/useSequentialTTS';
 import { useSentenceCollection } from '../../hooks/useSentenceCollection';
 import { useToast } from '../../components/Toast/toastContext';
 import { SentenceAnalysis } from '../../components/SentenceAnalysis';
+import { GlobalAudioBar } from '../../components/GlobalAudioBar';
 import { DialogueSceneList } from './DialogueSceneList';
 import { DialogueContent } from './DialogueContent';
 import type { DialogueScene } from '../../types';
@@ -11,6 +13,7 @@ import type { DialogueScene } from '../../types';
 export function DialoguesPage() {
   const { dialogues, selectedScene, setSelectedScene } = useSceneDialogues();
   const speak = useSpeechSynthesis(1.0);
+  const sequentialTTS = useSequentialTTS(1.0);
   const { addSentence } = useSentenceCollection();
   const { showToast } = useToast();
   const [analyzingTurn, setAnalyzingTurn] = useState<{ en: string; zh: string } | null>(null);
@@ -19,8 +22,27 @@ export function DialoguesPage() {
   const currentSceneId = useRef<string | null>(null);
 
   const handleSelectScene = (scene: DialogueScene) => {
+    // 场景切换：清空旧播放列表，重置播放下标
+    sequentialTTS.stop();
     setSelectedScene(scene);
   };
+
+  // 全局播放全部对话
+  const handlePlayAll = useCallback(() => {
+    if (!selectedScene) return;
+    const texts = selectedScene.turns.map((t) => t.en);
+    if (texts.length === 0) return;
+    sequentialTTS.play(texts, Math.max(0, sequentialTTS.currentIndex));
+  }, [selectedScene, sequentialTTS]);
+
+  // 单句播放时先停止全局播放器，避免音频重叠
+  const handleIndividualSpeak = useCallback(
+    (text: string) => {
+      sequentialTTS.stop();
+      speak(text);
+    },
+    [sequentialTTS, speak],
+  );
 
   const handleSaveScroll = useCallback((scrollTop: number) => {
     const sceneId = currentSceneId.current;
@@ -56,7 +78,7 @@ export function DialoguesPage() {
         <SentenceAnalysis
           en={analyzingTurn.en}
           zh={analyzingTurn.zh}
-          onPlay={() => speak(analyzingTurn.en)}
+          onPlay={() => handleIndividualSpeak(analyzingTurn.en)}
           onCollect={() => handleCollect(analyzingTurn.en)}
           onBack={handleCloseAnalysis}
         />
@@ -78,9 +100,18 @@ export function DialoguesPage() {
             scene={selectedScene}
             savedScrollTop={selectedScene ? scrollPositions.current[selectedScene.id] ?? 0 : 0}
             onScrollSave={handleSaveScroll}
-            onSpeak={speak}
+            onSpeak={handleIndividualSpeak}
             onCollect={handleCollect}
             onAnalyze={handleAnalyze}
+            playState={sequentialTTS.playState}
+            currentIndex={sequentialTTS.currentIndex}
+            totalCount={sequentialTTS.totalCount}
+            onPlayAll={handlePlayAll}
+            onPause={sequentialTTS.pause}
+            onResume={sequentialTTS.resume}
+            onStop={sequentialTTS.stop}
+            onNext={sequentialTTS.next}
+            onPrev={sequentialTTS.prev}
           />
         </div>
       </div>

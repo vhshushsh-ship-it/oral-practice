@@ -205,3 +205,14 @@ async def init_db() -> None:
                     FOREIGN KEY (question_id) REFERENCES listening_question(id) ON DELETE CASCADE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             """)
+            # ====================== AI 对话记录表 ======================
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS chat_sessions (
+                    user_id VARCHAR(50) NOT NULL,
+                    scene VARCHAR(50) NOT NULL,
+                    data JSON NOT NULL,
+                    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    PRIMARY KEY (user_id, scene),
+                    INDEX idx_chat_user (user_id)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)

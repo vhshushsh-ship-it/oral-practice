@@ -1,7 +1,14 @@
 import re
 import json
-from dashscope import Generation
-from config import SCENE_ROLES
+from openai import OpenAI
+from config import SCENE_ROLES, DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
+
+
+def _get_deepseek_client() -> OpenAI:
+    """Get a DeepSeek OpenAI-compatible client."""
+    if not DEEPSEEK_API_KEY:
+        raise ValueError("DEEPSEEK_API_KEY not configured")
+    return OpenAI(base_url=DEEPSEEK_BASE_URL, api_key=DEEPSEEK_API_KEY)
 
 
 def clean_ai_reply(text: str) -> str:
@@ -14,8 +21,8 @@ def clean_ai_reply(text: str) -> str:
     return cleaned.strip()
 
 
-def agent_reply(user_text: str, scene: str, conversation_history: list = None, memory_context: list[str] = None, max_tokens: int = 200) -> str:
-    """调用 LLM 生成场景对话回复"""
+def _build_chat_prompt(user_text: str, scene: str, conversation_history: list = None, memory_context: list[str] = None) -> str:
+    """构建对话 prompt（供 streaming 和非 streaming 共用）"""
     if conversation_history is None:
         conversation_history = []
 
@@ -34,19 +41,45 @@ def agent_reply(user_text: str, scene: str, conversation_history: list = None, m
             prompt += f"You: {msg['content']}\n"
     prompt += f"User: {user_text}\nYou: "
 
+    return prompt
+
+
+def agent_reply(user_text: str, scene: str, conversation_history: list = None, memory_context: list[str] = None, max_tokens: int = 200) -> str:
+    """调用 DeepSeek V4 Flash 生成场景对话回复"""
+    prompt = _build_chat_prompt(user_text, scene, conversation_history, memory_context)
+
     try:
-        response = Generation.call(
-            model="qwen-turbo",
+        client = _get_deepseek_client()
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
             messages=[{"role": "user", "content": prompt}],
-            result_format="message",
             max_tokens=max_tokens,
             temperature=0.7,
         )
-        raw_reply = response.output.choices[0].message["content"].strip()
+        raw_reply = response.choices[0].message.content.strip()
         return clean_ai_reply(raw_reply)
     except Exception as e:
         print("[LLM ERROR]", e)
         return "Sorry, I didn't catch that. Could you repeat?"
+
+
+def agent_reply_stream(user_text: str, scene: str, conversation_history: list = None, memory_context: list[str] = None, max_tokens: int = 200):
+    """流式调用 DeepSeek V4 Flash 生成场景对话回复，逐 token yield"""
+    prompt = _build_chat_prompt(user_text, scene, conversation_history, memory_context)
+
+    client = _get_deepseek_client()
+    response = client.chat.completions.create(
+        model="deepseek-v4-flash",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=max_tokens,
+        temperature=0.7,
+        stream=True,
+    )
+
+    for chunk in response:
+        if chunk.choices and chunk.choices[0].delta.content:
+            token = chunk.choices[0].delta.content
+            yield token
 
 
 def translate_text(text: str) -> str:
@@ -56,13 +89,13 @@ def translate_text(text: str) -> str:
 
     prompt = f"翻译英文为自然中文，仅输出结果：{text}"
     try:
-        response = Generation.call(
-            model="qwen-turbo",
+        client = _get_deepseek_client()
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
             messages=[{"role": "user", "content": prompt}],
-            result_format="message",
             temperature=0.1,
         )
-        return response.output.choices[0].message["content"].strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         print(f"[TRANSLATE ERROR] {e}")
         return "翻译出错"
@@ -75,20 +108,22 @@ def translate_to_english(text: str) -> str:
 
     prompt = f"翻译中文为自然、地道的英文，仅输出翻译结果，不要添加其他内容：{text}"
     try:
-        response = Generation.call(
-            model="qwen-turbo",
+        client = _get_deepseek_client()
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
             messages=[{"role": "user", "content": prompt}],
-            result_format="message",
             temperature=0.1,
         )
-        return response.output.choices[0].message["content"].strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         print(f"[TRANSLATE ERROR] {e}")
         return "翻译出错"
 
 
 def analyze_sentence(text: str) -> dict:
-    """分析句子连读现象和意群切分，返回结构化数据"""
+    """使用 DeepSeek V4 Flash 分析句子连读现象和意群切分，返回结构化数据"""
+    client = _get_deepseek_client()
+
     prompt = f"""你是英语发音专家。请分析以下英文句子的连读现象和意群切分，严格返回纯JSON格式，不要加任何多余的文字、注释、markdown：
 
 {{
@@ -113,14 +148,13 @@ def analyze_sentence(text: str) -> dict:
 
 句子：{text}"""
     try:
-        response = Generation.call(
-            model="qwen-turbo",
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
             messages=[{"role": "user", "content": prompt}],
-            result_format="message",
             temperature=0.1,
             max_tokens=800,
         )
-        raw = response.output.choices[0].message["content"].strip()
+        raw = response.choices[0].message.content.strip()
 
         json_match = re.search(r"\{[\s\S]*\}", raw)
         if not json_match:
@@ -151,14 +185,8 @@ def analyze_sentence(text: str) -> dict:
 
 
 def analyze_sentence_deepseek(text: str) -> dict:
-    """使用 DeepSeek V4 Pro 实时分析句子连读和意群切分"""
-    from openai import OpenAI
-    from config import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
-
-    if not DEEPSEEK_API_KEY:
-        raise ValueError("DEEPSEEK_API_KEY not configured")
-
-    client = OpenAI(base_url=DEEPSEEK_BASE_URL, api_key=DEEPSEEK_API_KEY)
+    """使用 DeepSeek V4 Flash 实时分析句子连读和意群切分"""
+    client = _get_deepseek_client()
 
     prompt = f"""你是英语发音专家。请分析以下英文句子的连读现象和意群切分，严格返回纯JSON格式，不要加任何多余的文字、注释、markdown：
 
@@ -186,7 +214,7 @@ def analyze_sentence_deepseek(text: str) -> dict:
 
     try:
         response = client.chat.completions.create(
-            model="deepseek-v4-pro",
+            model="deepseek-v4-flash",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.1,
             max_tokens=800,
@@ -217,18 +245,12 @@ def analyze_sentence_deepseek(text: str) -> dict:
 
 def check_grammar_deepseek(text: str) -> dict:
     """使用 DeepSeek V4 Flash 进行语法检测和打分（极速轻量模型）"""
-    from openai import OpenAI
-    from config import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
-
-    if not DEEPSEEK_API_KEY:
-        raise ValueError("DEEPSEEK_API_KEY not configured")
+    client = _get_deepseek_client()
 
     # Truncate very long input to avoid overwhelming the model
     MAX_INPUT_CHARS = 500
     if len(text) > MAX_INPUT_CHARS:
         text = text[:MAX_INPUT_CHARS] + "..."
-
-    client = OpenAI(base_url=DEEPSEEK_BASE_URL, api_key=DEEPSEEK_API_KEY)
 
     # Compact prompt — grammar check output is ~200-400 tokens
     prompt = (

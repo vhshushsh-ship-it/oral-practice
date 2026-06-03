@@ -250,7 +250,7 @@ async def delete_exam_record(exam_id: str, user_id: str = Depends(get_current_us
                 (exam_id, user_id),
             )
             await cur.execute(
-                "DELETE FROM listening_exam_record WHERE id = %s AND (user_id = %s OR user_id IS NULL)",
+                "DELETE FROM listening_exam_record WHERE id = %s AND user_id = %s",
                 (exam_id, user_id),
             )
             if cur.rowcount == 0:
@@ -300,7 +300,7 @@ async def get_exam_detail(exam_id: str, user_id: str = Depends(get_current_user)
     try:
         async with db.cursor(aiomysql.DictCursor) as cur:
             await cur.execute(
-                "SELECT * FROM listening_exam_record WHERE id = %s AND (user_id = %s OR user_id IS NULL)",
+                "SELECT * FROM listening_exam_record WHERE id = %s AND user_id = %s",
                 (exam_id, user_id),
             )
             record = await cur.fetchone()
@@ -314,9 +314,9 @@ async def get_exam_detail(exam_id: str, user_id: str = Depends(get_current_user)
                        lq.correct_answer
                 FROM listening_exam_answer ea
                 JOIN listening_question lq ON lq.id = ea.question_id
-                WHERE ea.exam_record_id = %s
+                WHERE ea.exam_record_id = %s AND ea.user_id = %s
                 ORDER BY lq.sort_order, lq.question_number
-            """, (exam_id,))
+            """, (exam_id, user_id))
             answers = list(await cur.fetchall())
 
     finally:

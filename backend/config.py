@@ -3,7 +3,6 @@ import json
 import secrets
 from pathlib import Path
 from dotenv import load_dotenv
-import dashscope
 import chromadb
 
 # ====================== 路径配置 ======================
@@ -14,7 +13,6 @@ DATA_DIR.mkdir(exist_ok=True)
 env_path = BASE_DIR / ".env"
 load_dotenv(dotenv_path=env_path)
 
-dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 
@@ -43,6 +41,12 @@ CHAT_BASE_DIR.mkdir(exist_ok=True)
 
 NOTES_BASE_DIR = DATA_DIR / "word_notes"
 NOTES_BASE_DIR.mkdir(exist_ok=True)
+
+SENTENCE_BASE_DIR = DATA_DIR / "sentence_collection"
+SENTENCE_BASE_DIR.mkdir(exist_ok=True)
+
+GRAMMAR_BASE_DIR = DATA_DIR / "grammar_history"
+GRAMMAR_BASE_DIR.mkdir(exist_ok=True)
 
 CACHE_FILE = DATA_DIR / "word_cache.json"
 if not CACHE_FILE.exists():
