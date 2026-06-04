@@ -99,10 +99,21 @@ export function useRecording(onSend: (blob: Blob) => void) {
       const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
       contextRef.current = ctx;
 
+      // Chrome 自动播放策略：await getUserMedia 后 AudioContext 可能处于 suspended 状态，
+      // 必须显式 resume，否则 onaudioprocess 永远不会触发，导致录音数据为空
+      if (ctx.state === 'suspended') {
+        await ctx.resume();
+      }
+
       const source = ctx.createMediaStreamSource(stream);
       const processor = ctx.createScriptProcessor(4096, 1, 1);
+      // 通过零音量的 GainNode 连接到 destination，既保证 onaudioprocess 触发，
+      // 又避免麦克风输入直通扬声器造成啸叫反馈
+      const gainNode = ctx.createGain();
+      gainNode.gain.value = 0;
       source.connect(processor);
-      processor.connect(ctx.destination);
+      processor.connect(gainNode);
+      gainNode.connect(ctx.destination);
 
       processor.onaudioprocess = (e: AudioProcessingEvent) => {
         const input = e.inputBuffer.getChannelData(0);

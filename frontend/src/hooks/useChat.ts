@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { ConversationMessage, Translation } from '../types';
 import { sendTextMessageStream, sendVoiceMessageStream, translateToChinese, saveChatHistory, fetchChatHistory, clearChatHistory } from '../services/api';
+import type { VoiceStreamEvent } from '../services/api';
 
 export function useChat(scene: string) {
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
@@ -212,7 +213,9 @@ export function useChat(scene: string) {
   );
 
   // ===================================================================
-  //  sendVoice — 语音发送（ASR 完成后即时显示 + 流式输出 + 后台翻译）
+  //  sendVoice — 语音发送（直接消费 stream，首个事件为 ASR 结果，后续为 AI token）
+  //  关键：不再使用 userTextPromise（旧代码创建了死锁：Promise 在 generator 内 resolve，
+  //  但 generator 是惰性的，需要 .next() 才会执行，而 .next() 在 Promise 之后才调用）。
   // ===================================================================
   const sendVoice = useCallback(
     async (audioBlob: Blob) => {
@@ -225,29 +228,30 @@ export function useChat(scene: string) {
       const last10 = prevMessages.slice(-10);
 
       try {
-        const { userTextPromise, stream, abort } = sendVoiceMessageStream(audioBlob, scene, last10);
+        const { stream, abort } = sendVoiceMessageStream(audioBlob, scene, last10);
         abortRef.current = abort;
 
-        // 等待 ASR 识别结果（服务端延迟不可消除，但一拿到就立即展示）
-        const userText = await userTextPromise;
-
+        let userText = '';
+        let fullAiText = '';
         let userMsg: ConversationMessage | null = null;
+        let userMsgShown = false;
 
-        if (userText) {
-          userMsg = { role: 'user', content: userText };
+        // 直接迭代 stream — 首个事件为 {type:'user_text'}，后续为 {type:'token'}
+        for await (const event of stream) {
+          if (event.type === 'user_text') {
+            userText = event.text;
+            if (userText && !userMsgShown) {
+              userMsgShown = true;
+              userMsg = { role: 'user', content: userText };
 
-          // ① 即刻展示用户消息 + AI 占位（同步，≤1ms）
-          const aiPlaceholder: ConversationMessage = { role: 'assistant', content: '' };
-          setMessages([...prevMessages, userMsg, aiPlaceholder]);
-          setTranslations([...prevTranslations, { source: userText, target: '翻译中...', isUser: true }]);
-
-          // ② 后台翻译用户文本（不阻塞 AI 流式）
-          const userTransPromise = translateToChinese(userText).catch(() => '翻译暂不可用');
-
-          // ③ 流式接收 AI 回复 token
-          let fullAiText = '';
-          for await (const token of stream) {
-            fullAiText += token;
+              // 即刻展示用户消息 + AI 占位
+              const aiPlaceholder: ConversationMessage = { role: 'assistant', content: '' };
+              setMessages([...prevMessages, userMsg, aiPlaceholder]);
+              setTranslations([...prevTranslations, { source: userText, target: '翻译中...', isUser: true }]);
+            }
+          } else if (event.type === 'token') {
+            fullAiText += event.text;
+            // 逐 token 更新 AI 消息
             setMessages((prev) => {
               const updated = [...prev];
               const lastIdx = updated.length - 1;
@@ -257,45 +261,41 @@ export function useChat(scene: string) {
               return updated;
             });
           }
+        }
 
-          abortRef.current = null;
+        abortRef.current = null;
 
-          // ④ 收集翻译结果
-          const userTrans = await userTransPromise;
+        // 消费完整个 stream，组装最终状态
+        if (userText && fullAiText) {
+          // 后台翻译用户文本
+          const userTrans = await translateToChinese(userText).catch(() => '翻译暂不可用');
           let aiTrans = '翻译暂不可用';
-          if (fullAiText) {
-            try {
-              aiTrans = await translateToChinese(fullAiText);
-            } catch { /* 翻译失败使用默认值 */ }
-          }
+          try {
+            aiTrans = await translateToChinese(fullAiText);
+          } catch { /* 翻译失败使用默认值 */ }
 
           const userTranslation: Translation = { source: userText, target: userTrans, isUser: true };
-          const aiTranslation: Translation | null = fullAiText
-            ? { source: fullAiText, target: aiTrans, isUser: false }
-            : null;
+          const aiTranslation: Translation = { source: fullAiText, target: aiTrans, isUser: false };
 
-          // ⑤ 组装最终状态
-          const finalMessages: ConversationMessage[] = [...prevMessages, userMsg];
-          if (fullAiText) finalMessages.push({ role: 'assistant', content: fullAiText });
-          const finalTranslations: Translation[] = [...prevTranslations, userTranslation];
-          if (aiTranslation) finalTranslations.push(aiTranslation);
+          const finalMessages: ConversationMessage[] = [...prevMessages, userMsg!, { role: 'assistant', content: fullAiText }];
+          const finalTranslations: Translation[] = [...prevTranslations, userTranslation, aiTranslation];
 
-          if (fullAiText) {
-            pendingAutoPlayRef.current = true;
-          }
+          pendingAutoPlayRef.current = true;
           setMessages(finalMessages);
           setTranslations(finalTranslations);
-
-          if (fullAiText) {
-            persistChat(finalMessages, finalTranslations);
-          }
+          persistChat(finalMessages, finalTranslations);
+        } else if (userText && !fullAiText) {
+          // 用户消息识别成功但 AI 无回复
+          const userTrans = await translateToChinese(userText).catch(() => '翻译暂不可用');
+          const userTranslation: Translation = { source: userText, target: userTrans, isUser: true };
+          const finalMessages: ConversationMessage[] = [...prevMessages, userMsg!];
+          const finalTranslations: Translation[] = [...prevTranslations, userTranslation];
+          setMessages(finalMessages);
+          setTranslations(finalTranslations);
         } else {
           // ASR 返回空文本
-          abortRef.current = null;
           const errorMsg: ConversationMessage = { role: 'assistant', content: '未识别到语音，请重试' };
           setMessages([...prevMessages, errorMsg]);
-          // 消费 stream 以避免资源泄漏
-          try { for await (const _ of stream) { /* drain */ } } catch { /* ignore drain errors */ }
         }
       } catch (err: any) {
         abortRef.current = null;

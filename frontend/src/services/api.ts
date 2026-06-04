@@ -50,20 +50,19 @@ export async function sendVoiceMessage(
   return res.json();
 }
 
-/**
- * 流式语音对话 — 返回 userTextPromise（ASR 识别结果）、token stream 和 abort。
- * userTextPromise 在收到第一个 SSE 事件时 resolve。
- */
+/** 流式语音对话 — ASR 识别结果作为首个事件 yield，后续 yield AI token 字符串 */
+export type VoiceStreamEvent =
+  | { type: 'user_text'; text: string }
+  | { type: 'token'; text: string };
+
 export function sendVoiceMessageStream(
   audioBlob: Blob,
   scene: string,
   history: ConversationMessage[],
-): { userTextPromise: Promise<string>; stream: AsyncGenerator<string, string, unknown>; abort: () => void } {
+): { stream: AsyncGenerator<VoiceStreamEvent, string, unknown>; abort: () => void } {
   const controller = new AbortController();
-  let resolveUserText!: (text: string) => void;
-  const userTextPromise = new Promise<string>((resolve) => { resolveUserText = resolve; });
 
-  async function* streamGenerator(): AsyncGenerator<string, string, unknown> {
+  async function* streamGenerator(): AsyncGenerator<VoiceStreamEvent, string, unknown> {
     const formData = new FormData();
     formData.append('audio', audioBlob, 'recording.wav');
     formData.append('scene', scene);
@@ -78,19 +77,21 @@ export function sendVoiceMessageStream(
     });
 
     if (!res.ok) {
-      resolveUserText('');
+      // 即使请求失败也要 yield user_text（空），保证消费端不挂起
+      yield { type: 'user_text' as const, text: '' };
       throw new Error(`Stream request failed: ${res.status}`);
     }
 
     const reader = res.body?.getReader();
     if (!reader) {
-      resolveUserText('');
+      yield { type: 'user_text' as const, text: '' };
       throw new Error('No response body');
     }
 
     const decoder = new TextDecoder();
     let buffer = '';
     let fullText = '';
+    let userTextYielded = false;
 
     try {
       while (true) {
@@ -110,10 +111,14 @@ export function sendVoiceMessageStream(
             try {
               const parsed = JSON.parse(data);
               if (parsed.user_text !== undefined) {
-                resolveUserText(parsed.user_text);
+                // 第一个 SSE 事件：ASR 识别结果 → 立即 yield 让前端展示用户消息
+                if (!userTextYielded) {
+                  userTextYielded = true;
+                  yield { type: 'user_text' as const, text: parsed.user_text || '' };
+                }
               } else if (parsed.token) {
                 fullText += parsed.token;
-                yield parsed.token;
+                yield { type: 'token' as const, text: parsed.token };
               }
             } catch {
               // skip malformed JSON lines
@@ -123,12 +128,14 @@ export function sendVoiceMessageStream(
       }
       return fullText;
     } finally {
-      // 确保 userTextPromise 必定 resolve，防止 hook 挂起
-      resolveUserText('');
+      // 确保 user_text 事件必定 yield，防止消费端挂起
+      if (!userTextYielded) {
+        yield { type: 'user_text' as const, text: '' };
+      }
     }
   }
 
-  return { userTextPromise, stream: streamGenerator(), abort: () => controller.abort() };
+  return { stream: streamGenerator(), abort: () => controller.abort() };
 }
 
 // ====================== 文本对话 ======================
