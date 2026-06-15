@@ -360,54 +360,27 @@ async def analyze(body: SentenceAnalysisBody):
             )
             row = await cur.fetchone()
             if row:
-                return {
-                    "connected_speech": json.loads(row["connected_speech"]) if isinstance(row["connected_speech"], str) else row["connected_speech"],
-                    "sense_groups": {
-                        "segmented": row["sense_groups_segmented"],
-                        "explanation": row["sense_groups_explanation"],
-                    },
-                }
+                # Parse cached connected_speech
+                cs = json.loads(row["connected_speech"]) if isinstance(row["connected_speech"], str) else row["connected_speech"]
+                # Only use cache if connected_speech is non-empty (avoid returning stale failed analysis)
+                if isinstance(cs, list) and len(cs) > 0:
+                    return {
+                        "connected_speech": cs,
+                        "sense_groups": {
+                            "segmented": row["sense_groups_segmented"],
+                            "explanation": row["sense_groups_explanation"],
+                        },
+                    }
+                # Empty connected_speech in cache → fall through
     finally:
         await release_db(db)
 
-    # Not in DB — call DeepSeek to generate analysis in real-time
-    try:
-        from services.ai_service import analyze_sentence_deepseek
-        result = analyze_sentence_deepseek(body.text)
-    except Exception as e:
-        print(f"[ANALYZE ERROR] DeepSeek call failed: {e}")
-        return {
-            "connected_speech": [],
-            "sense_groups": {
-                "segmented": body.text,
-                "explanation": "分析失败，请返回重试",
-            },
-        }
-
-    # Save to DB for future reuse
-    db2 = await get_db()
-    try:
-        async with db2.cursor() as cur:
-            await cur.execute(
-                "INSERT IGNORE INTO listening_sentence_analysis (sentence_text, connected_speech, sense_groups_segmented, sense_groups_explanation) VALUES (%s, %s, %s, %s)",
-                (
-                    body.text,
-                    json.dumps(result["connected_speech"], ensure_ascii=False),
-                    result["sense_groups"]["segmented"],
-                    result["sense_groups"]["explanation"],
-                ),
-            )
-            await db2.commit()
-    except Exception as e:
-        print(f"[ANALYZE ERROR] Failed to save analysis to DB: {e}")
-    finally:
-        await release_db(db2)
-
+    # 未命中缓存 — 直接返回空结果，不调用大模型
     return {
-        "connected_speech": result["connected_speech"],
+        "connected_speech": [],
         "sense_groups": {
-            "segmented": result["sense_groups"]["segmented"],
-            "explanation": result["sense_groups"]["explanation"],
+            "segmented": body.text,
+            "explanation": "暂无分析数据",
         },
     }
 

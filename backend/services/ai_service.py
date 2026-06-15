@@ -120,11 +120,9 @@ def translate_to_english(text: str) -> str:
         return "翻译出错"
 
 
-def analyze_sentence(text: str) -> dict:
-    """使用 DeepSeek V4 Flash 分析句子连读现象和意群切分，返回结构化数据"""
-    client = _get_deepseek_client()
-
-    prompt = f"""你是英语发音专家。请分析以下英文句子的连读现象和意群切分，严格返回纯JSON格式，不要加任何多余的文字、注释、markdown：
+def _build_analysis_prompt(text: str) -> str:
+    """构建句子分析 prompt（供 analyze_sentence 和 analyze_sentence_deepseek 共用）"""
+    return f"""你是英语发音专家。请分析以下英文句子的连读现象和意群切分，严格返回纯JSON格式，不要加任何多余的文字、注释、markdown：
 
 {{
   "connected_speech": [
@@ -147,32 +145,113 @@ def analyze_sentence(text: str) -> dict:
 - 所有解释使用中文
 
 句子：{text}"""
+
+
+def _extract_json_from_response(raw: str) -> dict:
+    """从 LLM 原始响应中提取并解析 JSON，支持多种容错策略"""
+    if not raw or not raw.strip():
+        raise ValueError("模型返回了空响应（content 为 None 或空字符串）")
+
+    raw = raw.strip()
+
+    # 1) 去掉 markdown 代码围栏 ```json ... ```
+    raw = re.sub(r'^```(?:json)?\s*\n?', '', raw)
+    raw = re.sub(r'\n?```\s*$', '', raw)
+
+    # 2) 尝试直接解析
     try:
-        response = client.chat.completions.create(
-            model="deepseek-v4-flash",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.1,
-            max_tokens=800,
-        )
-        raw = response.choices[0].message.content.strip()
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        pass
 
-        json_match = re.search(r"\{[\s\S]*\}", raw)
-        if not json_match:
-            raise ValueError("AI未返回JSON格式")
+    # 3) 尝试在响应中查找 JSON 对象
+    m = re.search(r'\{[\s\S]*\}', raw)
+    if not m:
+        raise ValueError(f"响应中未找到 JSON 对象，原始内容前 300 字符: {raw[:300]}")
 
-        clean_json = json_match.group(0)
-        clean_json = re.sub(r",\s*([}\]])", r"\1", clean_json)
+    candidate = m.group(0)
+    # 去掉尾部多余逗号（如 "key": "value",}）
+    candidate = re.sub(r',\s*([}\]])', r'\1', candidate)
 
+    try:
+        return json.loads(candidate)
+    except json.JSONDecodeError:
+        pass
+
+    # 4) 尝试将 Python 风格的单引号键值转为双引号（仅替换 JSON 结构引号，保护文本内撇号）
+    # 策略：用 json5 式启发法 —— 只替换跟在 {[,: 空格之后的开引号，和出现在 :, 空格之前的闭引号
+    # 更稳健的做法：逐字符状态机。此处用两次保守替换：先处理键名的单引号，再处理字符串值
+    try:
+        # 尝试用 demjson3 或简单策略：连续两个单引号替换为空
+        fixed = re.sub(r"(?<!\w)'([^']*?)'(?=\s*:)", r'"\1"', candidate)  # key: 'key' -> "key"
+        fixed = re.sub(r":\s*'([^']*?)'", r': "\1"', fixed)  # value: 'val' -> "val"
+        fixed = re.sub(r",\s*'([^']*?)'", r', "\1"', fixed)  # array: 'item' -> "item"
+        fixed = re.sub(r"\[\s*'([^']*?)'", r'["\1"', fixed)  # first item ['item' -> ["item"
+        if fixed != candidate:
+            return json.loads(fixed)
+    except (json.JSONDecodeError, ValueError):
+        pass
+
+    raise ValueError(f"无法解析 JSON，候选内容前 300 字符: {candidate[:300]}")
+
+
+def _validate_analysis_result(result: dict) -> dict:
+    """校验分析结果必填字段"""
+    for k in ("connected_speech", "sense_groups"):
+        if k not in result:
+            raise ValueError(f"JSON 缺少必填字段: {k}")
+    sg = result["sense_groups"]
+    if not isinstance(sg, dict) or "segmented" not in sg or "explanation" not in sg:
+        raise ValueError("sense_groups 缺少 segmented/explanation 字段")
+    if not isinstance(result["connected_speech"], list):
+        raise ValueError("connected_speech 必须是数组")
+    return result
+
+
+def _call_deepseek_for_analysis(text: str) -> dict:
+    """调用 DeepSeek V4 Flash 生成句子分析（带重试）"""
+    client = _get_deepseek_client()
+    prompt = _build_analysis_prompt(text)
+
+    last_exc = None
+    for attempt in range(3):
         try:
-            result = json.loads(clean_json)
-        except json.JSONDecodeError:
-            clean_json = clean_json.replace("'", '"')
-            result = json.loads(clean_json)
+            response = client.chat.completions.create(
+                model="deepseek-v4-flash",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.1,
+                max_tokens=1500,
+                timeout=30,
+            )
+            raw = response.choices[0].message.content
+            if not raw:
+                raise ValueError(f"DeepSeek 返回空 content: finish_reason={response.choices[0].finish_reason}")
+            result = _extract_json_from_response(raw)
+            return _validate_analysis_result(result)
+        except Exception as e:
+            last_exc = e
+            if attempt < 2:
+                wait = 2 ** attempt  # 1s, 2s
+                print(f"[DEEPSEEK ANALYZE] 第 {attempt + 1} 次尝试失败 ({type(e).__name__}: {e})，{wait}s 后重试...")
+                import time as _time
+                _time.sleep(wait)
+            else:
+                import traceback
+                print(f"[DEEPSEEK ANALYZE ERROR] 3 次尝试全部失败。最后错误: {type(e).__name__}: {e}")
+                traceback.print_exc()
+    raise last_exc
 
-        if "connected_speech" not in result or "sense_groups" not in result:
-            raise ValueError("JSON缺少必填字段")
 
-        return result
+def analyze_sentence_deepseek(text: str) -> dict:
+    """使用 DeepSeek V4 Flash 实时分析句子连读和意群切分（失败时抛异常，由调用方处理）"""
+    return _call_deepseek_for_analysis(text)
+
+
+def analyze_sentence(text: str) -> dict:
+    """使用 DeepSeek V4 Flash 分析句子连读现象和意群切分，返回结构化数据。
+    与 analyze_sentence_deepseek 共享同一实现；失败时返回 fallback 而非抛异常。"""
+    try:
+        return _call_deepseek_for_analysis(text)
     except Exception as e:
         print(f"[ANALYZE ERROR] {e}")
         return {
@@ -182,65 +261,6 @@ def analyze_sentence(text: str) -> dict:
                 "explanation": "分析失败，请稍后重试",
             },
         }
-
-
-def analyze_sentence_deepseek(text: str) -> dict:
-    """使用 DeepSeek V4 Flash 实时分析句子连读和意群切分"""
-    client = _get_deepseek_client()
-
-    prompt = f"""你是英语发音专家。请分析以下英文句子的连读现象和意群切分，严格返回纯JSON格式，不要加任何多余的文字、注释、markdown：
-
-{{
-  "connected_speech": [
-    {{
-      "words": "原文词组，如 has survived",
-      "phonetic": "美式音标（American IPA），如 /həz sərˈvaɪvd/（注意：请使用美式音标体系，不要使用英式音标符号如 /ɒ/ /əʊ/ /ɪə/ /eə/ /ʊə/ /ɜː/ /ɔː/ /ɑː/ /iː/ /uː/，应使用对应的美式 /ɑ/ /oʊ/ /ɪr/ /er/ /ʊr/ /ɜr/ /ɔ/ /ɑ/ /i/ /u/）",
-      "description": "连读/弱读/不完全爆破现象的中文解释，说明具体发生了什么音变，如：/z/ 与 /s/ 相邻，可连成轻微延长或短暂停顿（避免吞音）"
-    }}
-  ],
-  "sense_groups": {{
-    "segmented": "用 / 分隔意群的完整句子",
-    "explanation": "意群切分依据的中文解释，说明为什么这样划分，以及英语母语者朗读时的停顿规律"
-  }}
-}}
-
-规则：
-- connected_speech 列出句子中所有连读、弱读、不完全爆破、辅元连读等现象，每条包含原词组、音标、现象解释
-- sense_groups.segmented 按意群用 " / " 切分整个句子
-- sense_groups.explanation 解释划分原则
-- 所有解释使用中文
-
-句子：{text}"""
-
-    try:
-        response = client.chat.completions.create(
-            model="deepseek-v4-flash",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.1,
-            max_tokens=800,
-        )
-        raw = response.choices[0].message.content.strip()
-
-        json_match = re.search(r"\{[\s\S]*\}", raw)
-        if not json_match:
-            raise ValueError("DeepSeek未返回JSON格式")
-
-        clean_json = json_match.group(0)
-        clean_json = re.sub(r",\s*([}\]])", r"\1", clean_json)
-
-        try:
-            result = json.loads(clean_json)
-        except json.JSONDecodeError:
-            clean_json = clean_json.replace("'", '"')
-            result = json.loads(clean_json)
-
-        if "connected_speech" not in result or "sense_groups" not in result:
-            raise ValueError("JSON缺少必填字段")
-
-        return result
-    except Exception as e:
-        print(f"[DEEPSEEK ANALYZE ERROR] {e}")
-        raise
 
 
 def check_grammar_deepseek(text: str) -> dict:

@@ -17,7 +17,10 @@
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); qs=d['questions']; print\\(f'共 {len\\(qs\\)} 道题'\\); [print\\(f'  Q{q[\\\\\"question_number\\\\\"]}: {q.get\\(\\\\\"question_text_zh\\\\\",\\\\\"\\\\\"\\)[:40]}...'\\) for q in qs[:5]]\")",
       "Bash(taskkill /F /IM uvicorn.exe)",
       "Bash(nohup python -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5500)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5500)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('services/ai_service.py', encoding='utf-8'\\).read\\(\\)\\); print\\('syntax OK'\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('routers/listening_router.py', encoding='utf-8'\\).read\\(\\)\\); print\\('syntax OK'\\)\")",
+      "Bash(python -c \"from services.ai_service import analyze_sentence, analyze_sentence_deepseek, _build_analysis_prompt, _extract_json_from_response, _validate_analysis_result, _call_deepseek_for_analysis; print\\('all imports OK'\\)\")"
     ]
   }
 }
