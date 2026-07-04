@@ -385,6 +385,29 @@ export async function clearGrammarHistory(): Promise<void> {
   if (!res.ok) throw new Error(`清空语法历史失败: ${res.status}`);
 }
 
+// ====================== 句型提示 AI 生成 ======================
+export interface HintsResult {
+  patterns: string[];
+  vocabulary: string[];
+}
+
+export async function generateHints(
+  scene: string,
+  sceneChoice: string,
+  messages: ConversationMessage[],
+): Promise<HintsResult> {
+  const res = await postJSON('/api/hints/generate', {
+    scene,
+    scene_choice: sceneChoice,
+    messages,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: '生成句型提示失败' }));
+    throw new Error(err.detail || `生成句型提示失败: HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
 // ====================== 句子收藏翻译 ======================
 export async function translateSentence(text: string): Promise<string> {
   return translateToChinese(text);
@@ -460,16 +483,36 @@ export async function fetchExamDetail(examId: string): Promise<ExamResult> {
   return res.json();
 }
 
-export async function analyzeSentence(text: string): Promise<SentenceAnalysisResult> {
+export async function analyzeSentence(text: string, force: boolean = false): Promise<SentenceAnalysisResult> {
   const res = await fetch(`${API_BASE}/api/listening/analyze`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       ...getAuthHeaders(),
     },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ text, force }),
   });
-  if (!res.ok) throw new Error(`句子分析失败: ${res.status}`);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: '句子分析失败' }));
+    throw new Error(err.detail || `句子分析失败: HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+/** 用户私有句子分析（收藏页） */
+export async function analyzeSentencePrivate(text: string, force: boolean = false): Promise<SentenceAnalysisResult> {
+  const res = await fetch(`${API_BASE}/sentences/analyze`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify({ text, force }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: '句子分析失败' }));
+    throw new Error(err.detail || `句子分析失败: HTTP ${res.status}`);
+  }
   return res.json();
 }
 

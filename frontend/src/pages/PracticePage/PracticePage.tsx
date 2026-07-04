@@ -260,6 +260,9 @@ export function PracticePage() {
             isLoading={isLoading}
             prefillText={prefillText}
             onPrefillConsumed={handlePrefillConsumed}
+            sceneChoice={sceneChoice}
+            scene={scene}
+            messages={messages}
           />
         </div>
 

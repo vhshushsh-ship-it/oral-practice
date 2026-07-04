@@ -1,10 +1,12 @@
 import time
 import json
+import asyncio
 import aiomysql
 from fastapi import APIRouter, HTTPException, Query, Depends
 from db import get_db, release_db
 from models.schemas import ExamSubmitBody, SentenceAnalysisBody, GrammarCheckBody
 from routers.auth_dependency import get_current_user
+from services.ai_service import analyze_sentence_deepseek
 
 
 router = APIRouter(prefix="/api/listening", tags=["listening"])
@@ -351,18 +353,23 @@ async def get_exam_detail(exam_id: str, user_id: str = Depends(get_current_user)
 
 @router.post("/analyze")
 async def analyze(body: SentenceAnalysisBody):
+    """公共句子分析 — 缓存优先，未命中则调用 DeepSeek 实时生成（全局复用）"""
+    text = body.text.strip()
+    if not text:
+        raise HTTPException(status_code=400, detail="句子内容不能为空")
+
+    # 1. 查全局缓存
     db = await get_db()
     try:
         async with db.cursor(aiomysql.DictCursor) as cur:
             await cur.execute(
-                "SELECT connected_speech, sense_groups_segmented, sense_groups_explanation FROM listening_sentence_analysis WHERE sentence_text = %s OR %s LIKE CONCAT('%%', sentence_text, '%%') ORDER BY CHAR_LENGTH(sentence_text) DESC LIMIT 1",
-                (body.text, body.text),
+                "SELECT connected_speech, sense_groups_segmented, sense_groups_explanation "
+                "FROM listening_sentence_analysis WHERE sentence_text = %s LIMIT 1",
+                (text,),
             )
             row = await cur.fetchone()
             if row:
-                # Parse cached connected_speech
                 cs = json.loads(row["connected_speech"]) if isinstance(row["connected_speech"], str) else row["connected_speech"]
-                # Only use cache if connected_speech is non-empty (avoid returning stale failed analysis)
                 if isinstance(cs, list) and len(cs) > 0:
                     return {
                         "connected_speech": cs,
@@ -371,16 +378,52 @@ async def analyze(body: SentenceAnalysisBody):
                             "explanation": row["sense_groups_explanation"],
                         },
                     }
-                # Empty connected_speech in cache → fall through
     finally:
         await release_db(db)
 
-    # 未命中缓存 — 直接返回空结果，不调用大模型
+    # 2. 缓存未命中 → 实时调用 DeepSeek
+    try:
+        loop = asyncio.get_running_loop()
+        result = await asyncio.wait_for(
+            loop.run_in_executor(None, analyze_sentence_deepseek, text),
+            timeout=150.0,
+        )
+    except asyncio.TimeoutError:
+        raise HTTPException(status_code=504, detail="句子分析超时，请稍后重试")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"句子分析失败: {str(e)}")
+
+    # 3. 写入全局缓存（best-effort，失败不影响返回）
+    db2 = await get_db()
+    try:
+        async with db2.cursor() as cur:
+            await cur.execute(
+                "INSERT INTO listening_sentence_analysis "
+                "(sentence_text, connected_speech, sense_groups_segmented, sense_groups_explanation) "
+                "VALUES (%s, %s, %s, %s) "
+                "ON DUPLICATE KEY UPDATE "
+                "connected_speech = VALUES(connected_speech), "
+                "sense_groups_segmented = VALUES(sense_groups_segmented), "
+                "sense_groups_explanation = VALUES(sense_groups_explanation)",
+                (
+                    text,
+                    json.dumps(result["connected_speech"], ensure_ascii=False),
+                    result["sense_groups"]["segmented"],
+                    result["sense_groups"]["explanation"],
+                ),
+            )
+            await db2.commit()
+    except Exception as e:
+        print(f"[ANALYZE CACHE] 写入全局缓存失败: {e}")
+    finally:
+        await release_db(db2)
+
+    # 4. 返回
     return {
-        "connected_speech": [],
+        "connected_speech": result["connected_speech"],
         "sense_groups": {
-            "segmented": body.text,
-            "explanation": "暂无分析数据",
+            "segmented": result["sense_groups"]["segmented"],
+            "explanation": result["sense_groups"]["explanation"],
         },
     }
 

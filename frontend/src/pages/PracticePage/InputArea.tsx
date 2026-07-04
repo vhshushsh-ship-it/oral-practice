@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { SentenceHintPanel } from './SentenceHintPanel';
+import type { ConversationMessage } from '../../types';
 
 interface RecordingState {
   isRecording: boolean;
@@ -19,9 +21,12 @@ interface Props {
   isLoading: boolean;
   prefillText?: string | null;
   onPrefillConsumed?: () => void;
+  sceneChoice: string;
+  scene: string;
+  messages: ConversationMessage[];
 }
 
-export function InputArea({ recording, onSendText, isLoading, prefillText, onPrefillConsumed }: Props) {
+export function InputArea({ recording, onSendText, isLoading, prefillText, onPrefillConsumed, sceneChoice, scene, messages }: Props) {
   const [text, setText] = useState('');
 
   // Accept prefill text from outside (e.g. grammar correction)
@@ -65,19 +70,27 @@ export function InputArea({ recording, onSendText, isLoading, prefillText, onPre
         )}
 
         {!recording.state.isRecording ? (
-          <button
-            onClick={recording.start}
-            style={{
-              padding: '8px 18px',
-              background: 'var(--accent)',
-              color: '#fff',
-              fontSize: 13,
-              fontFamily: 'var(--font-mono)',
-              letterSpacing: '0.04em',
-            }}
-          >
-            开始录音
-          </button>
+          <>
+            <button
+              onClick={recording.start}
+              style={{
+                padding: '8px 18px',
+                background: 'var(--accent)',
+                color: '#fff',
+                fontSize: 13,
+                fontFamily: 'var(--font-mono)',
+                letterSpacing: '0.04em',
+              }}
+            >
+              开始录音
+            </button>
+            <SentenceHintPanel
+              sceneChoice={sceneChoice}
+              scene={scene}
+              messages={messages}
+              onFillInput={(text) => { setText(text); }}
+            />
+          </>
         ) : (
           <>
             <button

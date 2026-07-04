@@ -11,6 +11,7 @@ from routers.tts_router import router as tts_router
 from routers.listening_router import router as listening_router
 from routers.auth_router import router as auth_router
 from routers.stats_router import router as stats_router
+from routers.hints_router import router as hints_router
 from db import init_db
 from db.seed import seed_listening_data
 
@@ -50,6 +51,7 @@ app.include_router(tts_router)
 app.include_router(listening_router)
 app.include_router(auth_router)
 app.include_router(stats_router)
+app.include_router(hints_router)
 
 if __name__ == "__main__":
     import uvicorn

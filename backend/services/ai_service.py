@@ -21,12 +21,28 @@ def clean_ai_reply(text: str) -> str:
     return cleaned.strip()
 
 
+# ═══════════════════════════════════════════════════════════════
+# 美式口语风格规则（注入所有场景对话）
+# ═══════════════════════════════════════════════════════════════
+_AMERICAN_SPOKEN_STYLE = """
+=== AMERICAN CASUAL SPOKEN ENGLISH RULES (MUST FOLLOW) ===
+1. LENGTH: 2-3 short sentences max. Each sentence ≤15 words. No long paragraphs, no complex clauses.
+2. CONTRACTIONS: Use gonna, wanna, kinda, sorta, y'all, dunno, gotta, lemme, gimme, outta, ain't.
+3. INTERJECTIONS: Use haha, wow, huh, right, cool, nah, sure, oh, yep, nope, uh-huh, hey naturally.
+4. VOCABULARY: Everyday spoken words only. Replace formal/written words with casual equivalents. No academic or literary language.
+5. TOPIC: ONE lightweight topic at a time. Don't pile on multiple questions.
+6. ENDING: End with a short open-ended question to invite the user to continue. No long monologues.
+7. TONE: Relaxed, casual, friendly — like texting or chatting with a close friend your age. Not a teacher or a textbook.
+"""
+
+
 def _build_chat_prompt(user_text: str, scene: str, conversation_history: list = None, memory_context: list[str] = None) -> str:
     """构建对话 prompt（供 streaming 和非 streaming 共用）"""
     if conversation_history is None:
         conversation_history = []
 
     prompt = SCENE_ROLES.get(scene, SCENE_ROLES["restaurant"]) + "\n"
+    prompt += _AMERICAN_SPOKEN_STYLE + "\n"
 
     if memory_context:
         prompt += "\nHere are relevant past conversations in this scene for context:\n"
@@ -122,29 +138,24 @@ def translate_to_english(text: str) -> str:
 
 def _build_analysis_prompt(text: str) -> str:
     """构建句子分析 prompt（供 analyze_sentence 和 analyze_sentence_deepseek 共用）"""
-    return f"""你是英语发音专家。请分析以下英文句子的连读现象和意群切分，严格返回纯JSON格式，不要加任何多余的文字、注释、markdown：
+    return f"""Analyze this English sentence for connected speech and sense groups. Return ONLY valid JSON:
 
 {{
   "connected_speech": [
-    {{
-      "words": "原文词组，如 has survived",
-      "phonetic": "美式音标（American IPA），如 /həz sərˈvaɪvd/（注意：请使用美式音标体系，不要使用英式音标符号如 /ɒ/ /əʊ/ /ɪə/ /eə/ /ʊə/ /ɜː/ /ɔː/ /ɑː/ /iː/ /uː/，应使用对应的美式 /ɑ/ /oʊ/ /ɪr/ /er/ /ʊr/ /ɜr/ /ɔ/ /ɑ/ /i/ /u/）",
-      "description": "连读/弱读/不完全爆破现象的中文解释，说明具体发生了什么音变，如：/z/ 与 /s/ 相邻，可连成轻微延长或短暂停顿（避免吞音）"
-    }}
+    {{ "words": "...", "phonetic": "...", "description": "中文解释" }}
   ],
-  "sense_groups": {{
-    "segmented": "用 / 分隔意群的完整句子",
-    "explanation": "意群切分依据的中文解释，说明为什么这样划分，以及英语母语者朗读时的停顿规律"
-  }}
+  "sense_groups": {{ "segmented": "... / ...", "explanation": "中文划分依据" }}
 }}
 
-规则：
-- connected_speech 列出句子中所有连读、弱读、不完全爆破、辅元连读等现象，每条包含原词组、音标、现象解释
-- sense_groups.segmented 按意群用 " / " 切分整个句子
-- sense_groups.explanation 解释划分原则
-- 所有解释使用中文
+Rules:
+- GA American IPA, rhotic, flapped /t,d/→[ɾ], use /oʊ ɑ ɜr/ not /əʊ ɒ ɜː/
+- Connected speech types: C+V linking, C+C blending, flapping, reduction (gonna/wanna), elision, intrusive R, palatalization (did you→dɪdʒə), unreleased stops
+- Each item: name the rule, explain articulatory mechanism in Chinese, give connected IPA not citation form
+- Sense groups: split at clause boundaries, punctuation, long subjects; keep determiner+noun, aux+verb, prep+object together; 3-8 words each
+- Reduced forms: "to"→/tə/, "and"→/ən/, "of"→/əv/
+- description field: Chinese, specific (e.g. "舌尖从上齿龈滑向硬腭"), no vague phrases
 
-句子：{text}"""
+Sentence: "{text}" """
 
 
 def _extract_json_from_response(raw: str) -> dict:
@@ -214,30 +225,32 @@ def _call_deepseek_for_analysis(text: str) -> dict:
     prompt = _build_analysis_prompt(text)
 
     last_exc = None
-    for attempt in range(3):
+    for attempt in range(2):
         try:
             response = client.chat.completions.create(
                 model="deepseek-v4-flash",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.1,
-                max_tokens=1500,
-                timeout=30,
+                max_tokens=4096,
+                timeout=60,
             )
             raw = response.choices[0].message.content
             if not raw:
+                print(f"[DEEPSEEK ANALYZE] 空 content: finish_reason={response.choices[0].finish_reason}, "
+                      f"usage={response.usage}, model={response.model}")
                 raise ValueError(f"DeepSeek 返回空 content: finish_reason={response.choices[0].finish_reason}")
             result = _extract_json_from_response(raw)
             return _validate_analysis_result(result)
         except Exception as e:
             last_exc = e
-            if attempt < 2:
-                wait = 2 ** attempt  # 1s, 2s
+            if attempt < 1:  # only retry once more (2 total attempts: 0 → retry, 1 → fail)
+                wait = 2 ** attempt  # 1s
                 print(f"[DEEPSEEK ANALYZE] 第 {attempt + 1} 次尝试失败 ({type(e).__name__}: {e})，{wait}s 后重试...")
                 import time as _time
                 _time.sleep(wait)
             else:
                 import traceback
-                print(f"[DEEPSEEK ANALYZE ERROR] 3 次尝试全部失败。最后错误: {type(e).__name__}: {e}")
+                print(f"[DEEPSEEK ANALYZE ERROR] 2 次尝试全部失败。最后错误: {type(e).__name__}: {e}")
                 traceback.print_exc()
     raise last_exc
 
@@ -332,6 +345,80 @@ def check_grammar_deepseek(text: str) -> dict:
                 print(f"[GRAMMAR CHECK ERROR] All 3 attempts failed. Last: {type(e).__name__}: {e}")
                 traceback.print_exc()
     raise last_exc
+
+
+def generate_sentence_hints(scene: str, scene_choice: str, messages: list) -> dict:
+    """根据当前对话上下文，调用 DeepSeek V4 Flash 实时生成句型提示和核心词汇。
+    返回: {"patterns": [...], "vocabulary": [...]}
+    """
+    # 场景中文标签映射
+    scene_labels = {
+        "free_talk": "英语自由交流", "restaurant": "餐厅点餐用餐",
+        "interview": "职场英文面试", "hotel": "酒店入住办理",
+        "home_life": "日常居家交流", "directions": "出行问路乘车",
+        "shopping": "商场购物逛街", "medical": "看病就医问诊",
+        "campus": "校园师生交流", "social": "日常社交寒暄",
+        "travel": "旅游景点沟通", "workplace": "职场工作沟通",
+        "service": "生活办事咨询", "phone_chat": "电话微信沟通",
+        "hobbies": "兴趣爱好闲聊", "transport": "机场高铁出行",
+        "housing": "租房看房沟通",
+    }
+    scene_label = scene_labels.get(scene, scene)
+
+    # 取最近 20 条消息作为对话上下文
+    recent = messages[-20:] if messages else []
+    context_lines = []
+    for msg in recent:
+        role_label = "User" if msg["role"] == "user" else "AI Partner"
+        context_lines.append(f"{role_label}: {msg['content']}")
+    context_block = "\n".join(context_lines) if context_lines else "(no conversation yet — just a welcome message)"
+
+    prompt = f"""You are an English speaking practice assistant. The user is practicing oral English in the scenario: "{scene_label}".
+
+Below is the most recent conversation between the user and the AI speaking partner:
+---
+{context_block}
+---
+
+Based on the TOPICS and CONTENT of this specific conversation, generate two lists:
+
+1. "patterns": 10-15 useful spoken English sentence patterns/phrases that are directly relevant to what the user is currently talking about. These should be natural, colloquial patterns a learner could use to continue or improve this specific conversation. Focus on the actual topics being discussed, not generic scene phrases.
+
+2. "vocabulary": 15-20 key English vocabulary words or short phrases (1-3 words) that are relevant to the conversation topics. Include a mix of nouns, verbs, adjectives, and expressions the user might need.
+
+Rules:
+- Make everything highly contextual to the actual conversation, not generic to the scene
+- If there is no conversation yet (just a welcome message), generate hints appropriate to starting a conversation in this scene
+- Patterns should be complete, ready-to-use phrases, not templates with blanks
+- Vocabulary should be words the user is likely to need when discussing these topics
+- Keep all content in English
+
+Return ONLY valid JSON (no markdown, no explanation):
+{{"patterns": ["phrase 1", "phrase 2", ...], "vocabulary": ["word1", "word2", ...]}}"""
+
+    try:
+        client = _get_deepseek_client()
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+            max_tokens=1000,
+        )
+        raw = response.choices[0].message.content
+        if not raw:
+            raise ValueError("DeepSeek returned empty response for hints generation")
+        result = _extract_json_from_response(raw)
+
+        # Validate structure
+        if "patterns" not in result or "vocabulary" not in result:
+            raise ValueError("Hints response missing 'patterns' or 'vocabulary'")
+        if not isinstance(result["patterns"], list) or not isinstance(result["vocabulary"], list):
+            raise ValueError("Hints response fields must be arrays")
+
+        return result
+    except Exception as e:
+        print(f"[HINTS GENERATE ERROR] {e}")
+        raise
 
 
 def query_word_ai(word: str) -> dict:
