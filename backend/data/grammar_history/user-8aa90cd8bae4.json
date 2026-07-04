@@ -1,0 +1,18 @@
+[
+  {
+    "sourceSent": "Can't wait to get that math sorted out!",
+    "score": 100,
+    "errorIndex": [],
+    "errorInfo": [],
+    "fixedSent": "Can't wait to get that math sorted out!",
+    "createdAt": null
+  },
+  {
+    "sourceSent": "I'm a little bad",
+    "score": 100,
+    "errorIndex": [],
+    "errorInfo": [],
+    "fixedSent": "I'm a little bad",
+    "createdAt": null
+  }
+]

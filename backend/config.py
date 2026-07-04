@@ -3,7 +3,6 @@ import json
 import secrets
 from pathlib import Path
 from dotenv import load_dotenv
-import dashscope
 import chromadb
 
 # ====================== 路径配置 ======================
@@ -14,7 +13,6 @@ DATA_DIR.mkdir(exist_ok=True)
 env_path = BASE_DIR / ".env"
 load_dotenv(dotenv_path=env_path)
 
-dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 
@@ -43,6 +41,12 @@ CHAT_BASE_DIR.mkdir(exist_ok=True)
 
 NOTES_BASE_DIR = DATA_DIR / "word_notes"
 NOTES_BASE_DIR.mkdir(exist_ok=True)
+
+SENTENCE_BASE_DIR = DATA_DIR / "sentence_collection"
+SENTENCE_BASE_DIR.mkdir(exist_ok=True)
+
+GRAMMAR_BASE_DIR = DATA_DIR / "grammar_history"
+GRAMMAR_BASE_DIR.mkdir(exist_ok=True)
 
 CACHE_FILE = DATA_DIR / "word_cache.json"
 if not CACHE_FILE.exists():
@@ -98,21 +102,21 @@ SCENE_ROLES = {
 
 # ====================== 场景初始欢迎语 ======================
 INITIAL_MESSAGES = {
-    "free_talk": "Hi there! Feel free to talk about anything you like, I'm here to chat in English!",
-    "restaurant": "Hello! Welcome. What would you like to order?",
-    "interview": "Hello. Please introduce yourself.",
-    "hotel": "Welcome. Do you have a reservation?",
-    "home_life": "Hey! What's something you usually do at home? I'd love to chat about daily life!",
-    "directions": "Hi there! Need help finding a place or asking for directions?",
-    "shopping": "Welcome! Looking for something specific today, or just browsing?",
-    "medical": "Hello. I'm here to help you practice talking to a doctor. What's on your mind?",
-    "campus": "Hi! Let's chat about school life, classes, or anything related to campus!",
-    "social": "Hey! Let's practice casual small talk, like greeting people or chatting about your day!",
-    "travel": "Welcome! Planning a trip? Let's practice talking about travel and tourist spots!",
-    "workplace": "Hi! Let's practice professional conversations for work, like meetings or emails!",
-    "service": "Hello! Need help practicing talking to staff at banks, post offices, or other services?",
-    "phone_chat": "Hi! Let's practice phone or WeChat conversations, like making plans or catching up!",
-    "hobbies": "Hey! What do you like to do in your free time? Let's chat about hobbies!",
-    "transport": "Hi! Let's practice talking about airports, trains, or commuting!",
-    "housing": "Hello! Let's practice conversations about renting apartments or talking to landlords!",
+    "free_talk": "Hey! What's up? Anything you wanna chat about today?",
+    "restaurant": "Hey! Know what you're getting, or still checking the menu?",
+    "interview": "Hi there. Why don't you tell me a little about yourself?",
+    "hotel": "Hey, welcome! Do you have a reservation with us?",
+    "home_life": "Hey! So what's your home routine like? Big breakfast person or nah?",
+    "directions": "Hi! You look a little lost, haha. Where are ya tryna go?",
+    "shopping": "Hey! Just looking around, or got something in mind?",
+    "medical": "Hey, what's been bothering ya? Just take your time.",
+    "campus": "Hey! How's school treating you? Any tough classes this term?",
+    "social": "Hey! How's your day going so far? Anything fun happen?",
+    "travel": "Hey! You visiting or just checking out the spots around here?",
+    "workplace": "Hey, how's the project coming along? Making progress?",
+    "service": "Hi! What can I help ya with today?",
+    "phone_chat": "Hey! Been a while, huh? What've you been up to?",
+    "hobbies": "Hey! So what do you do for fun? Into games or music or something?",
+    "transport": "Hey! Where ya headed? Need help figuring out the right train?",
+    "housing": "Hey! So what kinda place are you looking for — something cozy or bigger?",
 }

@@ -28,6 +28,7 @@ export function SentencesPage() {
     return (
       <div className="page">
         <SentenceAnalysis
+          analysisSource="private"
           en={analyzingItem.en}
           zh={analyzingItem.zh}
           onPlay={() => speak(analyzingItem.en)}

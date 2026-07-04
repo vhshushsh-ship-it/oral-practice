@@ -249,6 +249,157 @@ NEW_SET = {
 }
 
 
+# ── 2021年12月 CET-4 真题（第一套）──
+
+NEW_SET_2021 = {
+    "id": "cet4-2021-12",
+    "name": "2021年12月 CET-4 真题（第一套）",
+    "type": "cet4",
+    "year": 2021,
+    "month": 12,
+    "sections": [
+        {
+            "id": "cet4-2021-12-secA",
+            "name": "Section A: News Reports",
+            "section_type": "news_report",
+            "sort_order": 0,
+            "items": [
+                {
+                    "id": "cet4-2021-12-itemA1",
+                    "name": "News Report One",
+                    "sort_order": 0,
+                    "sentences": [
+                        ("Rescue crews in southern Spain have saved dozens of people trapped by severe flooding caused by heavy rain.", "西班牙南部救援人员救出了数十名被暴雨引发的严重洪水围困的民众。"),
+                        ("Continuous downpours over two days made local rivers overflow, submerging many residential streets and low-lying houses.", "连续两日的大雨导致当地河水泛滥，淹没多处居民区街道与低洼房屋。"),
+                        ("Firefighters used boats to evacuate trapped residents from flooded homes.", "消防员乘坐船只，从被淹住宅中疏散被困居民。"),
+                        ("Local government opened several public sports halls as temporary shelters for homeless people.", "当地政府开放多处公共体育馆，作为受灾民众的临时安置点。"),
+                        ("Officials warned residents to stay away from river banks as more rainfall is forecast in the coming days.", "有关官员提醒居民远离河岸，未来几日仍有降雨预报。"),
+                        ("No deaths have been reported in this flood, though dozens of people suffered minor injuries.", "本次洪水暂无人员遇难报告，但数十人受轻伤。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2021-12-itemA2",
+                    "name": "News Report Two",
+                    "sort_order": 1,
+                    "sentences": [
+                        ("A newly published report shows that the number of wild bees across Europe has dropped sharply in the past twenty years.", "一份最新发布的报告显示，过去二十年间欧洲野生蜜蜂数量大幅锐减。"),
+                        ("Experts point out three major reasons for the decline: widespread use of farm pesticides, loss of wild flower fields due to farmland expansion, and climate change.", "专家指出三大诱因：农田杀虫剂的大范围使用、农田扩张造成野生花草用地缩减以及气候变化。"),
+                        ("Wild bees play an irreplaceable role in crop pollination, supporting the production of fruits and vegetables.", "野生蜜蜂在农作物授粉环节有着不可替代的作用，保障果蔬作物产出。"),
+                        ("Without enough wild bees, local agricultural output will face obvious decline.", "如果野生蜜蜂数量不足，当地农业产量将明显下滑。"),
+                        ("Environmental groups are calling on European governments to limit harmful pesticide use and reserve more wild flowering land to protect bee populations.", "环保组织呼吁欧洲各国政府限制有害农药使用，预留更多野生花草用地以保护蜜蜂种群。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2021-12-itemA3",
+                    "name": "News Report Three",
+                    "sort_order": 2,
+                    "sentences": [
+                        ("London's famous Central Library reopened to the public on Monday after a two-year repair project.", "伦敦知名的中央图书馆在历时两年修缮工程后，于周一重新对外开放。"),
+                        ("The old building was built in 1922 and suffered serious roof damage after heavy storms three years ago.", "这座老建筑始建于1922年，三年前受强暴风雨侵袭，屋顶损毁严重。"),
+                        ("Repair workers replaced broken roof materials and fixed old indoor facilities while keeping the library's original classic architectural style.", "修缮工人更换破损屋顶建材、修整老旧室内设施，同时完整保留图书馆原有的经典建筑风格。"),
+                        ("The library adds a new children's reading zone and digital resource room during the renovation.", "改造期间图书馆新增儿童阅览区与数字资源室。"),
+                        ("Library managers say daily opening hours will be extended by two hours, and all books and digital resources are free for local citizens to borrow and use.", "图书馆负责人表示，每日开放时长延长两小时，所有纸质藏书与数字资源对本地市民免费借阅使用。"),
+                    ],
+                },
+            ],
+        },
+        {
+            "id": "cet4-2021-12-secB",
+            "name": "Section B: Long Conversations",
+            "section_type": "long_conversation",
+            "sort_order": 1,
+            "items": [
+                {
+                    "id": "cet4-2021-12-itemB1",
+                    "name": "Conversation One",
+                    "sort_order": 0,
+                    "sentences": [
+                        ("Hi, Mark. I heard you are looking for a part-time job these days. Have you found a suitable one?", "嗨，马克，听说你最近在找兼职，找到合适的了吗？"),
+                        ("Not yet. I turned down two job offers last week. One is a restaurant waiter, the other works as a supermarket cashier.", "还没有，上周我推掉了两份录用通知，一份是餐厅服务员，另一份是超市收银员。"),
+                        ("Why did you refuse them? Both jobs can bring you pocket money.", "为什么拒绝呢？两份工作都能赚取零花钱。"),
+                        ("The working time conflicts with my afternoon compulsory courses. I cannot skip classes for part-time work.", "工作时间和我下午的必修课冲突，我不能为了兼职逃课。"),
+                        ("That makes sense. What kind of part-time work are you searching for exactly?", "原来是这样。那你想找什么样的兼职？"),
+                        ("I hope to find a job related to English writing or tutoring. My major is English, and I want to improve practical skills.", "我希望找英语写作或者家教相关的工作，我的专业是英语，想锻炼实操能力。"),
+                        ("I know the university's tutoring center is recruiting student tutors for middle school students now. Working hours are only on weekends.", "我知道学校家教中心正在招募中学生课外辅导老师，只需要周末上班。"),
+                        ("That sounds perfect! Where can I submit my application form?", "这太合适了！在哪里递交申请表？"),
+                        ("You can fill out forms online on the center's official website before this Friday.", "本周五前在中心官网线上填表即可。"),
+                        ("Thanks a lot for the useful information. I will prepare my resume right away.", "非常感谢，我立刻准备简历。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2021-12-itemB2",
+                    "name": "Conversation Two",
+                    "sort_order": 1,
+                    "sentences": [
+                        ("Hello, Susan. Do you have plans for the coming holiday break?", "你好苏珊，马上假期了，你有出行计划吗？"),
+                        ("I plan to go to a coastal city with my parents for a five-day trip.", "我打算和父母去一座海滨城市玩五天。"),
+                        ("That sounds wonderful. Which coastal city will you visit?", "很不错，准备去哪个海滨城市？"),
+                        ("Qingdao. We have booked a seaside hotel close to the beach.", "青岛，我们已经预订了临近沙滩的海景酒店。"),
+                        ("I've been there before. Local seafood and coastal scenery are really amazing. By the way, have you booked train tickets?", "我之前去过那里，当地海鲜和海滨风光特别棒。对了，火车票订好了吗？"),
+                        ("Not yet, the holiday ticket reservation is extremely tight these days. I plan to buy high-speed rail tickets tomorrow morning.", "还没有，假期车票一票难求，我打算明天早上抢高铁票。"),
+                        ("You'd better finish booking as soon as possible. Many tickets get sold out quickly during vacation.", "尽量尽早订票，节假日车票很快售罄。"),
+                        ("Right, I will set an early alarm tomorrow. What about your holiday arrangement?", "没错，我明天定闹钟早起抢票。那你假期怎么安排？"),
+                        ("I will stay on campus and finish my graduation paper. The submission deadline is early next month.", "留校写毕业论文，下月初就要提交定稿。"),
+                        ("All the best with your paper writing! I will bring you local seafood snacks after returning.", "祝你写作顺利！我回来给你带当地海鲜特产。"),
+                        ("Thank you, have a nice journey.", "谢谢，祝你旅途愉快。"),
+                    ],
+                },
+            ],
+        },
+        {
+            "id": "cet4-2021-12-secC",
+            "name": "Section C: Passages",
+            "section_type": "passage",
+            "sort_order": 2,
+            "items": [
+                {
+                    "id": "cet4-2021-12-itemC1",
+                    "name": "Passage One",
+                    "sort_order": 0,
+                    "sentences": [
+                        ("Many parents choose to send their children to different hobby training classes on weekends, including painting, dancing, musical instrument and sports courses.", "很多家长选择在周末送孩子参加各类兴趣培训班，包含绘画、舞蹈、乐器以及体育运动课程。"),
+                        ("Some parents believe these courses can help children develop all-round abilities and cultivate extra interests.", "部分家长认为兴趣课能够帮助孩子全面发展、培养特长。"),
+                        ("However, more and more educational experts hold different opinions.", "但越来越多的教育专家持不同看法。"),
+                        ("They point out too many after-school training courses take up children's rest and outdoor activity time.", "他们指出过量课外培训挤占孩子休息与户外活动时间。"),
+                        ("Kids are overburdened with heavy study tasks and easily feel tired and anxious.", "繁重课业压力让孩子身心疲惫、产生焦虑情绪。"),
+                        ("Experts suggest parents respect children's personal willingness.", "专家建议家长尊重孩子自身意愿。"),
+                        ("If a kid shows no interest in certain hobbies, forcing training will get opposite results.", "如果孩子对某项特长毫无兴趣，强迫培训只会适得其反。"),
+                        ("It's better to leave enough spare time for children to play outdoors and develop interests naturally.", "应当留出充足空余时间，让孩子户外玩耍、顺其自然培养爱好。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2021-12-itemC2",
+                    "name": "Passage Two",
+                    "sort_order": 1,
+                    "sentences": [
+                        ("Walking is one of the easiest and most affordable daily sports for ordinary people.", "步行是普通人门槛最低、成本最小的日常运动。"),
+                        ("Unlike swimming or ball games, walking requires no special sports equipment and extra venue fees.", "不同于游泳或球类运动，步行不需要专业器材，也不用支付场地费用。"),
+                        ("People can walk on neighborhood paths, city parks or sidewalks whenever they have free time.", "人们有空时可以在小区步道、城市公园或者人行道散步。"),
+                        ("Medical research proves that regular daily walking effectively improves blood circulation, strengthens heart function and helps control body weight.", "医学研究证实，每日规律步行能够促进血液循环、增强心肺功能、控制体重。"),
+                        ("Besides, taking a slow walk after meals helps digest food and releases daily work pressure.", "除此之外，饭后慢走有助消化，舒缓日常工作压力。"),
+                        ("Doctors recommend people to keep 30-minute walking exercise every day, and maintain a relaxed pace instead of walking too fast.", "医生建议每日坚持30分钟步行，保持舒缓步伐，不必快步疾走。"),
+                    ],
+                },
+                {
+                    "id": "cet4-2021-12-itemC3",
+                    "name": "Passage Three",
+                    "sort_order": 2,
+                    "sentences": [
+                        ("Online shopping has greatly changed people's daily consumption habits over the past decade.", "过去十年，网购极大改变了大众消费习惯。"),
+                        ("Consumers can search for products, compare prices and finish payment at home without visiting physical stores.", "消费者足不出户就能选购商品、比价付款，不用前往实体门店。"),
+                        ("Online shops cut down costs such as store rent and shop assistants' salary, so most online goods have lower prices than offline counterparts.", "网店省去门店租金、店员薪酬等开支，多数商品售价低于实体店。"),
+                        ("However, online shopping also has obvious drawbacks.", "但网购短板同样突出。"),
+                        ("Customers cannot touch or try on goods before purchase, leading to frequent return problems caused by size, quality mismatches.", "消费者下单前无法触摸、试用商品，经常因尺码、实物不符产生退货纠纷。"),
+                        ("In addition, false advertising and fake products occasionally appear on some small shopping platforms.", "此外，部分小型购物平台不时出现虚假宣传与伪劣产品。"),
+                        ("Consumers are advised to choose large official shopping websites and check product comments carefully before placing orders.", "建议消费者优先选择正规大型购物平台，下单前仔细查看用户评价。"),
+                    ],
+                },
+            ],
+        },
+    ],
+}
+
+
 # ── 2025年12月 CET-4 真题 题目（第一套）──
 
 NEW_SET_QUESTIONS = [
@@ -285,6 +436,44 @@ NEW_SET_QUESTIONS = [
     {"id": "cet4-2025-12-q23", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC3", "question_number": 23, "question_text": "What can the price of school uniforms Spark among families in financial difficulty?", "question_text_zh": "校服的价格会在经济困难的家庭中引发什么？", "option_a": "It may make children hate going to school.", "option_b": "It may cause worries among those families.", "option_c": "It will change people's consumption habits.", "option_d": "It will lead to the rise of local commodity prices.", "correct_answer": "B", "sort_order": 1},
     {"id": "cet4-2025-12-q24", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC3", "question_number": 24, "question_text": "What did the head teacher think of the school's new uniform rules?", "question_text_zh": "校长对学校的新校服规定有什么看法？", "option_a": "It brings too much trouble to parents.", "option_b": "It is not suitable for poor students.", "option_c": "It needs to be discussed and improved.", "option_d": "It helps improve students' behavior and study.", "correct_answer": "D", "sort_order": 2},
     {"id": "cet4-2025-12-q25", "set_id": "cet4-2025-12", "section_id": "cet4-2025-12-secC", "item_id": "cet4-2025-12-itemC3", "question_number": 25, "question_text": "What did Lucinda May have to do to buy her child the correct pair of shoes?", "question_text_zh": "Lucinda May为了给孩子买一双符合规定的鞋子不得不做了什么？", "option_a": "Borrow money from her own parents.", "option_b": "Complain about the rule to the school.", "option_c": "Buy cheap second-hand shoes for her kid.", "option_d": "Ask the school to reduce uniform costs.", "correct_answer": "A", "sort_order": 3},
+]
+
+# ── 2021年12月 CET-4 真题 题目（第一套）──
+
+NEW_SET_2021_QUESTIONS = [
+    # ── Section A: News Report One (Q1-Q2) ──
+    {"id": "cet4-2021-12-q1", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secA", "item_id": "cet4-2021-12-itemA1", "question_number": 1, "question_text": "What caused the severe flooding in southern Spain?", "question_text_zh": "是什么导致了西班牙南部的严重洪水？", "option_a": "Sudden ice melting in nearby mountains.", "option_b": "Two days of continuous heavy rainfall.", "option_c": "Man-made damage to river dams.", "option_d": "High tide from nearby ocean.", "correct_answer": "B", "sort_order": 0},
+    {"id": "cet4-2021-12-q2", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secA", "item_id": "cet4-2021-12-itemA1", "question_number": 2, "question_text": "What did local government do for homeless flood victims?", "question_text_zh": "当地政府为无家可归的洪水灾民做了什么？", "option_a": "Provided free medical treatment in hospitals.", "option_b": "Arranged temporary accommodation in sports halls.", "option_c": "Sent food and clothes door to door.", "option_d": "Moved all residents to higher ground permanently.", "correct_answer": "B", "sort_order": 1},
+    # ── Section A: News Report Two (Q3-Q4) ──
+    {"id": "cet4-2021-12-q3", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secA", "item_id": "cet4-2021-12-itemA2", "question_number": 3, "question_text": "What is the main problem mentioned in the news report?", "question_text_zh": "新闻报道中提到的主要问题是什么？", "option_a": "Europe's fruit production keeps falling yearly.", "option_b": "Wild bee numbers in Europe have decreased greatly.", "option_c": "Pesticide pollution damages European farmland.", "option_d": "Many wild flowers disappear across European countries.", "correct_answer": "B", "sort_order": 0},
+    {"id": "cet4-2021-12-q4", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secA", "item_id": "cet4-2021-12-itemA2", "question_number": 4, "question_text": "What do environmental organizations urge governments to do?", "question_text_zh": "环保组织敦促政府做什么？", "option_a": "Develop new pollution-free pesticides.", "option_b": "Build special breeding bases for wild bees.", "option_c": "Restrict harmful pesticides and protect flower fields.", "option_d": "Change traditional crop planting patterns.", "correct_answer": "C", "sort_order": 1},
+    # ── Section A: News Report Three (Q5-Q7) ──
+    {"id": "cet4-2021-12-q5", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secA", "item_id": "cet4-2021-12-itemA3", "question_number": 5, "question_text": "Why was London Central Library closed for two years?", "question_text_zh": "伦敦中央图书馆为什么关闭了两年？", "option_a": "It was undergoing large-scale renovation work.", "option_b": "It lacked funds to maintain daily operation.", "option_c": "Its surrounding roads were under construction.", "option_d": "It needed to sort out massive old books.", "correct_answer": "A", "sort_order": 0},
+    {"id": "cet4-2021-12-q6", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secA", "item_id": "cet4-2021-12-itemA3", "question_number": 6, "question_text": "When was the Central Library originally constructed?", "question_text_zh": "中央图书馆最初建于何时？", "option_a": "In 1922.", "option_b": "Three years ago.", "option_c": "Twenty years ago.", "option_d": "Two years ago.", "correct_answer": "A", "sort_order": 1},
+    {"id": "cet4-2021-12-q7", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secA", "item_id": "cet4-2021-12-itemA3", "question_number": 7, "question_text": "What new service does the library provide after reopening?", "question_text_zh": "图书馆重新开放后提供了什么新服务？", "option_a": "Free professional training courses.", "option_b": "New children's area and digital resource room.", "option_c": "Free shuttle buses for distant readers.", "option_d": "Outdoor book markets every weekend.", "correct_answer": "B", "sort_order": 2},
+    # ── Section B: Conversation One (Q8-Q11) ──
+    {"id": "cet4-2021-12-q8", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secB", "item_id": "cet4-2021-12-itemB1", "question_number": 8, "question_text": "What has Mark done with two part-time job offers?", "question_text_zh": "Mark对两份兼职录用通知做了什么？", "option_a": "He accepted both of them immediately.", "option_b": "He refused these two job opportunities.", "option_c": "He postponed his final decision temporarily.", "option_d": "He recommended them to his classmates.", "correct_answer": "B", "sort_order": 0},
+    {"id": "cet4-2021-12-q9", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secB", "item_id": "cet4-2021-12-itemB1", "question_number": 9, "question_text": "What is the main reason for Mark's refusal?", "question_text_zh": "Mark拒绝的主要原因是什么？", "option_a": "The salary is far below his expectation.", "option_b": "Working time clashes with his classes.", "option_c": "Working environment is too noisy.", "option_d": "The job content is too difficult for him.", "correct_answer": "B", "sort_order": 1},
+    {"id": "cet4-2021-12-q10", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secB", "item_id": "cet4-2021-12-itemB1", "question_number": 10, "question_text": "What kind of part-time job does Mark prefer?", "question_text_zh": "Mark更喜欢哪种兼职工作？", "option_a": "Jobs related to English tutoring or writing.", "option_b": "Weekend jobs in campus cafeteria.", "option_c": "Offline sales work in downtown stores.", "option_d": "Part-time jobs for newspaper delivery.", "correct_answer": "A", "sort_order": 2},
+    {"id": "cet4-2021-12-q11", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secB", "item_id": "cet4-2021-12-itemB1", "question_number": 11, "question_text": "Where should Mark hand in his application?", "question_text_zh": "Mark应该在哪里递交申请？", "option_a": "Submit paper forms at the tutoring center office.", "option_b": "Send application via the official website online.", "option_c": "Email his resume to the woman's mailbox.", "option_d": "Hand in documents to his major teacher.", "correct_answer": "B", "sort_order": 3},
+    # ── Section B: Conversation Two (Q12-Q15) ──
+    {"id": "cet4-2021-12-q12", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secB", "item_id": "cet4-2021-12-itemB2", "question_number": 12, "question_text": "What is Susan's holiday plan?", "question_text_zh": "Susan的假期计划是什么？", "option_a": "Travel to Qingdao with her parents.", "option_b": "Finish her school paper at home.", "option_c": "Visit her relatives in coastal towns.", "option_d": "Take part in a seaside volunteer activity.", "correct_answer": "A", "sort_order": 0},
+    {"id": "cet4-2021-12-q13", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secB", "item_id": "cet4-2021-12-itemB2", "question_number": 13, "question_text": "What trouble does Susan meet about the trip?", "question_text_zh": "Susan的旅行遇到了什么麻烦？", "option_a": "She cannot find suitable accommodation.", "option_b": "It's hard to buy holiday train tickets.", "option_c": "Her parents change travel destination suddenly.", "option_d": "The local weather is not suitable for travelling.", "correct_answer": "B", "sort_order": 1},
+    {"id": "cet4-2021-12-q14", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secB", "item_id": "cet4-2021-12-itemB2", "question_number": 14, "question_text": "What will the man do during the holiday?", "question_text_zh": "男士假期会做什么？", "option_a": "Have a self-driving trip to the seaside.", "option_b": "Take a part-time job near the campus.", "option_c": "Stay at school to complete graduation paper.", "option_d": "Attend a short-term professional training.", "correct_answer": "C", "sort_order": 2},
+    {"id": "cet4-2021-12-q15", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secB", "item_id": "cet4-2021-12-itemB2", "question_number": 15, "question_text": "What will Susan bring back for the man after travel?", "question_text_zh": "Susan旅行后会给男士带回什么？", "option_a": "Handmade local crafts.", "option_b": "Delicious seafood snacks.", "option_c": "A set of local scenic postcards.", "option_d": "Special local fruit products.", "correct_answer": "B", "sort_order": 3},
+    # ── Section C: Passage One (Q16-Q18) ──
+    {"id": "cet4-2021-12-q16", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC1", "question_number": 16, "question_text": "What's the common practice among many parents on weekends?", "question_text_zh": "许多家长在周末的常见做法是什么？", "option_a": "Accompany kids to take various hobby training lessons.", "option_b": "Organize family outdoor sports regularly.", "option_c": "Buy many storybooks for children's reading.", "option_d": "Invite private teachers for home tutoring.", "correct_answer": "A", "sort_order": 0},
+    {"id": "cet4-2021-12-q17", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC1", "question_number": 17, "question_text": "What negative effect do too many training classes bring to kids?", "question_text_zh": "过多的培训班给孩子带来什么负面影响？", "option_a": "They lose enthusiasm for formal school courses.", "option_b": "They suffer tiredness and mental anxiety.", "option_c": "They refuse all kinds of outdoor activities.", "option_d": "They have conflicts with their parents frequently.", "correct_answer": "B", "sort_order": 1},
+    {"id": "cet4-2021-12-q18", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC1", "question_number": 18, "question_text": "What is experts' suggestion for parents?", "question_text_zh": "专家对家长的建议是什么？", "option_a": "Sign up fewer high-cost training courses.", "option_b": "Choose courses based on children's own interest.", "option_c": "Compare different training institutions carefully.", "option_d": "Focus only on kids' academic performance.", "correct_answer": "B", "sort_order": 2},
+    # ── Section C: Passage Two (Q19-Q21) ──
+    {"id": "cet4-2021-12-q19", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC2", "question_number": 19, "question_text": "What's the advantage of walking compared with other sports?", "question_text_zh": "与其他运动相比，步行的优势是什么？", "option_a": "It can burn fat much faster.", "option_b": "It needs no special equipment or venue cost.", "option_c": "It achieves better fitness effects in shorter time.", "option_d": "It is suitable for all people including seriously sick patients.", "correct_answer": "B", "sort_order": 0},
+    {"id": "cet4-2021-12-q20", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC2", "question_number": 20, "question_text": "What health benefit can regular walking bring?", "question_text_zh": "规律步行能带来什么健康益处？", "option_a": "Improve heart condition and control weight.", "option_b": "Completely cure chronic stomach diseases.", "option_c": "Help people stay away from all illnesses.", "option_d": "Improve people's sleep environment directly.", "correct_answer": "A", "sort_order": 1},
+    {"id": "cet4-2021-12-q21", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC2", "question_number": 21, "question_text": "How long does the doctor advise people to walk each day?", "question_text_zh": "医生建议人们每天步行多长时间？", "option_a": "Half an hour every single day.", "option_b": "One full hour after supper.", "option_c": "Twenty minutes before breakfast.", "option_d": "Forty minutes every other day.", "correct_answer": "A", "sort_order": 2},
+    # ── Section C: Passage Three (Q22-Q25) ──
+    {"id": "cet4-2021-12-q22", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC3", "question_number": 22, "question_text": "What convenience does online shopping bring to customers?", "question_text_zh": "网购给消费者带来了什么便利？", "option_a": "They can receive goods on the same day of purchase.", "option_b": "They shop at home without going to physical shops.", "option_c": "All online products enjoy free lifetime after-sale service.", "option_d": "Consumers can bargain freely with online shop owners.", "correct_answer": "B", "sort_order": 0},
+    {"id": "cet4-2021-12-q23", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC3", "question_number": 23, "question_text": "Why are online products usually cheaper?", "question_text_zh": "为什么网上的商品通常更便宜？", "option_a": "Online shops save rent and labor costs.", "option_b": "Online merchants purchase goods in huge quantities.", "option_c": "Online platforms offer constant official subsidies.", "option_d": "Online goods have simpler packing standards.", "correct_answer": "A", "sort_order": 1},
+    {"id": "cet4-2021-12-q24", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC3", "question_number": 24, "question_text": "What is one main shortcoming of online shopping?", "question_text_zh": "网购的一个主要缺点是什么？", "option_a": "Delivery speed is always uncontrollable.", "option_b": "Customers can't inspect products before buying.", "option_c": "Online payment is not safe enough nowadays.", "option_d": "Return service costs buyers extra money.", "correct_answer": "B", "sort_order": 2},
+    {"id": "cet4-2021-12-q25", "set_id": "cet4-2021-12", "section_id": "cet4-2021-12-secC", "item_id": "cet4-2021-12-itemC3", "question_number": 25, "question_text": "What suggestion is given to online shoppers?", "question_text_zh": "给网购者的建议是什么？", "option_a": "Buy discount goods only during big shopping festivals.", "option_b": "Avoid buying cheap products from small platforms.", "option_c": "Pick big formal websites and check user reviews.", "option_d": "Pay after receiving and checking all commodities.", "correct_answer": "C", "sort_order": 3},
 ]
 
 
@@ -341,24 +530,52 @@ async def seed_listening_data() -> None:
 
             await db.commit()
 
+        # Always seed 2021-12 set (safe: ON DUPLICATE KEY UPDATE)
+        ns21 = NEW_SET_2021
+        async with db.cursor() as cur:
+            await cur.execute(
+                "INSERT INTO listening_set(id, name, type, year, month, set_order) VALUES(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
+                (ns21["id"], ns21["name"], ns21["type"], ns21["year"], ns21["month"], 0),
+            )
+        for sec in ns21["sections"]:
+            async with db.cursor() as cur:
+                await cur.execute(
+                    "INSERT INTO listening_section(id, set_id, name, section_type, sort_order) VALUES(%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
+                    (sec["id"], ns21["id"], sec["name"], sec["section_type"], sec["sort_order"]),
+                )
+            for item in sec.get("items", []):
+                async with db.cursor() as cur:
+                    await cur.execute(
+                        "INSERT INTO listening_item(id, set_id, section_id, name, sort_order) VALUES(%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE name=VALUES(name)",
+                        (item["id"], ns21["id"], sec["id"], item["name"], item["sort_order"]),
+                    )
+                    for i, (en, zh) in enumerate(item["sentences"]):
+                        await cur.execute(
+                            "INSERT INTO listening_sentence(id, set_id, section_id, item_id, en, zh, sort_order) VALUES(%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE en=VALUES(en), zh=VALUES(zh)",
+                            (f"{item['id']}-s{i+1}", ns21["id"], sec["id"], item["id"], en, zh, i),
+                        )
+        await db.commit()
+
         # Seed questions (always check — handles upgrade from old schema)
         async with db.cursor() as cur:
             await cur.execute("SELECT COUNT(*) FROM listening_question")
             q_row = await cur.fetchone()
             if not q_row or q_row[0] == 0:
-                for q in NEW_SET_QUESTIONS:
-                    await cur.execute(
-                        "INSERT INTO listening_question(id, set_id, section_id, item_id, question_number, question_text, question_text_zh, option_a, option_b, option_c, option_d, correct_answer, sort_order) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE question_text=VALUES(question_text), question_text_zh=VALUES(question_text_zh), correct_answer=VALUES(correct_answer)",
-                        (q["id"], q["set_id"], q["section_id"], q.get("item_id"), q["question_number"], q["question_text"], q.get("question_text_zh", ""), q["option_a"], q["option_b"], q["option_c"], q["option_d"], q["correct_answer"], q["sort_order"]),
-                    )
+                for qs in (NEW_SET_QUESTIONS, NEW_SET_2021_QUESTIONS):
+                    for q in qs:
+                        await cur.execute(
+                            "INSERT INTO listening_question(id, set_id, section_id, item_id, question_number, question_text, question_text_zh, option_a, option_b, option_c, option_d, correct_answer, sort_order) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE question_text=VALUES(question_text), question_text_zh=VALUES(question_text_zh), correct_answer=VALUES(correct_answer)",
+                            (q["id"], q["set_id"], q["section_id"], q.get("item_id"), q["question_number"], q["question_text"], q.get("question_text_zh", ""), q["option_a"], q["option_b"], q["option_c"], q["option_d"], q["correct_answer"], q["sort_order"]),
+                        )
                 await db.commit()
             else:
                 # Always update options for existing questions (handles data upgrades)
-                for q in NEW_SET_QUESTIONS:
-                    await cur.execute(
-                        "UPDATE listening_question SET option_a=%s, option_b=%s, option_c=%s, option_d=%s WHERE id=%s",
-                        (q["option_a"], q["option_b"], q["option_c"], q["option_d"], q["id"]),
-                    )
+                for qs in (NEW_SET_QUESTIONS, NEW_SET_2021_QUESTIONS):
+                    for q in qs:
+                        await cur.execute(
+                            "INSERT INTO listening_question(id, set_id, section_id, item_id, question_number, question_text, question_text_zh, option_a, option_b, option_c, option_d, correct_answer, sort_order) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE question_text=VALUES(question_text), question_text_zh=VALUES(question_text_zh), option_a=VALUES(option_a), option_b=VALUES(option_b), option_c=VALUES(option_c), option_d=VALUES(option_d), correct_answer=VALUES(correct_answer)",
+                            (q["id"], q["set_id"], q["section_id"], q.get("item_id"), q["question_number"], q["question_text"], q.get("question_text_zh", ""), q["option_a"], q["option_b"], q["option_c"], q["option_d"], q["correct_answer"], q["sort_order"]),
+                        )
                 await db.commit()
     finally:
         await release_db(db)

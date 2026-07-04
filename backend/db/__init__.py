@@ -184,6 +184,17 @@ async def init_db() -> None:
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             """)
             await cur.execute("""
+                CREATE TABLE IF NOT EXISTS user_sentence_analysis (
+                    user_id VARCHAR(50) NOT NULL,
+                    sentence_text TEXT NOT NULL,
+                    connected_speech JSON NOT NULL,
+                    sense_groups_segmented TEXT NOT NULL,
+                    sense_groups_explanation TEXT NOT NULL,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY (user_id, sentence_text(200))
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            await cur.execute("""
                 CREATE TABLE IF NOT EXISTS listening_grammar_cache (
                     sentence_text VARCHAR(500) PRIMARY KEY,
                     score INT NOT NULL,
@@ -203,5 +214,16 @@ async def init_db() -> None:
                     is_correct BOOLEAN NOT NULL,
                     FOREIGN KEY (exam_record_id) REFERENCES listening_exam_record(id) ON DELETE CASCADE,
                     FOREIGN KEY (question_id) REFERENCES listening_question(id) ON DELETE CASCADE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """)
+            # ====================== AI 对话记录表 ======================
+            await cur.execute("""
+                CREATE TABLE IF NOT EXISTS chat_sessions (
+                    user_id VARCHAR(50) NOT NULL,
+                    scene VARCHAR(50) NOT NULL,
+                    data JSON NOT NULL,
+                    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    PRIMARY KEY (user_id, scene),
+                    INDEX idx_chat_user (user_id)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             """)

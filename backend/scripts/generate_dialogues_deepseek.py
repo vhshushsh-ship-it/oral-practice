@@ -55,7 +55,7 @@ def generate_scene_dialogue(scene: str) -> list[dict]:
     for attempt in range(3):
         try:
             response = client.chat.completions.create(
-                model="deepseek-chat",
+                model="deepseek-v4-flash",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.8,
                 max_tokens=4000,

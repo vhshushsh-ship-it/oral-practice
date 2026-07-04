@@ -5,10 +5,13 @@ from routers.chat_router import router as chat_router
 from routers.translate_router import router as translate_router
 from routers.word_router import router as word_router
 from routers.notes_router import router as notes_router
+from routers.sentence_router import router as sentence_router
+from routers.grammar_router import router as grammar_router
 from routers.tts_router import router as tts_router
 from routers.listening_router import router as listening_router
 from routers.auth_router import router as auth_router
 from routers.stats_router import router as stats_router
+from routers.hints_router import router as hints_router
 from db import init_db
 from db.seed import seed_listening_data
 
@@ -42,10 +45,13 @@ app.include_router(chat_router)
 app.include_router(translate_router)
 app.include_router(word_router)
 app.include_router(notes_router)
+app.include_router(sentence_router)
+app.include_router(grammar_router)
 app.include_router(tts_router)
 app.include_router(listening_router)
 app.include_router(auth_router)
 app.include_router(stats_router)
+app.include_router(hints_router)
 
 if __name__ == "__main__":
     import uvicorn

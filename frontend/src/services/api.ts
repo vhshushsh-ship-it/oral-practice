@@ -3,8 +3,11 @@ import type { ConversationMessage, WordData, SentenceItem, ListeningSetMeta, Lis
 const API_BASE = 'http://127.0.0.1:8000';
 
 // ====================== Auth token 管理 ======================
+// 使用 sessionStorage 实现单标签登录态隔离：
+// 同一浏览器多个标签可分别登录不同账号，各自独立，互不顶替。
+// sessionStorage 生命周期绑定单个标签页，关闭标签即清除登录态。
 function getAuthHeaders(): Record<string, string> {
-  const token = localStorage.getItem('access_token');
+  const token = sessionStorage.getItem('access_token');
   if (token) {
     return { 'Authorization': `Bearer ${token}` };
   }
@@ -47,6 +50,94 @@ export async function sendVoiceMessage(
   return res.json();
 }
 
+/** 流式语音对话 — ASR 识别结果作为首个事件 yield，后续 yield AI token 字符串 */
+export type VoiceStreamEvent =
+  | { type: 'user_text'; text: string }
+  | { type: 'token'; text: string };
+
+export function sendVoiceMessageStream(
+  audioBlob: Blob,
+  scene: string,
+  history: ConversationMessage[],
+): { stream: AsyncGenerator<VoiceStreamEvent, string, unknown>; abort: () => void } {
+  const controller = new AbortController();
+
+  async function* streamGenerator(): AsyncGenerator<VoiceStreamEvent, string, unknown> {
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'recording.wav');
+    formData.append('scene', scene);
+    formData.append('conversation_history', JSON.stringify(history));
+    formData.append('stream', 'true');
+
+    const res = await fetch(`${API_BASE}/chat`, {
+      method: 'POST',
+      headers: { ...getAuthHeaders() },
+      body: formData,
+      signal: controller.signal,
+    });
+
+    if (!res.ok) {
+      // 即使请求失败也要 yield user_text（空），保证消费端不挂起
+      yield { type: 'user_text' as const, text: '' };
+      throw new Error(`Stream request failed: ${res.status}`);
+    }
+
+    const reader = res.body?.getReader();
+    if (!reader) {
+      yield { type: 'user_text' as const, text: '' };
+      throw new Error('No response body');
+    }
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let fullText = '';
+    let userTextYielded = false;
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') {
+              return fullText;
+            }
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.user_text !== undefined) {
+                // 第一个 SSE 事件：ASR 识别结果 → 立即 yield 让前端展示用户消息
+                if (!userTextYielded) {
+                  userTextYielded = true;
+                  yield { type: 'user_text' as const, text: parsed.user_text || '' };
+                }
+              } else if (parsed.token) {
+                fullText += parsed.token;
+                yield { type: 'token' as const, text: parsed.token };
+              }
+            } catch {
+              // skip malformed JSON lines
+            }
+          }
+        }
+      }
+      return fullText;
+    } finally {
+      // 确保 user_text 事件必定 yield，防止消费端挂起
+      if (!userTextYielded) {
+        yield { type: 'user_text' as const, text: '' };
+      }
+    }
+  }
+
+  return { stream: streamGenerator(), abort: () => controller.abort() };
+}
+
 // ====================== 文本对话 ======================
 export async function sendTextMessage(
   text: string,
@@ -59,6 +150,78 @@ export async function sendTextMessage(
     conversation_history: JSON.stringify(history),
   });
   return res.json();
+}
+
+/**
+ * 流式文本对话 — 返回一个 AbortController 和 async generator，
+ * 逐 token yield，实现打字机实时输出。
+ */
+export function sendTextMessageStream(
+  text: string,
+  scene: string,
+  history: ConversationMessage[],
+): { stream: AsyncGenerator<string, string, unknown>; abort: () => void } {
+  const controller = new AbortController();
+
+  async function* streamGenerator(): AsyncGenerator<string, string, unknown> {
+    const formBody = new URLSearchParams({
+      user_text: text,
+      scene,
+      conversation_history: JSON.stringify(history),
+      stream: 'true',
+    }).toString();
+
+    const res = await fetch(`${API_BASE}/chat_text`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...getAuthHeaders(),
+      },
+      body: formBody,
+      signal: controller.signal,
+    });
+
+    if (!res.ok) {
+      throw new Error(`Stream request failed: ${res.status}`);
+    }
+
+    const reader = res.body?.getReader();
+    if (!reader) throw new Error('No response body');
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let fullText = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6);
+          if (data === '[DONE]') {
+            return fullText;
+          }
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.token) {
+              fullText += parsed.token;
+              yield parsed.token;
+            }
+          } catch {
+            // skip malformed JSON lines
+          }
+        }
+      }
+    }
+    return fullText;
+  }
+
+  return { stream: streamGenerator(), abort: () => controller.abort() };
 }
 
 // ====================== 翻译 ======================
@@ -81,6 +244,167 @@ export async function queryWord(word: string): Promise<WordData | { error: strin
     headers: { ...getAuthHeaders() },
   });
   if (!res.ok) throw new Error(`请求失败，状态码：${res.status}`);
+  return res.json();
+}
+
+// ====================== JSON 请求辅助 ======================
+async function postJSON(path: string, body: unknown): Promise<Response> {
+  return fetch(`${API_BASE}${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify(body),
+  });
+}
+
+async function del(path: string): Promise<Response> {
+  return fetch(`${API_BASE}${path}`, {
+    method: 'DELETE',
+    headers: { ...getAuthHeaders() },
+  });
+}
+
+// ====================== 对话历史持久化 ======================
+export async function saveChatHistory(
+  scene: string,
+  history: ConversationMessage[],
+  translations?: { source: string; target: string; isUser: boolean }[],
+): Promise<void> {
+  const res = await postJSON('/chat/save', { scene, history, translations: translations || [] });
+  if (!res.ok) throw new Error(`保存对话失败: ${res.status}`);
+}
+
+export async function fetchChatHistory(
+  scene: string,
+): Promise<{ history: ConversationMessage[]; translations: { source: string; target: string; isUser: boolean }[] }> {
+  const res = await fetch(`${API_BASE}/chat/history?scene=${encodeURIComponent(scene)}`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取对话历史失败: ${res.status}`);
+  return res.json();
+}
+
+export async function clearChatHistory(scene: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/chat/clear?scene=${encodeURIComponent(scene)}`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`清空对话失败: ${res.status}`);
+}
+
+// ====================== 单词笔记持久化 ======================
+export interface WordNoteItem {
+  word: string;
+  phonetic: string;
+  meaning: string;
+  meanings: { part_of_speech: string; definition: string; example: string }[];
+  createTime: number;
+}
+
+export async function fetchWordNotes(): Promise<WordNoteItem[]> {
+  const res = await fetch(`${API_BASE}/notes/all`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取单词笔记失败: ${res.status}`);
+  const data = await res.json();
+  return data.notes;
+}
+
+export async function addWordNote(item: WordNoteItem): Promise<{ status: string; message: string }> {
+  const res = await postJSON('/notes/add', item);
+  return res.json();
+}
+
+export async function deleteWordNote(word: string): Promise<void> {
+  await postJSON(`/notes/delete?word=${encodeURIComponent(word)}`, {});
+}
+
+export async function clearWordNotes(): Promise<void> {
+  await postJSON('/notes/clear', {});
+}
+
+// ====================== 句子收藏持久化 ======================
+export async function fetchSentences(): Promise<SentenceItem[]> {
+  const res = await fetch(`${API_BASE}/sentences/all`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取句子收藏失败: ${res.status}`);
+  const data = await res.json();
+  return data.sentences;
+}
+
+export async function addSentenceItem(
+  text: string,
+  translation: string,
+  createTime?: number,
+): Promise<{ status: string; message: string }> {
+  const res = await postJSON('/sentences/add', { text, translation, createTime });
+  return res.json();
+}
+
+export async function deleteSentenceItem(index: number): Promise<void> {
+  await postJSON(`/sentences/delete?index=${index}`, {});
+}
+
+export async function clearSentenceItems(): Promise<void> {
+  await postJSON('/sentences/clear', {});
+}
+
+// ====================== 语法打分历史持久化 ======================
+export interface GrammarHistoryRecord {
+  sourceSent: string;
+  score: number;
+  errorIndex: number[];
+  errorInfo: string[];
+  fixedSent: string;
+  createdAt: string;
+}
+
+export async function saveGrammarResult(result: Omit<GrammarHistoryRecord, 'createdAt'>): Promise<void> {
+  const res = await postJSON('/grammar/save', result);
+  if (!res.ok) throw new Error(`保存语法记录失败: ${res.status}`);
+}
+
+export async function fetchGrammarHistory(): Promise<GrammarHistoryRecord[]> {
+  const res = await fetch(`${API_BASE}/grammar/history`, {
+    headers: { ...getAuthHeaders() },
+  });
+  if (!res.ok) throw new Error(`获取语法历史失败: ${res.status}`);
+  const data = await res.json();
+  return data.records;
+}
+
+export async function deleteGrammarRecord(index: number): Promise<void> {
+  const res = await del(`/grammar/history/${index}`);
+  if (!res.ok) throw new Error(`删除语法记录失败: ${res.status}`);
+}
+
+export async function clearGrammarHistory(): Promise<void> {
+  const res = await del('/grammar/history');
+  if (!res.ok) throw new Error(`清空语法历史失败: ${res.status}`);
+}
+
+// ====================== 句型提示 AI 生成 ======================
+export interface HintsResult {
+  patterns: string[];
+  vocabulary: string[];
+}
+
+export async function generateHints(
+  scene: string,
+  sceneChoice: string,
+  messages: ConversationMessage[],
+): Promise<HintsResult> {
+  const res = await postJSON('/api/hints/generate', {
+    scene,
+    scene_choice: sceneChoice,
+    messages,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: '生成句型提示失败' }));
+    throw new Error(err.detail || `生成句型提示失败: HTTP ${res.status}`);
+  }
   return res.json();
 }
 
@@ -159,16 +483,36 @@ export async function fetchExamDetail(examId: string): Promise<ExamResult> {
   return res.json();
 }
 
-export async function analyzeSentence(text: string): Promise<SentenceAnalysisResult> {
+export async function analyzeSentence(text: string, force: boolean = false): Promise<SentenceAnalysisResult> {
   const res = await fetch(`${API_BASE}/api/listening/analyze`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       ...getAuthHeaders(),
     },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ text, force }),
   });
-  if (!res.ok) throw new Error(`句子分析失败: ${res.status}`);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: '句子分析失败' }));
+    throw new Error(err.detail || `句子分析失败: HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+/** 用户私有句子分析（收藏页） */
+export async function analyzeSentencePrivate(text: string, force: boolean = false): Promise<SentenceAnalysisResult> {
+  const res = await fetch(`${API_BASE}/sentences/analyze`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify({ text, force }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: '句子分析失败' }));
+    throw new Error(err.detail || `句子分析失败: HTTP ${res.status}`);
+  }
   return res.json();
 }
 
@@ -425,7 +769,7 @@ export async function fetchStreakStats(): Promise<StreakStats> {
 }
 
 export async function fetchCurrentUser(): Promise<AuthUser | null> {
-  const token = localStorage.getItem('access_token');
+  const token = sessionStorage.getItem('access_token');
   if (!token) return null;
   try {
     const res = await fetch(`${API_BASE}/api/auth/me`, {

@@ -96,3 +96,11 @@ class VerifyCodeRequest(BaseModel):
     code: str = Field(..., pattern=r'^\d{6}$')
     password: str = Field(..., min_length=6, max_length=128)
     confirm_password: str = Field(..., min_length=6, max_length=128)
+
+
+# ====================== 句型提示 ======================
+
+class GenerateHintsRequest(BaseModel):
+    scene: str
+    scene_choice: str
+    messages: list[ConversationMessage] = []

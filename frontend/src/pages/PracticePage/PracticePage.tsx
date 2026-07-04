@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { initScene, checkGrammar, sendVoiceMessage } from '../../services/api';
+import { initScene, checkGrammar, sendVoiceMessage, saveGrammarResult } from '../../services/api';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { useChat } from '../../hooks/useChat';
 import { useRecording } from '../../hooks/useRecording';
@@ -11,7 +11,7 @@ import { TranslatePanel } from './TranslatePanel';
 import { WordQueryModule } from './WordQueryModule';
 import { SentenceTranslateModule } from './SentenceTranslateModule';
 import { GrammarScorePanel } from './GrammarScorePanel';
-import type { GrammarCheckResult } from '../../types';
+import type { GrammarCheckResult, ConversationMessage } from '../../types';
 
 const SCENE_OPTIONS = [
   { value: '0', label: '英语自由交流' },
@@ -50,8 +50,28 @@ export function PracticePage() {
   const [grammarError, setGrammarError] = useState('');
 
   const speak = useSpeechSynthesis(speechRate);
-  const { messages, translations, isLoading, sendText, sendVoice, clearHistory, pendingAutoPlayRef } = useChat(scene);
+  const { messages, translations, isLoading, historyLoaded, sendText, sendVoice, clearHistory, setHistory, pendingAutoPlayRef } = useChat(scene);
   const { showToast } = useToast();
+
+  // 待设置的欢迎消息（由 initScene 返回，useChat 加载完成后若无历史则写入）
+  const pendingWelcomeRef = useRef<{ message: ConversationMessage; scene: string } | null>(null);
+
+  // useChat 加载完成后，若该场景无历史数据，写入初始欢迎消息（统一走后端持久化）
+  useEffect(() => {
+    if (!historyLoaded) return;
+    const pending = pendingWelcomeRef.current;
+    if (!pending) return;
+    // 只处理当前场景的待定欢迎消息
+    if (pending.scene !== scene) return;
+    if (messages.length > 0) {
+      // 已有历史数据（来自后端或迁移），不需要欢迎消息
+      pendingWelcomeRef.current = null;
+      return;
+    }
+    // 无历史数据，写入欢迎消息并持久化
+    pendingWelcomeRef.current = null;
+    setHistory([pending.message]);
+  }, [historyLoaded, messages.length, scene, setHistory]);
 
   const handleVoiceSend = useCallback(
     (blob: Blob) => {
@@ -92,13 +112,11 @@ export function PracticePage() {
       setSceneChoice(choice);
       try {
         const data = await initScene(choice);
-        const key = `chat_history_${data.scene}`;
-        if (!localStorage.getItem(key)) {
-          localStorage.setItem(
-            key,
-            JSON.stringify([{ role: 'assistant', content: data.initial_message }]),
-          );
-        }
+        // 保存初始欢迎消息，等 useChat 加载完成后若该场景无历史则写入
+        pendingWelcomeRef.current = {
+          message: { role: 'assistant' as const, content: data.initial_message },
+          scene: data.scene,
+        };
         setScene(data.scene);
       } catch {
         showToast('场景加载失败', 'warning');
@@ -149,7 +167,17 @@ export function PracticePage() {
 
     checkGrammar(text)
       .then((data) => {
-        if (!cancelled) setGrammarResult(data);
+        if (!cancelled) {
+          setGrammarResult(data);
+          // 自动保存语法打分历史到后端
+          saveGrammarResult({
+            sourceSent: data.source_sent,
+            score: data.score,
+            errorIndex: data.error_index,
+            errorInfo: data.error_info,
+            fixedSent: data.fixed_sent,
+          }).catch(() => { /* 静默失败，不影响主流程 */ });
+        }
       })
       .catch((err: unknown) => {
         if (!cancelled) {
@@ -183,17 +211,18 @@ export function PracticePage() {
     handleSceneChange('0');
   }, []);
 
-  // Auto-speak AI responses — only when triggered by a new user-initiated reply
-  const prevLenRef = useRef(0);
+  // Auto-speak AI responses — 仅当流式回复完整接收后触发，同一条消息只朗读一次
   useEffect(() => {
-    if (messages.length > prevLenRef.current && messages.length > 0) {
-      const last = messages[messages.length - 1];
-      if (last.role === 'assistant' && pendingAutoPlayRef.current) {
-        pendingAutoPlayRef.current = false;
-        speak(last.content);
-      }
+    if (messages.length === 0) return;
+    const last = messages[messages.length - 1];
+    if (
+      last.role === 'assistant' &&
+      last.content &&
+      pendingAutoPlayRef.current
+    ) {
+      pendingAutoPlayRef.current = false;
+      speak(last.content);
     }
-    prevLenRef.current = messages.length;
   }, [messages, speak, pendingAutoPlayRef]);
 
   return (
@@ -231,6 +260,9 @@ export function PracticePage() {
             isLoading={isLoading}
             prefillText={prefillText}
             onPrefillConsumed={handlePrefillConsumed}
+            sceneChoice={sceneChoice}
+            scene={scene}
+            messages={messages}
           />
         </div>
 
